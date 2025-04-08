@@ -1,75 +1,74 @@
-# Nuxt Minimal Starter
+Berikut `README.md` yang sudah diperbarui dengan penjelasan tentang proyek **Storytime**:
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+```markdown
+# Storytime - Website Majalah Online
 
-## Setup
+Storytime adalah aplikasi berbasis website seperti Medium, yang menyajikan berbagai pilihan cerita atau artikel seperti majalah online. Proyek ini dibangun menggunakan [Nuxt 3](https://nuxt.com), dengan desain UI yang bersih dan responsif.
 
-Make sure to install dependencies:
+## 🔗 Tautan Penting
+
+- 💻 GitHub Repository: [https://github.com/AdiSan103/timedoor-storytime](https://github.com/AdiSan103/timedoor-storytime)
+- 🎨 Desain Figma: [Storytime Figma UI](https://www.figma.com/design/VUhSZSH0z7Ls8RwpgRdxG3/Redesign-Website-Training-Nuxt?node-id=213-290&p=f&t=Xv0Iv8WD7BNeE7oI-0)
+- 📚 Dokumentasi Nuxt: [https://nuxt.com/docs/guide/](https://nuxt.com/docs/guide/)
+
+## 🚀 Fitur Utama
+
+- Tulis dan baca cerita seperti platform Medium
+- Komponen yang reusable untuk mempercepat pengembangan
+- Struktur file yang rapi dan modular
+
+## 🛠️ Instalasi
+
+Clone repositori dan install dependensi:
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
+git clone https://github.com/AdiSan103/timedoor-storytime
+cd timedoor-storytime
 yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## 🧪 Jalankan Aplikasi
 
-Start the development server on `http://localhost:3000`:
+Untuk menjalankan aplikasi di lokal:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
 yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Server akan berjalan di `http://localhost:3000`
 
-Build the application for production:
+## 🏗️ Struktur Proyek
+
+Proyek ini mengikuti struktur dasar Nuxt 3 dengan beberapa tambahan:
+
+```
+components/
+├── layouts/      # Komponen khusus untuk layout tertentu
+├── pages/        # Komponen khusus halaman tertentu
+├── ui/           # Komponen yang reusable di banyak tempat
+```
+
+Dokumentasi lengkap tentang struktur dapat dibaca di [Nuxt Directory Structure](https://nuxt.com/docs/guide/directory-structure/nuxt-config).
+
+## 🏁 Build dan Deploy
+
+Build untuk produksi:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
 yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview hasil build:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
 yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Untuk info lebih lanjut mengenai deployment, baca [Deployment Guide Nuxt](https://nuxt.com/docs/getting-started/deployment).
+
+---
+
+Made with ❤️ by [Putu Adi](https://github.com/AdiSan103)
+```
+
+Kalau kamu mau ditambahkan badge, gambar, atau penjelasan fitur lebih detail, tinggal bilang aja!
