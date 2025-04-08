@@ -9,7 +9,7 @@
       <Input placeholder="Search Story" customClass="input" />
       <img src="/images/image1.png" alt="" />
     </section>
-    <section class="container lastest-story">
+    <section class="container cards1">
       <div class="d-flex justify-content-between align-items-center">
         <h2>Latest Story</h2>
         <NuxLink to="/#" class="link"
@@ -26,9 +26,9 @@
         <Card />
       </div>
     </section>
-    <section class="container comedy">
+    <section class="container cards2">
       <div class="d-flex justify-content-between align-items-center">
-        <h2>Comedy</h2>
+        <h2>card</h2>
         <NuxLink to="/#" class="link"
           >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
         </NuxLink>
@@ -42,7 +42,7 @@
         </div>
       </div>
     </section>
-    <section class="container lastest-story">
+    <section class="container cards1">
       <div class="d-flex justify-content-between align-items-center">
         <h2>Latest Story</h2>
         <NuxLink to="/#" class="link"
@@ -59,7 +59,7 @@
         <Card />
       </div>
     </section>
-    <section class="container comedy">
+    <section class="container cards2">
       <div class="d-flex justify-content-between align-items-center">
         <h2>Horror</h2>
         <NuxLink to="/#" class="link"
@@ -137,7 +137,7 @@ import Badge from "@/components/ui/Badge.vue";
   }
 }
 
-.lastest-story {
+.cards1 {
   h2 {
     font-family: Playfair Display;
     font-weight: 600;
@@ -169,7 +169,7 @@ import Badge from "@/components/ui/Badge.vue";
   }
 }
 
-.comedy {
+.cards2 {
   .cards {
     display: flex;
     justify-content: space-between;

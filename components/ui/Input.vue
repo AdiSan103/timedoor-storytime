@@ -1,5 +1,7 @@
 <template>
-  <div :class="['contain d-flex justify-content-between align-items-center', customClass]">
+  <div
+    :class="['contain d-flex justify-content-between align-items-center ', classCustom]"
+  >
     <input :type="type" :placeholder="placeholder" />
     <Icon name="iconoir:search" style="color: black" size="25" />
   </div>
@@ -13,7 +15,7 @@ interface Props {
   href?: string;
   type?: string;
   placeholder?: string;
-  customClass?: string;
+  classCustom?: string;
 }
 
 defineProps<Props>();
@@ -33,10 +35,11 @@ defineProps<Props>();
 }
 
 input {
- border: none;
- &:focus {
+  width: 100%;
   border: none;
-  outline: none;
- }
+  &:focus {
+    border: none;
+    outline: none;
+  }
 }
 </style>

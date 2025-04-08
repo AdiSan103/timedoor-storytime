@@ -1,0 +1,3 @@
+<template>
+ story create
+</template>

@@ -1,0 +1,3 @@
+<template>
+ story edit
+</template>
