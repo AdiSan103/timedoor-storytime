@@ -1,6 +1,5 @@
 Berikut `README.md` yang sudah diperbarui dengan penjelasan tentang proyek **Storytime**:
 
-```markdown
 # Storytime - Website Majalah Online
 
 Storytime adalah aplikasi berbasis website seperti Medium, yang menyajikan berbagai pilihan cerita atau artikel seperti majalah online. Proyek ini dibangun menggunakan [Nuxt 3](https://nuxt.com), dengan desain UI yang bersih dan responsif.
