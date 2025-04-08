@@ -1,99 +1,97 @@
-<template>
-  <NuxtLayout name="default">
-    <section class="container banner">
-      <h1>Welcome to Storytime</h1>
-      <p>
-        The world's most-loved social storytelling platform. Story time connects a global
-        community of 90 million readers and writers through the power of story.
-      </p>
-      <Input placeholder="Search Story" customClass="input" />
-      <img src="/images/image1.png" alt="" />
-    </section>
-    <section class="container cards1">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Latest Story</h2>
-        <NuxLink to="/#" class="link"
-          >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
-        </NuxLink>
-      </div>
-      <Separator />
-      <div class="cards">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </div>
-    </section>
-    <section class="container cards2">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>card</h2>
-        <NuxLink to="/#" class="link"
-          >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
-        </NuxLink>
-      </div>
-      <Separator />
-      <div class="cards">
-        <Card height="770" />
-        <div class="left">
-          <Card />
-          <Card />
-        </div>
-      </div>
-    </section>
-    <section class="container cards1">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Latest Story</h2>
-        <NuxLink to="/#" class="link"
-          >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
-        </NuxLink>
-      </div>
-      <Separator />
-      <div class="cards">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </div>
-    </section>
-    <section class="container cards2">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2>Horror</h2>
-        <NuxLink to="/#" class="link"
-          >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
-        </NuxLink>
-      </div>
-      <Separator />
-      <div class="cards">
-        <Card height="770" />
-        <div class="left">
-          <Card />
-          <Card />
-        </div>
-      </div>
-    </section>
-    <section class="container categories">
-      <h2>More Categories</h2>
-      <Separator />
-      <div class="cards">
-        <Badge classCustom="badge_" />
-        <Badge classCustom="badge_" />
-        <Badge classCustom="badge_" />
-        <Badge classCustom="badge_" />
-      </div>
-    </section>
-  </NuxtLayout>
-</template>
-
 <script setup lang="ts">
 import Input from "@/components/ui/Input.vue";
 import Separator from "@/components/ui/Separator.vue";
 import Card from "@/components/ui/Card.vue";
 import Badge from "@/components/ui/Badge.vue";
 </script>
+
+<template>
+  <section class="container banner">
+    <h1>Welcome to Storytime</h1>
+    <p>
+      The world's most-loved social storytelling platform. Story time connects a global
+      community of 90 million readers and writers through the power of story.
+    </p>
+    <Input placeholder="Search Story" customClass="input" />
+    <img src="/images/image1.png" alt="" />
+  </section>
+  <section class="container cards1">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Latest Story</h2>
+      <NuxLink to="/#" class="link"
+        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      </NuxLink>
+    </div>
+    <Separator />
+    <div class="cards">
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </div>
+  </section>
+  <section class="container cards2">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>card</h2>
+      <NuxLink to="/#" class="link"
+        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      </NuxLink>
+    </div>
+    <Separator />
+    <div class="cards">
+      <Card height="770" />
+      <div class="left">
+        <Card />
+        <Card />
+      </div>
+    </div>
+  </section>
+  <section class="container cards1">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Latest Story</h2>
+      <NuxLink to="/#" class="link"
+        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      </NuxLink>
+    </div>
+    <Separator />
+    <div class="cards">
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </div>
+  </section>
+  <section class="container cards2">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Horror</h2>
+      <NuxLink to="/#" class="link"
+        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      </NuxLink>
+    </div>
+    <Separator />
+    <div class="cards">
+      <Card height="770" />
+      <div class="left">
+        <Card />
+        <Card />
+      </div>
+    </div>
+  </section>
+  <section class="container categories">
+    <h2>More Categories</h2>
+    <Separator />
+    <div class="cards">
+      <Badge classCustom="badge_" />
+      <Badge classCustom="badge_" />
+      <Badge classCustom="badge_" />
+      <Badge classCustom="badge_" />
+    </div>
+  </section>
+</template>
 
 <style lang="scss" scoped>
 .banner {
