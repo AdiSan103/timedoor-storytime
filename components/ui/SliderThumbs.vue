@@ -1,3 +1,23 @@
+<script setup>
+import { ref } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
+
+import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+
+const thumbsSwiper = ref(null);
+
+const setThumbsSwiper = (swiperInstance) => {
+  thumbsSwiper.value = swiperInstance;
+};
+
+const modules = [FreeMode, Navigation, Thumbs];
+</script>
+
 <template>
   <div>
     <swiper
@@ -33,26 +53,6 @@
     </swiper>
   </div>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import { Swiper, SwiperSlide } from "swiper/vue";
-
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
-const thumbsSwiper = ref(null);
-
-const setThumbsSwiper = (swiperInstance) => {
-  thumbsSwiper.value = swiperInstance;
-};
-
-const modules = [FreeMode, Navigation, Thumbs];
-</script>
 
 <style lang="scss" scoped>
 .swiper {

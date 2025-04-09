@@ -1,12 +1,3 @@
-<template>
-  <div
-    :class="['contain d-flex justify-content-between align-items-center ', classCustom]"
-  >
-    <input :type="type" :placeholder="placeholder" />
-    <Icon name="iconoir:search" style="color: black" size="25" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { defineProps } from "vue";
 
@@ -16,13 +7,48 @@ interface Props {
   type?: string;
   placeholder?: string;
   classCustom?: string;
+  icon?: string;
+  label?: string;
 }
 
 defineProps<Props>();
+
+// type == 'password'
+const togglePassword = ref(true);
+const handlePassword = () => {
+  togglePassword.value = !togglePassword.value;
+};
 </script>
 
+<template>
+  <div>
+    <label for="" class="component__label">{{ label }}</label>
+    <div :class="['component ', classCustom]">
+      <!-- condition type password -->
+      <input
+        :type="togglePassword === false ? 'text' : type"
+        :placeholder="placeholder"
+        class="component__input"
+      />
+      <Icon :name="icon" style="color: black" size="25" v-if="icon" />
+      <!-- type password -->
+      <Icon
+        class="component__password"
+        :name="togglePassword ? 'ph:eye-light' : 'mdi-light:eye-off'"
+        style="color: black"
+        size="25"
+        v-if="type == 'password'"
+        @click="handlePassword"
+      />
+    </div>
+  </div>
+</template>
+
 <style lang="scss">
-.contain {
+.component {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px;
   border-width: 2px;
   border-radius: 8px;
@@ -30,16 +56,30 @@ defineProps<Props>();
   padding-right: 30px;
   padding-bottom: 15px;
   padding-left: 30px;
-
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border: 2px solid #cccccc;
-}
 
-input {
-  width: 100%;
-  border: none;
-  &:focus {
+  &__input {
+    width: 100%;
     border: none;
-    outline: none;
+
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+
+  &__label {
+    font-family: DM Sans;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+
+  &__password {
+    cursor: pointer;
   }
 }
 </style>

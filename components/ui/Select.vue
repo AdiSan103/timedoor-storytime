@@ -1,8 +1,11 @@
+<script lang="ts" setup>
+</script>
+
 <template>
-  <div class="custom-select">
-    <label for="selects">Sort By</label>
-    <div class="select-wrapper">
-      <select id="selects">
+  <div class="select">
+    <label class="select__label">Sort By</label>
+    <div class="select__wrapper">
+      <select class="select__input">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="popular">Most Popular</option>
@@ -12,11 +15,11 @@
 </template>
 
 <style lang="scss" scoped>
-.custom-select {
+.select {
   display: flex;
   gap: 20px;
 
-  label {
+  &__label {
     font-family: "DM Sans";
     font-weight: 400;
     font-size: 24px;
@@ -26,20 +29,20 @@
     width: 130px;
   }
 
-  .select-wrapper {
+  &__wrapper {
     position: relative;
     width: 100%;
     max-width: 300px;
+  }
 
-    select {
-      max-width: 120px;
-      font-family: "DM Sans";
-      font-weight: 500;
-      font-size: 24px;
-      line-height: 32px;
-      border: none;
-      outline: none;
-    }
+  &__input {
+    max-width: 120px;
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    border: none;
+    outline: none;
   }
 }
 </style>

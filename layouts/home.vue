@@ -14,6 +14,7 @@ import Footer from '~/components/layouts/Footer.vue';
 <style lang="css">
 main{
  position: relative;
+ overflow-x: hidden;
 }
 </style>
 

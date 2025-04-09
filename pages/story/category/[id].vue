@@ -1,15 +1,14 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "story",
+});
+
 import Input from "~/components/ui/Input.vue";
 import Select from "~/components/ui/Select.vue";
 import Card from "~/components/ui/Card.vue";
 import Pagination from "~/components/ui/Pagination.vue";
 import type { Story } from "~/type/module/stories";
 import CardSekelton from "~/components/ui/CardSekelton.vue";
-
-// meta
-definePageMeta({
-  layout: "story",
-});
 
 // declaration variable
 const { $api } = useNuxtApp();
@@ -39,26 +38,13 @@ fetchstory();
 
 <template>
   <section class="form">
-    <div class="form__selects">
+    <div class="selects">
       <Select />
       <Select />
     </div>
-    <Input placeholder="Search Story" classCustom="form__input" />
+    <Input placeholder="Search Story" />
   </section>
-
   <section class="cards">
-    <div class="cards__items">
-      <Card height="770" :item="story[0]" v-if="!storyLoading" />
-      <CardSekelton height="770" v-if="storyLoading"  />
-      <div class="cards__left">
-        <CardSekelton v-if="storyLoading" />
-        <CardSekelton v-if="storyLoading"  />
-        <Card :item="story[1]" v-if="!storyLoading" />
-        <Card :item="story[2]" v-if="!storyLoading" />
-      </div>
-    </div>
-  </section>
-  <section class="cards__list">
     <!--  -->
     <CardSekelton v-if="storyLoading" />
     <CardSekelton v-if="storyLoading" />
@@ -71,40 +57,12 @@ fetchstory();
 </template>
 
 <style lang="scss" scoped>
-.form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &__selects {
-    display: flex;
-    gap: 20px;
-  }
-  &__input {
-    width: 45%;
-  }
-}
 .cards {
-  &__items {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 40px;
-  }
-  &__list {
-    margin: 50px 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  &__left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 50%;
-  }
+  margin: 50px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
-
 .pagination {
   display: flex;
   justify-content: center;
@@ -112,5 +70,14 @@ fetchstory();
   margin-top: 50px;
   margin-bottom: 70px;
 }
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  .selects {
+    display: flex;
+    gap: 20px;
+  }
+}
 </style>

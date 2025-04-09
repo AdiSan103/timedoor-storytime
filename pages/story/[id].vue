@@ -4,19 +4,29 @@ import Breadcumb from "~/components/ui/Breadcumb.vue";
 import SliderThumbs from "~/components/ui/SliderThumbs.vue";
 import bg from "@/assets/images/image-book.png";
 import Separator from "~/components/ui/Separator.vue";
+
+definePageMeta({
+  layout: "home",
+});
+
+const { $api } = useNuxtApp();
+
+const { data: dataStory, pending, error: dataStoryError } = await $api.stories.getStories(
+  "newest"
+);
 </script>
 
 <template>
   <Breadcumb />
-  <div class="container">
-    <section class="title">
-      <p>15 May 2023</p>
-      <h1>Guardians of the Galaxy Vol. 3</h1>
-      <div class="avatar">
-        <div :style="{ backgroundImage: `url(${bg})` }" class="user"></div>
-        <p>Khrisvana (updated) 1</p>
+  <div class="detail container">
+    <section class="detail__title">
+      <p class="detail__label">15 May 2023</p>
+      <h1 class="detail__title">Guardians of the Galaxy Vol. 3</h1>
+      <div class="detail__avatar">
+        <div :style="{ backgroundImage: `url(${bg})` }" class="detail__user"></div>
+        <p class="detail__label">Khrisvana (updated) 1</p>
       </div>
-      <div class="bookmark">
+      <div class="detail__bookmark">
         <Icon
           name="material-symbols:bookmark-add-outline-rounded"
           style="color: #fff"
@@ -24,11 +34,11 @@ import Separator from "~/components/ui/Separator.vue";
         />
       </div>
     </section>
-    <section class="content">
-      <div class="left">
+    <section class="detail__content">
+      <div class="detail__contentleft">
         <SliderThumbs />
       </div>
-      <div class="right">
+      <div class="detail__contentright">
         <p>
           At their new headquarters on Knowhere,[a] the Guardians of the Galaxy are
           attacked by Adam Warlock, a Sovereign warrior created by their high
@@ -106,13 +116,10 @@ import Separator from "~/components/ui/Separator.vue";
       </div>
     </section>
     <section>
-      <h3>Similiar Story</h3>
+      <h3 class="detail__heading3">Similiar Story</h3>
       <Separator />
-      <div class="cards">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+      <div class="detail__items">
+        <Card v-for="item in dataStory?.data" :item="item" />
       </div>
     </section>
   </div>
@@ -120,13 +127,21 @@ import Separator from "~/components/ui/Separator.vue";
 
 <style lang="scss" scoped>
 @import "@/assets/main.scss";
-
-.title {
-  text-align: center;
-  margin-bottom: 50px;
-  position: relative;
-
-  .bookmark {
+.detail {
+  &__title {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  &__heading2 {
+    font-family: Playfair Display;
+    font-weight: 600;
+    font-size: 44px;
+    letter-spacing: 0%;
+    margin-bottom: 40px;
+    margin-top: 100px;
+  }
+  &__bookmark {
     background-color: $color3;
     width: 40px;
     height: 40px;
@@ -139,16 +154,15 @@ import Separator from "~/components/ui/Separator.vue";
     cursor: pointer;
     right: 0;
   }
-
-  p {
+  &__label {
     font-family: DM Sans;
     font-weight: 400;
     font-size: 24px;
     letter-spacing: 0%;
     text-align: center;
+    margin: 0;
   }
-
-  h1 {
+  &__title {
     font-family: Playfair Display;
     font-weight: 700;
     font-size: 60px;
@@ -156,26 +170,15 @@ import Separator from "~/components/ui/Separator.vue";
     text-align: center;
     margin-bottom: 40px;
   }
-}
-h3 {
-  font-family: Playfair Display;
-  font-weight: 600;
-  font-size: 44px;
-  letter-spacing: 0%;
-  margin-bottom: 40px;
-  margin-top: 100px;
-}
-.avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
 
-  p {
-    margin-bottom: 0;
+  &__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
   }
 
-  .user {
+  &__user {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -183,23 +186,25 @@ h3 {
     width: 30px;
     border-radius: 100%;
   }
-}
-.content {
-  display: flex;
-  gap: 40px;
 
-  .left {
+  &__content {
+    display: flex;
+    gap: 40px;
+  }
+
+  &__contentleft {
     width: 40%;
   }
 
-  .right {
+  &__contentright {
     width: 60%;
   }
-}
-.cards {
-  margin: 50px 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+
+  &__items {
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
 }
 </style>

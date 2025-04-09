@@ -1,10 +1,28 @@
+<script setup lang="ts">
+// import bg from "@/assets/images/image-book.png";
+import Badge from "@/components/ui/Badge.vue";
+import { defineProps } from "vue";
+import type { Story } from "~/type/module/stories";
+
+// Define props with TypeScript
+interface Props {
+  height?: string;
+  item: Story;
+}
+
+defineProps<Props>();
+</script>
+
 <template>
   <div class="card">
     <div
-      :style="{ backgroundImage: `url(${bg})`, minHeight: (height ?? 300) + 'px' }"
-      class="bg"
+      :style="{
+        backgroundImage: `url(${item.content_images[0].url})`,
+        minHeight: (height ?? 300) + 'px',
+      }"
+      class="card__background"
     >
-      <div class="bookmark">
+      <div class="card__bookmark">
         <Icon
           name="material-symbols:bookmark-add-outline-rounded"
           style="color: #fff"
@@ -12,39 +30,27 @@
         />
       </div>
     </div>
-    <div class="content">
-      <h3>Gemma</h3>
-      <p>
-        1. GOLDEN Gemma was only five minutes away from her parents’ hut, but the jungle
-        had already taken on a different personality. It was thicker. The trees had grown
-        taller. The ti plants shaded the...
+    <div class="card__content">
+      <h3 class="card__title">{{ item.title.slice(0, 26) }}</h3>
+      <p class="card__label">
+        {{ item.preview_content.slice(0, 200) }}
       </p>
     </div>
-    <div class="footer">
-      <div class="left">
-        <div :style="{ backgroundImage: `url(${bg})` }" class="user"></div>
-        <p>Khrisvana (updated) 1</p>
+    <div class="card__footer">
+      <div class="card_footerleft">
+        <div
+          :style="{ backgroundImage: `url(${item.user.profile_image})` }"
+          class="card__user"
+        ></div>
+        <p class="card__label">{{ item.user.name }}</p>
       </div>
-      <div class="right">
-        <p>12 March 2024</p>
+      <div class="card_footerright">
+        <p class="card__label">{{ item.created_at }}</p>
         <Badge />
       </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import bg from "@/assets/images/image-book.png";
-import Badge from "@/components/ui/Badge.vue";
-import { defineProps } from "vue";
-
-// Define props with TypeScript
-interface Props {
-  height?: string;
-}
-
-defineProps<Props>();
-</script>
 
 <style scoped lang="scss">
 @import "@/assets/main.scss";
@@ -59,38 +65,47 @@ defineProps<Props>();
   border: none;
   outline: none;
 
-  .footer {
+  &__footer {
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    .left {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .right {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-    }
-
-    p {
-      font-family: DM Sans;
-      font-weight: 500;
-      font-size: 8px;
-      line-height: 26px;
-      letter-spacing: 0%;
-      vertical-align: middle;
-      margin: 0;
-    }
   }
 
-  .user {
+  &__title {
+    font-family: DM Sans;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 46px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+  }
+
+  &__label {
+    font-family: DM Sans;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    margin: 0;
+    text-align: justify;
+  }
+
+  &__left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__user {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -99,7 +114,7 @@ defineProps<Props>();
     border-radius: 100%;
   }
 
-  .bg {
+  &__background {
     width: 100%;
     background-size: cover;
     background-position: center;
@@ -107,43 +122,27 @@ defineProps<Props>();
     flex-shrink: 0;
     border-radius: 8px;
     position: relative;
-
-    .bookmark {
-      background-color: $color3;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 100px;
-      position: absolute;
-      bottom: 10px;
-      cursor: pointer;
-      right: 10px;
-    }
   }
 
-  .content {
+  &__bookmark {
+    background-color: $color3;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    position: absolute;
+    bottom: 10px;
+    cursor: pointer;
+    right: 10px;
+  }
+
+  &__content {
     padding: 10px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
-
-    h3 {
-      font-family: DM Sans;
-      font-weight: 700;
-      font-size: 26px;
-      line-height: 46px;
-      letter-spacing: 0%;
-      vertical-align: middle;
-    }
-
-    p {
-      font-family: DM Sans;
-      font-weight: 400;
-      font-size: 12px;
-      letter-spacing: 0%;
-    }
   }
 }
 </style>

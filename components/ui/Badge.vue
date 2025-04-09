@@ -1,22 +1,26 @@
-<template>
-  <div :class="classCustom">Comedy</div>
-</template>
-
 <script setup lang="ts">
-import { defineProps } from "vue";
-
-// Define props with TypeScript
 interface Props {
   classCustom?: string;
+  label?: string;
+  link?: string;
 }
 
 defineProps<Props>();
 </script>
 
+<template>
+  <NuxtLink v-if="link" :to="link" :class="['badge', classCustom]">
+    {{ label }}
+  </NuxtLink>
+  <div v-else :class="['badge', classCustom]">
+    {{ label }}
+  </div>
+</template>
+
 <style lang="scss" scoped>
 @import "@/assets/main.scss";
 
-div {
+.badge {
   display: flex;
   background-color: $color2;
   padding: 3px 6px;
@@ -27,6 +31,7 @@ div {
   font-size: 10px;
   letter-spacing: 0%;
 
-  color:  $color3;
+  color: $color3;
+  text-decoration: none;
 }
 </style>

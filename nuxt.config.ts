@@ -4,4 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/main.scss"],
   modules: ["@nuxt/icon"],
+  runtimeConfig: {
+    apiBaseUrl: process.env.API_BASE_URL,
+    public: {
+      appUrl: process.env.APP_URL
+    }
+  }
 })
