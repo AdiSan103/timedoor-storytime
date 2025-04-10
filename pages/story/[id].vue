@@ -1,4 +1,7 @@
 <script setup lang="ts">
+
+import type { Story } from "~/type/module/stories";
+
 import Card from "~/components/ui/Card.vue";
 import Breadcumb from "~/components/ui/Breadcumb.vue";
 import SliderThumbs from "~/components/ui/SliderThumbs.vue";
@@ -9,11 +12,30 @@ definePageMeta({
   layout: "home",
 });
 
+// declaration variable
 const { $api } = useNuxtApp();
+const story: Ref<Story[]> = ref([]);
+const storyLoading = ref(false);
 
-const { data: dataStory, pending, error: dataStoryError } = await $api.stories.getStories(
-  "newest"
-);
+// function
+const fetchstory = () => {
+  storyLoading.value = true;
+
+  $api.stories
+    .getStories("newest")
+    .then((res) => {
+      story.value = res.data; // ✅ karena res.data.value = PropsStory
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      storyLoading.value = false;
+    });
+};
+
+// lifecycle
+fetchstory();
 </script>
 
 <template>
@@ -119,7 +141,7 @@ const { data: dataStory, pending, error: dataStoryError } = await $api.stories.g
       <h3 class="detail__heading3">Similiar Story</h3>
       <Separator />
       <div class="detail__items">
-        <Card v-for="item in dataStory?.data" :item="item" />
+        <Card v-for="item in story" :item="item" />
       </div>
     </section>
   </div>

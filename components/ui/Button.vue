@@ -1,38 +1,37 @@
 <script setup lang="ts">
+import { NuxtLink } from "#components";
 import { defineProps } from "vue";
 
 // Define props with TypeScript
 interface Props {
   label: string;
-  href?: string;
+  link?: string;
   variant?: "primary" | "secondary" | "success" | "light";
   type?: "button" | "submit" | "reset" | "disabled";
-  classCustom?: string
+  classCustom?: string;
 }
 
 defineProps<Props>();
 </script>
 
 <template>
-  <template v-if="href">
-    <a :href="href" class="base__link">{{ label }}</a>
-  </template>
-  <template v-else>
-    <button
-      :class="[
-        'base ',
-        classCustom,
-        variant == 'primary' ? ' base--primary ' : '',
-        variant == 'secondary' ? ' base--secondary ' : '',
-        variant == 'success' ? ' base--success ' : '',
-        variant == 'light' ? ' base--light ' : '',
-        type == 'disabled' ? ' base--disabled ' : '',
-      ]"
-      :disabled="type === 'disabled'"
-    >
+  <button
+    :class="[
+      'base',
+      classCustom,
+      variant == 'primary' ? ' base--primary ' : '',
+      variant == 'secondary' ? ' base--secondary ' : '',
+      variant == 'success' ? ' base--success ' : '',
+      variant == 'light' ? ' base--light ' : '',
+      type == 'disabled' ? ' base--disabled ' : '',
+    ]"
+    :disabled="type === 'disabled'"
+  >
+    <NuxtLink :to="link" v-if="link">
       {{ label }}
-    </button>
-  </template>
+    </NuxtLink>
+    <span v-else> {{ label }}</span>
+  </button>
 </template>
 
 <style scoped lang="scss">
@@ -54,7 +53,13 @@ defineProps<Props>();
 
   &--primary {
     background-color: $color3;
+    color: $color8;
     color: $color1;
+
+    a {
+      color: $color1!important;
+      text-decoration: none;
+    }
 
     &:hover {
       background-color: $color8;
@@ -67,18 +72,34 @@ defineProps<Props>();
 
   &--secondary {
     background-color: $color1;
+
+    a {
+      color: $color8!important;
+      text-decoration: none;
+    }
   }
 
   &--success {
     background-color: $color2;
     border: none;
     font-weight: bold;
+
+    a {
+      color:$color3!important;
+      text-decoration: none;
+    }
   }
 
   &--light {
     background-color: white;
     border: none;
     font-weight: bold;
+
+    
+    a {
+      color:$color3!important;
+      text-decoration: none;
+    }
   }
 }
 </style>

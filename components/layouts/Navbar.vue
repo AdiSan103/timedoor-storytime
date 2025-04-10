@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import Button from "@/components/ui/Button.vue";
 import bg from "@/assets/images/image-book.png";
+import { NuxtLink } from "#components";
 
 const menu = ref(false);
 
@@ -13,10 +14,12 @@ const handleMenu = () => {
 <template>
   <nav class="navbar">
     <div class="d-flex justify-content-between align-items-center container">
-      <img src="/images/logo.png" alt="logo" class="navbar__img" />
+      <NuxtLink to="/">
+        <img src="/images/logo.png" alt="logo" class="navbar__img" />
+      </NuxtLink>
       <div class="d-flex gap-3">
-        <Button label="Register" variant="secondary" />
-        <Button label="Login" variant="primary" />
+        <Button link="/auth/register" label="Register" variant="secondary" />
+        <Button link="/auth/login" label="Login" variant="primary" />
         <div class="navbar__avatar">
           <div class="navbar__content" @click="handleMenu">
             <div :style="{ backgroundImage: `url(${bg})` }" class="navbar__user"></div>
@@ -29,8 +32,8 @@ const handleMenu = () => {
             />
           </div>
           <ul class="navbar__listmenu" v-if="menu">
-            <li class="navbar__listitem">My Profile</li>
-            <li class="navbar__listitem">Log Out</li>
+            <NuxtLink to="/auth/mystory" class="navbar__listitem">My Profile</NuxtLink>
+            <NuxtLink class="navbar__listitem">Log Out</NuxtLink>
           </ul>
         </div>
       </div>
@@ -45,7 +48,7 @@ const handleMenu = () => {
   position: sticky;
   background-color: $color1;
   top: 0;
-  z-index: 99;
+  z-index: 80;
   padding: 10px;
   box-shadow: 0px 1px 4px 0px #0c0c0d0d;
   box-shadow: 0px 1px 4px 0px #0c0c0d1a;
@@ -104,6 +107,8 @@ const handleMenu = () => {
     margin: 0;
     padding: 0;
     cursor: pointer;
+    color: black;
+    text-decoration: none;
   }
 }
 </style>

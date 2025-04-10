@@ -1,10 +1,16 @@
 <script lang="ts" setup>
+import type { Story } from "~/type/module/stories";
+
 import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/auth/mystory/Modal.vue";
 import CardSekelton from "~/components/ui/CardSekelton.vue";
-import Card from "~/components/ui/Card.vue";
+import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
+import Toast from "~/components/ui/Toast.vue";
+import ModalEditCard from "@/components/pages/auth/ModalEditCard.vue";
 
 import imgNotFound from "~/assets/images/notfound_story.png";
+import CardEdit from "~/components/ui/CardEdit.vue";
+
 // meta
 definePageMeta({
   layout: "home",
@@ -37,6 +43,9 @@ fetchstory();
 </script>
 
 <template>
+  <Toast message="Succesfully for updated data!" :status="false" type="success" />
+  <ModalEditCard :status="false"/>
+  <ModalEditProfile :status="false" />
   <section class="mystory">
     <div class="container user">
       <img class="user__profile" src="/images/image-book.png" alt="" />
@@ -54,8 +63,8 @@ fetchstory();
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
-      <Button label="My Story" variant="success" classCustom="mystory__button" />
-      <Button label="Bookmark" variant="light" classCustom="mystory__button" />
+      <Button link="#" label="My Story" variant="success" classCustom="mystory__button" />
+      <Button link="/auth/mybookmark" label="Bookmark" variant="light" classCustom="mystory__button" />
     </div>
     <div class="mystory__content">
       <div class="mystory__left">
@@ -69,7 +78,7 @@ fetchstory();
           <CardSekelton v-if="storyLoading" />
           <CardSekelton v-if="storyLoading" />
           <!--  -->
-          <Card v-for="item in story" :item="item" />
+          <CardEdit v-for="item in story" :item="item" />
         </div>
         <!-- not found -->
         <div class="mystory__notfound">

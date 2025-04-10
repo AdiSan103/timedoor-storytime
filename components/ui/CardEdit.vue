@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// import bg from "@/assets/images/image-book.png";
+import type { Story } from "~/type/module/stories";
+
 import Badge from "@/components/ui/Badge.vue";
 import { defineProps } from "vue";
-import type { Story } from "~/type/module/stories";
 
 // Define props with TypeScript
 interface Props {
@@ -14,7 +14,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <NuxtLink to="/story/123" class="card">
+  <div class="card">
     <div
       :style="{
         backgroundImage: `url(${item.content_images[0].url})`,
@@ -22,12 +22,28 @@ defineProps<Props>();
       }"
       class="card__background"
     >
-      <div class="card__bookmark">
-        <Icon
-          name="material-symbols:bookmark-add-outline-rounded"
-          style="color: #fff"
-          size="25"
-        />
+      <div class="card__icons">
+        <div class="card__icon">
+          <Icon
+            name="mage:edit"
+            style="color: #fff"
+            size="25"
+          />
+        </div>
+        <div class="card__icon">
+          <Icon
+            name="material-symbols:bookmark-add-outline-rounded"
+            style="color: #fff"
+            size="25"
+          />
+        </div>
+        <div class="card__icon">
+          <Icon
+            name="tabler:trash"
+            style="color: #fff"
+            size="25"
+          />
+        </div>
       </div>
     </div>
     <div class="card__content">
@@ -49,7 +65,7 @@ defineProps<Props>();
         <Badge />
       </div>
     </div>
-  </NuxtLink>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -64,7 +80,6 @@ defineProps<Props>();
   position: relative;
   border: none;
   outline: none;
-  text-decoration: none;
 
   &__footer {
     padding: 10px;
@@ -125,7 +140,15 @@ defineProps<Props>();
     position: relative;
   }
 
-  &__bookmark {
+  &__icons {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap:10px
+  }
+
+  &__icon {
     background-color: $color3;
     width: 40px;
     height: 40px;
@@ -133,10 +156,7 @@ defineProps<Props>();
     justify-content: center;
     align-items: center;
     border-radius: 100px;
-    position: absolute;
-    bottom: 10px;
     cursor: pointer;
-    right: 10px;
   }
 
   &__content {

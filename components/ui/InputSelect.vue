@@ -3,11 +3,11 @@ import { defineProps } from "vue";
 
 // Define props with TypeScript
 interface Props {
-  type?: string;
-  placeholder?: string;
-  classCustom?: string;
-  icon?: string;
   label?: string;
+  options?: any[];
+  classCustom?: string;
+  optionValue: string;
+  optionLabel: string;
 }
 
 defineProps<Props>();
@@ -24,21 +24,13 @@ const handlePassword = () => {
     <label for="" class="component__label">{{ label }}</label>
     <div :class="['component ', classCustom]">
       <!-- condition type password -->
-      <input
-        :type="togglePassword === false ? 'text' : type"
-        :placeholder="placeholder"
+      <select
         class="component__input"
-      />
-      <Icon :name="icon" style="color: black" size="25" v-if="icon" />
-      <!-- type password -->
-      <Icon
-        class="component__password"
-        :name="togglePassword ? 'ph:eye-light' : 'mdi-light:eye-off'"
-        style="color: black"
-        size="25"
-        v-if="type == 'password'"
-        @click="handlePassword"
-      />
+      >
+      <option :value="item[`${optionValue}`]" v-for="item in options">
+        {{ item[`${optionLabel}`] }}
+        </option>
+      </select>
     </div>
   </div>
 </template>

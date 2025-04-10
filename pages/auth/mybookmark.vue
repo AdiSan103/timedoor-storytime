@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+
+import type { Story } from "~/type/module/stories";
+
 import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/auth/mystory/Modal.vue";
 import CardSekelton from "~/components/ui/CardSekelton.vue";
 import Card from "~/components/ui/Card.vue";
+import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
 
 import imgNotFound from "~/assets/images/notfound_bookmark.png";
 // meta
@@ -37,6 +41,7 @@ fetchstory();
 </script>
 
 <template>
+  <ModalEditProfile :status="false"/>
   <section class="mystory">
     <div class="container user">
       <img class="user__profile" src="/images/image-book.png" alt="" />
@@ -54,8 +59,8 @@ fetchstory();
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
-      <Button label="My Story" variant="success" classCustom="mystory__button" />
-      <Button label="Bookmark" variant="light" classCustom="mystory__button" />
+      <Button link="/auth/mystory" label="My Story" variant="light" classCustom="mystory__button" />
+      <Button link="#" label="Bookmark" variant="success" classCustom="mystory__button" />
     </div>
     <div class="mystory__content">
       <div class="mystory__left">
