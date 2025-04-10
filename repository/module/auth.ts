@@ -29,12 +29,6 @@ class Stories extends FetchFactory<PropsStory> {
       method: 'GET'
     })
   }
-
-  getSearchStories(search: any) {
-    return super.call('/api/stories?search=' + search, {
-      method: 'GET'
-    })
-  }
 }
 
 export default Stories

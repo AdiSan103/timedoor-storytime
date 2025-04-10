@@ -9,6 +9,7 @@ import CardsRomance from "~/components/pages/home/CardsRomance.vue";
 import CardsHorror from "~/components/pages/home/CardsHorror.vue";
 import type { PropsStory, Story } from "~/type/module/stories";
 import CardsCategories from "~/components/pages/home/CardsCategories.vue";
+import Toast from "~/components/ui/Toast.vue";
 
 // meta
 definePageMeta({
@@ -31,6 +32,11 @@ const horrorLoading = ref(false);
 
 const romance: Ref<Story[]> = ref([]);
 const romanceLoading = ref(false);
+
+const search = ref("");
+
+const toastMessage = ref("")
+const toastStatus = ref(false)
 
 // function
 const fetchLastestStory = () => {
@@ -76,7 +82,7 @@ const fetchStoryFilterByCategory = (
     .getStoriesFilterByCategory(slug)
     .then((res) => {
       data.value = res.data;
-      console.log(slug, data.value)
+      console.log(slug, data.value);
     })
     .catch((err) => {
       console.error(err);
@@ -86,32 +92,47 @@ const fetchStoryFilterByCategory = (
     });
 };
 
+const handleSearch = () => {
+  if(search.value == "") {
+    toastStatus.value = true;
+    toastMessage.value = "Pencaharian Kosong..."
+  } else {
+    window.location.href = "/story/search/" + search.value
+  }
+}
+
 // lifecycle
 fetchLastestStory();
 fetchCategories();
-fetchStoryFilterByCategory("Romance",romance,romanceLoading)
-fetchStoryFilterByCategory("Horror",horror,horrorLoading)
-fetchStoryFilterByCategory("Comedy",comedy,comedyLoading)
-
+fetchStoryFilterByCategory("Romance", romance, romanceLoading);
+fetchStoryFilterByCategory("Horror", horror, horrorLoading);
+fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
 </script>
 
 <template>
+  <Toast :message="toastMessage" type="info" v-model="toastStatus" />
   <section class="container banner">
     <h1 class="banner__title">Welcome to Storytime</h1>
     <p class="banner__desc">
       The world's most-loved social storytelling platform. Story time connects a global
       community of 90 million readers and writers through the power of story.
     </p>
-    <Input placeholder="Search Story" classCustom="banner__input" icon="iconoir:search"/>
+    <form @submit.prevent="handleSearch">
+      <Input
+        placeholder="Search Story"
+        classCustom="banner__input"
+        icon="iconoir:search"
+        v-model="search"
+      />
+    </form>
     <img src="/images/image1.png" alt="" class="banner__image" />
   </section>
 
   <CardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
-  <CardsComedy :items="comedy" :loading="comedyLoading"/>
-  <CardsRomance :items="romance" :loading="romanceLoading"/>
-  <CardsHorror :items="horror" :loading="horrorLoading"/>
-  <CardsCategories :items="categories" :loading="categoriesLoading"/>
-  
+  <CardsComedy :items="comedy" :loading="comedyLoading" />
+  <CardsRomance :items="romance" :loading="romanceLoading" />
+  <CardsHorror :items="horror" :loading="horrorLoading" />
+  <CardsCategories :items="categories" :loading="categoriesLoading" />
 </template>
 
 <style lang="scss" scoped>

@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import Breadcumb from '../ui/Breadcumb.vue';
+import { defineProps } from "vue";
 
+// Define props with TypeScript
+interface Props {
+  query: any;
+}
+
+defineProps<Props>();
 </script>
 
 <template>
-  <h3 class="container title">All Story</h3>
+  <h3 class="container title">{{ query ?? 'All Story' }}</h3>
   <Breadcumb/>
 </template>
 

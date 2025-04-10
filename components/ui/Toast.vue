@@ -1,27 +1,35 @@
 <script setup lang="ts">
+
+const model = defineModel()
+
 interface Props {
   message: string;
-  type: "success" | "danger";
-  status: boolean;
+  type: "success" | "info";
+}
+
+const handleToggle = () => {
+  model.value = !model.value
 }
 
 defineProps<Props>();
 </script>
 <template>
-  <div class="toasts" v-if="status">
+  <div class="toasts" v-if="model">
     <div
       :class="[
         'toasts__contain',
-        { 'toasts--success': type === 'success', 'toasts--danger': type === 'danger' },
+        { 'toasts--success': type === 'success', 'toasts--info': type === 'info' },
       ]"
     >
-      <Icon name="la:check-circle" style="color: black" size="32" />
+      <Icon v-if="type == 'info'" name="akar-icons:info" style="color: black" size="32" />
+      <Icon v-if="type == 'success'" name="la:check-circle" style="color: black" size="32" />
       <p class="toasts__desc">{{ message }}</p>
       <Icon
         name="proicons:cancel"
         style="color: black"
         size="22"
         class="toasts__cancel"
+        @click="handleToggle"
       />
     </div>
   </div>
@@ -33,7 +41,6 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   width: 100%;
-  
 
   &__desc {
     margin: 0;

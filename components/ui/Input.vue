@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 
+const model = defineModel()
+
 // Define props with TypeScript
 interface Props {
   type?: string;
@@ -28,6 +30,7 @@ const handlePassword = () => {
         :type="togglePassword === false ? 'text' : type"
         :placeholder="placeholder"
         class="component__input"
+        v-model="model"
       />
       <Icon :name="icon" style="color: black" size="25" v-if="icon" />
       <!-- type password -->
