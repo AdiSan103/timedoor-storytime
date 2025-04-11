@@ -35,6 +35,12 @@ class Stories extends FetchFactory<PropsStory> {
       method: 'GET'
     })
   }
+
+  getDetailStory(id: any) {
+    return super.call('/api/stories/' + id, {
+      method: 'GET'
+    })
+  }
 }
 
 export default Stories

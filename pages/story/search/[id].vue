@@ -4,7 +4,7 @@ import Select from "~/components/ui/Select.vue";
 import Card from "~/components/ui/Card.vue";
 import Pagination from "~/components/ui/Pagination.vue";
 import type { Story } from "~/type/module/stories";
-import CardSekelton from "~/components/ui/CardSekelton.vue";
+import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import Toast from "~/components/ui/Toast.vue";
 
 // meta
@@ -69,10 +69,10 @@ fetchstory();
   <section class="cards" v-if="storyLoading || story.length != 0">
     <div class="cards__items">
       <Card height="770" :item="story[0]" v-if="!storyLoading" />
-      <CardSekelton height="770" v-if="storyLoading" />
+      <CardSekeleton height="770" v-if="storyLoading" />
       <div class="cards__left">
-        <CardSekelton v-if="storyLoading" />
-        <CardSekelton v-if="storyLoading" />
+        <CardSekeleton v-if="storyLoading" />
+        <CardSekeleton v-if="storyLoading" />
         <Card :item="story[1]" v-if="!storyLoading" />
         <Card :item="story[2]" v-if="!storyLoading" />
       </div>
@@ -80,14 +80,14 @@ fetchstory();
   </section>
   <section class="cards__list" v-if="storyLoading || story.length != 0">
     <!--  -->
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
     <!--  -->
-    <Card v-for="item in story" :item="item" />
+    <Card v-for="(item,index) in story" :item="item" :key="index" />
   </section>
-  <p v-else class="text-center fst-italic">Cerita tidak di temukan</p>
+  <p v-else class="text-center fst-italic">Cerita tidak di temukan..</p>
   <Pagination classCustom="pagination" />
 </template>
 

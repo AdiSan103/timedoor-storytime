@@ -1,26 +1,40 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import Button from "@/components/ui/Button.vue";
 import bg from "@/assets/images/image-book.png";
-import { NuxtLink } from "#components";
+import ModalLogout from "@/components/layouts/ModalLogout.vue";
 
 const menu = ref(false);
+const authToken = useCookie("STORYTIME_TOKEN");
+const statusModalLogout = ref(false)
 
 const handleMenu = () => {
   menu.value = !menu.value;
 };
+
+const handleModalLogout = () => {
+  statusModalLogout.value = !statusModalLogout.value
+}
 </script>
 
 <template>
+  <ModalLogout v-model="statusModalLogout"/>
   <nav class="navbar">
     <div class="d-flex justify-content-between align-items-center container">
       <NuxtLink to="/">
         <img src="/images/logo.png" alt="logo" class="navbar__img" />
       </NuxtLink>
       <div class="d-flex gap-3">
-        <Button link="/auth/register" label="Register" variant="secondary" />
-        <Button link="/auth/login" label="Login" variant="primary" />
-        <div class="navbar__avatar">
+        <Button
+          link="/auth/register"
+          label="Register"
+          variant="secondary"
+          v-if="!authToken"
+        />
+        <Button link="/auth/login" label="Login" variant="primary" v-if="!authToken" />
+
+        <div class="navbar__avatar" v-if="authToken">
           <div class="navbar__content" @click="handleMenu">
             <div :style="{ backgroundImage: `url(${bg})` }" class="navbar__user"></div>
             <span class="navbar__usertitle">Khrisvana</span>
@@ -33,7 +47,7 @@ const handleMenu = () => {
           </div>
           <ul class="navbar__listmenu" v-if="menu">
             <NuxtLink to="/auth/mystory" class="navbar__listitem">My Profile</NuxtLink>
-            <NuxtLink class="navbar__listitem">Log Out</NuxtLink>
+            <span class="navbar__listitem" @click="handleModalLogout">Log Out</span>
           </ul>
         </div>
       </div>

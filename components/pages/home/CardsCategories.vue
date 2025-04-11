@@ -21,8 +21,9 @@ defineProps<Props>();
       <Badge 
         classCustom="categories__item"
         :label="item.name"
-        :link="'/story/category/' + item.id"
-        v-for="item in items"
+        :link="'/story/category/' + item.name"
+        v-for="( item, index) in items"
+        :key="index"
       />
       <!--  -->
     </div>

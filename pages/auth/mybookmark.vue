@@ -4,14 +4,16 @@ import type { Story } from "~/type/module/stories";
 
 import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/auth/mystory/Modal.vue";
-import CardSekelton from "~/components/ui/CardSekelton.vue";
+import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import Card from "~/components/ui/Card.vue";
 import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
 
 import imgNotFound from "~/assets/images/notfound_bookmark.png";
+
 // meta
 definePageMeta({
   layout: "home",
+  middleware: ["auth-user"]
 });
 
 // declaration variable
@@ -69,12 +71,12 @@ fetchstory();
       <div class="mystory__right">
         <div class="mystory__cards">
           <!--  -->
-          <CardSekelton v-if="storyLoading" />
-          <CardSekelton v-if="storyLoading" />
-          <CardSekelton v-if="storyLoading" />
-          <CardSekelton v-if="storyLoading" />
+          <CardSekeleton v-if="storyLoading" />
+          <CardSekeleton v-if="storyLoading" />
+          <CardSekeleton v-if="storyLoading" />
+          <CardSekeleton v-if="storyLoading" />
           <!--  -->
-          <Card v-for="item in story" :item="item" />
+          <Card v-for="(item,index) in story" :key="index" :item="item" />
         </div>
         <!-- not found -->
         <div class="mystory__notfound">

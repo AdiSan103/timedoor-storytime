@@ -1,25 +1,85 @@
 <script lang="ts" setup>
+import { useForm } from "vee-validate";
+import * as yup from "yup";
+
 import logoImg from "@/assets/images/logo.png";
 import imgLogin from "@/assets/images/login.png";
 import Input from "~/components/ui/Input.vue";
 import Button from "~/components/ui/Button.vue";
+import LoadingScreen from "@/components/ui/LoadingScreen.vue";
+import Toast from "~/components/ui/Toast.vue";
+
+// Initialize variable
+const { $api } = useNuxtApp();
+const loading = ref(false);
+const token = useCookie("STORYTIME_TOKEN");
+const toastStatus = ref(false);
+
+// Schema for form validation
+const schema = yup.object({
+  username_or_email: yup.string().required("email or username is required"),
+  password: yup.string().required("Password is required"),
+});
+
+// Use vee-validate for form management and validation
+const { defineField, handleSubmit, errors, resetForm } = useForm({
+  validationSchema: schema,
+});
+
+// Define fields using defineField for individual input management
+const [username_or_email] = defineField("username_or_email");
+const [password] = defineField("password");
+
+// function
+const onSubmit = handleSubmit(() => {
+  loading.value = true;
+  const formLogin = {
+    username_or_email: username_or_email.value,
+    password: password.value,
+  };
+
+  $api.auth
+    .login(formLogin)
+    .then((res) => {
+      console.log(res);
+      token.value = res.token;
+      toastStatus.value = true;
+
+      setTimeout(() => {
+        window.location.href = '/auth/mystory'
+      }, 700)
+    })
+    .catch((err) => {
+      alert('Username or Password incorrect!')
+      console.log(err);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+});
 </script>
 
 <template>
+  <Toast type="success" message="Login Successfully!" v-model="toastStatus" />
+  <LoadingScreen v-if="loading" />
   <section class="login container">
     <div class="login__left">
       <img :src="logoImg" alt="logo" class="login__logo" />
       <h3 class="login__heading2">Login</h3>
-      <form action="" class="login__form">
+      <form action="" class="login__form" @submit.prevent="onSubmit">
         <Input
           placeholder="Enter your username or email"
           label="Username/Email"
           type="text"
+          v-model="username_or_email"
+          :error="errors.username_or_email"
         />
         <Input
           placeholder="Enter your choosen password"
           label="Password"
           type="password"
+          v-model="password"
+          :error="errors.password"
         />
         <Button variant="primary" label="Login" classCustom="login__button" />
         <span class="login__link"

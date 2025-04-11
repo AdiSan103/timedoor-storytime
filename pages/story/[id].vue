@@ -1,12 +1,12 @@
 <script setup lang="ts">
-
 import type { Story } from "~/type/module/stories";
 
 import Card from "~/components/ui/Card.vue";
 import Breadcumb from "~/components/ui/Breadcumb.vue";
-import SliderThumbs from "~/components/ui/SliderThumbs.vue";
+import SliderThumbs from '@/components/pages/story/SliderThumbs.vue'
 import bg from "@/assets/images/image-book.png";
 import Separator from "~/components/ui/Separator.vue";
+import DetailSekeleton from "@/components/pages/story/DetailSekeleton.vue";
 
 definePageMeta({
   layout: "home",
@@ -14,15 +14,22 @@ definePageMeta({
 
 // declaration variable
 const { $api } = useNuxtApp();
+
+const lastestStory: Ref<Story[]> = ref([]);
+const lastestStoryLoading = ref(false);
+
 const story: Ref<Story[]> = ref([]);
 const storyLoading = ref(false);
+
+const route = useRoute();
+const id = ref(route.params.id);
 
 // function
 const fetchstory = () => {
   storyLoading.value = true;
 
   $api.stories
-    .getStories("newest")
+    .getDetailStory(id.value)
     .then((res) => {
       story.value = res.data; // ✅ karena res.data.value = PropsStory
     })
@@ -34,19 +41,40 @@ const fetchstory = () => {
     });
 };
 
+// function
+const fetchLastestStory = () => {
+  lastestStoryLoading.value = true;
+
+  $api.stories
+    .getStories("newest")
+    .then((res) => {
+      lastestStory.value = res.data; // ✅ karena res.data.value = PropsStory
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      lastestStoryLoading.value = false;
+    });
+};
+
 // lifecycle
 fetchstory();
+fetchLastestStory();
 </script>
 
 <template>
   <Breadcumb />
   <div class="detail container">
-    <section class="detail__title">
-      <p class="detail__label">15 May 2023</p>
-      <h1 class="detail__title">Guardians of the Galaxy Vol. 3</h1>
+    <!--  -->
+    <DetailSekeleton v-if="storyLoading" />
+    <!--  -->
+    <section v-if="!storyLoading" class="detail__title">
+      <p class="detail__label">{{ story.created_at }}</p>
+      <h1 class="detail__title">{{ story.title }}</h1>
       <div class="detail__avatar">
         <div :style="{ backgroundImage: `url(${bg})` }" class="detail__user"></div>
-        <p class="detail__label">Khrisvana (updated) 1</p>
+        <p class="detail__label">Author : {{ story.user.name }}</p>
       </div>
       <div class="detail__bookmark">
         <Icon
@@ -56,92 +84,19 @@ fetchstory();
         />
       </div>
     </section>
-    <section class="detail__content">
+    <section v-if="!storyLoading" class="detail__content">
       <div class="detail__contentleft">
-        <SliderThumbs />
+        <SliderThumbs :items="story.content_images" />
       </div>
-      <div class="detail__contentright">
-        <p>
-          At their new headquarters on Knowhere,[a] the Guardians of the Galaxy are
-          attacked by Adam Warlock, a Sovereign warrior created by their high
-          priestess Ayesha.[b] After Adam overpowers them and critically wounds Rocket, he
-          is stabbed by Nebula and forced to flee. The Guardians are unable to tend to
-          Rocket's wounds due to a kill switch, made by the company Orgocorp, embedded in
-          him. They travel to Orgocorp's headquarters to find the override code.
-        </p>
-        <p>
-          As Rocket lies unconscious, he recalls his past. As a baby raccoon, he was
-          experimented on by the High Evolutionary, a scientist who sought to enhance
-          and anthropomorphize animal lifeforms to create a Counter-Earth. Rocket
-          befriended the High Evolutionary's other test subjects: the otter Lylla,
-          the walrus Teefs, and the rabbit Floor. The High Evolutionary was impressed by
-          Rocket's intelligence but furious that it exceeded his own. The High
-          Evolutionary perfected his experiments with Rocket's advice but ordered Rocket's
-          brain to be extracted and his friends incinerated. Rocket freed Lylla, only for
-          the High Evolutionary to kill her. Rocket mauled the High Evolutionary and shot
-          his guards, but Teefs and Floor were killed in the chaos. Alone, Rocket stole a
-          spaceship and fled.
-        </p>
-
-        <p>
-          In the present, the alternate version of Gamora,[c] who has joined the Ravagers,
-          helps the Guardians infiltrate Orgocorp. They retrieve Rocket's file but
-          discover that the code has been removed. The group speculates that Theel, one of
-          the High Evolutionary's advisors, has it, so they depart for Counter-Earth. They
-          are followed by Ayesha and Adam, who are ordered by their creator, the High
-          Evolutionary, to retrieve Rocket for his brain.
-        </p>
-
-        <p>
-          Upon arriving, the team is helped by residents in tracing Theel to the High
-          Evolutionary's ship. Drax and Mantis remain with Gamora and Rocket as Peter
-          Quill, Groot, and Nebula travel to the High Evolutionary's ship. Nebula is
-          forced to wait outside by guards as Quill and Groot board. Drax and Mantis
-          pursue Quill's group.
-        </p>
-        <p>
-          The High Evolutionary initiates his destruction and planned recreation of
-          Counter-Earth, which kills all life on the planet, including Ayesha. As his ship
-          enters orbit, Quill and Groot leap off and kill Theel, retrieving the code from
-          him. Gamora arrives with their ship to rescue them, while Nebula, Mantis, and
-          Drax board the High Evolutionary's ship to escape the planet. As Quill's group
-          attempts to access the code, Rocket flatlines and has a near-death experience,
-          where he reunites with Lylla, Teefs, and Floor. Lylla tells him that his time
-          has not yet come as Quill uses the code to disable the kill switch and save
-          Rocket's life.
-        </p>
-        <p>
-          Nebula, Mantis, and Drax come across hundreds of imprisoned humanoid children on
-          the High Evolutionary's ship before being captured. Quill's group sets out to
-          rescue the three, who are placed in a chamber with monstrous Abilisks. Mantis
-          befriends the Abilisks, allowing the group to escape and reunite with Quill's
-          group, together overpowering the High Evolutionary's
-          army. Kraglin and Cosmo arrive on Knowhere, and Cosmo creates
-          a telekinetic tunnel connecting Knowhere to the High Evolutionary's ship to free
-          the captured children. Rocket discovers imprisoned animals on the ship before
-          being attacked by the High Evolutionary, but the rest of the Guardians help
-          subdue him, leaving him to perish on his ship. The Guardians rescue the animals
-          and lead them aboard Knowhere. Quill nearly dies trying to cross over but is
-          saved by Adam, who had a change of heart after being saved by Groot.
-        </p>
-        <p>
-          In the aftermath, Quill leaves the Guardians, bestowing the captaincy to Rocket
-          before leaving for Earth to reunite with his grandfather Jason. Mantis embarks
-          on a journey of self-discovery with the Abilisks, Gamora reunites with the
-          Ravagers, and Nebula and Drax remain on Knowhere to raise the rescued children.
-        </p>
-        <p>
-          In a mid-credits scene, the new Guardians, consisting of Rocket, Groot, Cosmo,
-          Kraglin, Adam, Phyla (one of the rescued children), and Adam's pet Blurp, take
-          on a new mission. In a post-credits scene, Quill eats breakfast with Jason.
-        </p>
+      <div class="detail__contentright" v-html="story.content">
       </div>
     </section>
+
     <section>
       <h3 class="detail__heading3">Similiar Story</h3>
       <Separator />
       <div class="detail__items">
-        <Card v-for="item in story" :item="item" />
+        <Card v-for="(item, index) in lastestStory" :key="index" :item="item" />
       </div>
     </section>
   </div>
@@ -212,6 +167,7 @@ fetchstory();
   &__content {
     display: flex;
     gap: 40px;
+    margin-bottom: 40px;
   }
 
   &__contentleft {

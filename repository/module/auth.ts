@@ -1,34 +1,23 @@
-import type { PropsStory } from '~/type/module/stories'
+import type { LoginForm, RegisterForm, UserAuthRequest } from '~/type/module/auth'
 import FetchFactory from '../factory'
 
-class Stories extends FetchFactory<PropsStory> {
-  // async getStoriesFilterByCategory(slug: string) {
-  //   return await useAsyncData(() => {
-  //     return super.call('/api/stories?category=' + slug, {
-  //       method: 'GET'
-  //     })
-  //   })
-  // }
+class Auth extends FetchFactory<UserAuthRequest> {
 
-  // async getStories(sort_by: string) {
-  //   return await useAsyncData(() => {
-  //     return super.call('/api/stories?sort_by=' + sort_by, {
-  //       method: 'GET'
-  //     })
-  //   })
-  // }
-
-  getStoriesFilterByCategory(slug: string) {
-      return super.call('/api/stories?category=' + slug, {
-        method: 'GET'
+  register(data: RegisterForm) {
+      return super.call('/api/register', {
+        method: 'POST',
+        body: data
     })
   }
 
-  getStories(sort_by: string) {
-    return super.call('/api/stories?sort_by=' + sort_by, {
-      method: 'GET'
+  login(data: LoginForm) {
+    return super.call('/api/login', {
+      method: 'POST',
+      body: data
     })
   }
+
+  logout() {}
 }
 
-export default Stories
+export default Auth

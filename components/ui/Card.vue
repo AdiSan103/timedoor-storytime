@@ -4,6 +4,9 @@ import Badge from "@/components/ui/Badge.vue";
 import { defineProps } from "vue";
 import type { Story } from "~/type/module/stories";
 
+const route = useRoute();
+const query = ref(route.params.id);
+
 // Define props with TypeScript
 interface Props {
   height?: string;
@@ -14,7 +17,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <NuxtLink to="/story/123" class="card">
+  <NuxtLink :to="`/story/${item.id}`" class="card">
     <div
       :style="{
         backgroundImage: `url(${item.content_images[0].url})`,

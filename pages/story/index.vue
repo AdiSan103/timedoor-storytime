@@ -6,7 +6,7 @@ import Input from "~/components/ui/Input.vue";
 import Select from "~/components/ui/Select.vue";
 import Card from "~/components/ui/Card.vue";
 import Pagination from "~/components/ui/Pagination.vue";
-import CardSekelton from "~/components/ui/CardSekelton.vue";
+import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 
 // meta
 definePageMeta({
@@ -49,12 +49,12 @@ fetchstory();
   </section>
   <section class="cards">
     <!--  -->
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
+    <CardSekeleton v-if="storyLoading" />
     <!--  -->
-    <Card v-for="item in story" :item="item" />
+    <Card v-for="(item, index) in story" :key="index" :item="item" />
   </section>
   <Pagination classCustom="pagination" v-if="!storyLoading" />
 </template>

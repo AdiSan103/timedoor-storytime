@@ -17,9 +17,20 @@ export interface PropsAuthResponse {
 }
 
 export interface UserAuthRequest {
- name: string,
+ token: string | null | undefined;
+ message: string;
+ user: User;
+}
+
+export interface LoginForm {
+ username_or_email: string,
+ password: string
+}
+
+export interface RegisterForm {
  username: string,
+ name: string,
  email: string,
  password: string,
- password_confirmation: string
+ password_confirmation:string,
 }

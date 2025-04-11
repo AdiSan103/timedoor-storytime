@@ -10,6 +10,7 @@ interface Props {
   classCustom?: string;
   icon?: string;
   label?: string;
+  error?: string
 }
 
 defineProps<Props>();
@@ -24,7 +25,7 @@ const handlePassword = () => {
 <template>
   <div>
     <label for="" class="component__label">{{ label }}</label>
-    <div :class="['component ', classCustom]">
+    <div :class="['component ', classCustom, error ? 'component--error' : '']">
       <!-- condition type password -->
       <input
         :type="togglePassword === false ? 'text' : type"
@@ -43,6 +44,7 @@ const handlePassword = () => {
         @click="handlePassword"
       />
     </div>
+    <p class="component__error">{{error}}</p>
   </div>
 </template>
 
@@ -82,6 +84,16 @@ const handlePassword = () => {
 
   &__password {
     cursor: pointer;
+  }
+
+  &__error {
+    color: red;
+    font-style: italic;
+    margin-top:5px;
+  }
+
+  &--error {
+    border: red solid 2px;
   }
 }
 </style>

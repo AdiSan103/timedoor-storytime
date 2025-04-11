@@ -2,7 +2,7 @@
 import type { Story } from "~/type/module/stories";
 
 import Card from "@/components/ui/Card.vue";
-import CardSekelton from "~/components/ui/CardSekelton.vue";
+import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 
 // Define props with TypeScript
 interface Props {
@@ -24,12 +24,12 @@ defineProps<Props>();
     <Separator />
     <div class="cards__items">
       <!--  -->
-      <CardSekelton v-if="loading" />
-      <CardSekelton v-if="loading" />
-      <CardSekelton v-if="loading" />
-      <CardSekelton v-if="loading" />
+      <CardSekeleton v-if="loading" />
+      <CardSekeleton v-if="loading" />
+      <CardSekeleton v-if="loading" />
+      <CardSekeleton v-if="loading" />
       <!--  -->
-      <Card v-for="item in items" :item="item" />
+      <Card v-for="(item,index) in items" :item="item" :key="index" />
     </div>
   </section>
 </template>

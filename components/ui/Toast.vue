@@ -7,11 +7,12 @@ interface Props {
   type: "success" | "info";
 }
 
+defineProps<Props>();
+
 const handleToggle = () => {
   model.value = !model.value
 }
 
-defineProps<Props>();
 </script>
 <template>
   <div class="toasts" v-if="model">
@@ -41,6 +42,10 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: fixed;
+  top: 30px;
+  z-index: 99;
+
 
   &__desc {
     margin: 0;
@@ -54,10 +59,8 @@ defineProps<Props>();
   }
 
   &__contain {
-    position: fixed;
-    top: 10;
+    position:relative;
     background-color: white;
-    z-index: 99;
     padding: 20px;
     display: flex;
     justify-content: center;

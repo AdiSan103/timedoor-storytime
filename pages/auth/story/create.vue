@@ -10,7 +10,9 @@ import Button from "~/components/ui/Button.vue";
 // meta
 definePageMeta({
   layout: "home",
+  middleware: ["auth-user"]
 });
+
 
 //
 const selectOptions = [

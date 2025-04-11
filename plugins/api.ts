@@ -1,11 +1,13 @@
 // Import repository modules
+import Auth from "~/repository/module/auth";
 import Categories from "~/repository/module/categories";
 import Stories from "~/repository/module/stories";
 
 interface IApiInstance {
  //   auth: AuthModule
       categories: Categories;
-      stories: Stories
+      stories: Stories;
+      auth: Auth;
  }
  
  export default defineNuxtPlugin(() => {
@@ -14,6 +16,7 @@ interface IApiInstance {
      // auth: new AuthModule()
      categories: new Categories,
      stories: new Stories,
+     auth: new Auth
    }
  
    return {

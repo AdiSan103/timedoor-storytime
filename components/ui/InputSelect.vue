@@ -27,7 +27,7 @@ const handlePassword = () => {
       <select
         class="component__input"
       >
-      <option :value="item[`${optionValue}`]" v-for="item in options">
+      <option :value="item[`${optionValue}`]" v-for="(item, index) in options" :key="index">
         {{ item[`${optionLabel}`] }}
         </option>
       </select>

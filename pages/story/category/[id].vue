@@ -8,50 +8,70 @@ import Select from "~/components/ui/Select.vue";
 import Card from "~/components/ui/Card.vue";
 import Pagination from "~/components/ui/Pagination.vue";
 import type { Story } from "~/type/module/stories";
-import CardSekelton from "~/components/ui/CardSekelton.vue";
+import CardSekeleton from "~/components/ui/CardSekeleton.vue";
+import Toast from "~/components/ui/Toast.vue";
 
 // declaration variable
 const { $api } = useNuxtApp();
-const story: Ref<Story[]> = ref([]);
-const storyLoading = ref(false);
+const stories: Ref<Story[]> = ref([]);
+const storiesLoading = ref(false);
+
+const route = useRoute();
+const id = ref(route.params.id);
+
+const toastMessage = ref("");
+const toastStatus = ref(false);
 
 // function
-const fetchstory = () => {
-  storyLoading.value = true;
+const fetchStoryFilterByCategory = () => {
+  storiesLoading.value = true;
 
   $api.stories
-    .getStories("newest")
+    .getStoriesFilterByCategory(id.value)
     .then((res) => {
-      story.value = res.data; // ✅ karena res.data.value = PropsStory
+      stories.value = res.data;
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     })
     .finally(() => {
-      storyLoading.value = false;
+      storiesLoading.value = false;
     });
 };
 
+const handleSearch = () => {
+  if (id.value == "") {
+    toastStatus.value = true;
+    toastMessage.value = "Pencaharian Kosong...";
+  } else {
+    window.location.href = "/story/category/" + id.value;
+  }
+};
+
 // lifecycle
-fetchstory();
+fetchStoryFilterByCategory();
 </script>
 
 <template>
+  <Toast :message="toastMessage" type="info" v-model="toastStatus" />
+
   <section class="form">
     <div class="selects">
       <Select />
       <Select />
     </div>
-    <Input placeholder="Search Story" />
+    <form @submit.prevent="handleSearch">
+      <Input placeholder="Search Story" classCustom="form__input" v-model="id" />
+    </form>
   </section>
   <section class="cards">
     <!--  -->
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
-    <CardSekelton v-if="storyLoading" />
+    <CardSekeleton v-if="storiesLoading" />
+    <CardSekeleton v-if="storiesLoading" />
+    <CardSekeleton v-if="storiesLoading" />
+    <CardSekeleton v-if="storiesLoading" />
     <!--  -->
-    <Card v-for="item in story" :item="item" />
+    <Card v-for="(item, index) in stories" :key="index" :item="item" />
   </section>
   <Pagination classCustom="pagination" />
 </template>

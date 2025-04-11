@@ -9,6 +9,7 @@ import imageDefault from "@/assets/images/notfound_story.png";
 // meta
 definePageMeta({
   layout: "home",
+  middleware: ["auth-user"]
 });
 
 //
