@@ -46,8 +46,8 @@ defineProps<Props>();
   border-radius: 8px;
   font-family: DM Sans;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 32px;
+  font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+  
   letter-spacing: 0%;
   vertical-align: middle;
 

@@ -7,6 +7,7 @@ import Modal from "~/components/pages/auth/mystory/Modal.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import Card from "~/components/ui/Card.vue";
 import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
+import UserSection from "~/components/pages/auth/UserSection.vue";
 
 import imgNotFound from "~/assets/images/notfound_bookmark.png";
 
@@ -45,19 +46,7 @@ fetchstory();
 <template>
   <ModalEditProfile :status="false"/>
   <section class="mystory">
-    <div class="container user">
-      <img class="user__profile" src="/images/image-book.png" alt="" />
-      <div class="user__content">
-        <p class="user__title">Iswara</p>
-        <p class="user__email">dewiratnaiswara99@gmail.com</p>
-        <p class="user__desc">
-          Avid reader and aspiring writer. Lover of mysteries, thrillers, and sci-fi.
-          Coffee enthusiast and nature explorer. Always on the lookout for new stories and
-          adventures.
-        </p>
-      </div>
-      <Button label="Edit Profile" variant="primary" />
-    </div>
+    <UserSection/>
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
@@ -147,8 +136,8 @@ fetchstory();
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    
     letter-spacing: 0%;
   }
 
@@ -190,7 +179,7 @@ fetchstory();
   &__email {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -198,7 +187,7 @@ fetchstory();
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
     letter-spacing: 0%;
     vertical-align: middle;
     text-align: justify;

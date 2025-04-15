@@ -151,7 +151,7 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
   &__title {
     font-family: Playfair Display;
     font-weight: 400;
-    font-size: 60px;
+    font-size: clamp(1.8rem,calc(5vw + 1rem),5rem);
     line-height: 74px;
     letter-spacing: 0%;
     text-align: center;
@@ -162,8 +162,8 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
     padding-top: 20px;
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    
     letter-spacing: 0%;
     text-align: center;
     max-width: 1412px;

@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
  if (!authToken.value || authToken.value === '') {
   return navigateTo('/auth/login')
  } else {
-  console.log('authentication success')
-  console.log('token: ', authToken.value)
+  console.log('😁 status : ','authentication success')
+  // console.log('token: ', authToken.value)
  }
 })

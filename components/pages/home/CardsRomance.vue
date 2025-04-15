@@ -58,8 +58,8 @@ defineProps<Props>();
   &__link {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    
     letter-spacing: 0%;
     vertical-align: middle;
     color: black;

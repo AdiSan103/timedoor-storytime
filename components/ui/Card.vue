@@ -36,7 +36,7 @@ defineProps<Props>();
     <div class="card__content">
       <h3 class="card__title">{{ item.title.slice(0, 26) }}</h3>
       <p class="card__label">
-        {{ item.preview_content.slice(0, 200) }}
+        {{ item.preview_content.slice(0, 100) + '...'}}
       </p>
     </div>
     <div class="card__footer">
@@ -79,8 +79,7 @@ defineProps<Props>();
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 26px;
-    line-height: 46px;
+    font-size: clamp(1rem,calc(2vw + 1rem),1.2rem);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -88,9 +87,11 @@ defineProps<Props>();
   &__label {
     font-family: DM Sans;
     font-weight: 500;
-    font-size: 16px;
+    font-size: clamp(0.8rem,calc(1vw + 0.5rem),1rem);
     letter-spacing: 0%;
     vertical-align: middle;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     margin: 0;
     text-align: justify;
   }

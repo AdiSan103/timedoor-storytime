@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import Button from "~/components/ui/Button.vue";
 
-interface Props {
-  status: boolean;
-}
+const model = defineModel()
 
-defineProps<Props>();
+const handleClose = () => {
+  model.value = !model.value
+}
 </script>
 
 <template>
-  <div class="component" v-if="status">
+  <div class="component"  v-if="model">
     <div class="component__contain">
       <h2 class="component__title">Delete Story</h2>
       <p class="component__desc">Are you sure want to delete this story?</p>
       <div class="component__buttons">
-        <Button label="Cancel" variant="secondary" />
+        <Button label="Cancel" variant="secondary" @click="handleClose" />
         <Button label="Delete" variant="primary" />
       </div>
     </div>
@@ -27,6 +27,7 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.29);
   z-index: 80;
   width: 100vw;

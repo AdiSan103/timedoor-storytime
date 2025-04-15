@@ -4,24 +4,50 @@ import { ref } from "vue";
 import Button from "@/components/ui/Button.vue";
 import bg from "@/assets/images/image-book.png";
 import ModalLogout from "@/components/layouts/ModalLogout.vue";
+import type { User } from "@/type/module/users";
+
+// declaration variable
+const { $api } = useNuxtApp();
 
 const menu = ref(false);
 const authToken = useCookie("STORYTIME_TOKEN");
-const statusModalLogout = ref(false)
+const statusModalLogout = ref(false);
+
+const user: Ref<User | undefined> = ref();
+const userLoading = ref(false);
 
 const handleMenu = () => {
   menu.value = !menu.value;
 };
 
 const handleModalLogout = () => {
-  statusModalLogout.value = !statusModalLogout.value
-}
+  statusModalLogout.value = !statusModalLogout.value;
+};
+
+const fetchDetailUser = () => {
+  userLoading.value = true;
+
+  $api.users
+    .getDetail()
+    .then((res) => {
+      user.value = res.user;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      userLoading.value = false;
+    });
+};
+
+// lifecycle
+fetchDetailUser();
 </script>
 
 <template>
-  <ModalLogout v-model="statusModalLogout"/>
+  <ModalLogout v-model="statusModalLogout" />
   <nav class="navbar">
-    <div class="d-flex justify-content-between align-items-center container">
+    <div class="navbar__contain container">
       <NuxtLink to="/">
         <img src="/images/logo.png" alt="logo" class="navbar__img" />
       </NuxtLink>
@@ -35,9 +61,14 @@ const handleModalLogout = () => {
         <Button link="/auth/login" label="Login" variant="primary" v-if="!authToken" />
 
         <div class="navbar__avatar" v-if="authToken">
-          <div class="navbar__content" @click="handleMenu">
-            <div :style="{ backgroundImage: `url(${bg})` }" class="navbar__user"></div>
-            <span class="navbar__usertitle">Khrisvana</span>
+          <div class="placeholder-glow navbar__avatars" v-if="userLoading">
+            <div class="placeholder navbar__loadingprofile"></div>
+            <div class="placeholder navbar__loadinguser"></div>
+          </div>
+          <!--  -->
+          <div class="navbar__content" @click="handleMenu" v-if="!userLoading">
+            <img class="navbar__user" :src="user?.profile_image ?? 'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg' " alt="" v-if="!userLoading"/>
+            <span class="navbar__usertitle">{{ user?.name }}</span>
             <Icon
               name="weui:arrow-outlined"
               style="color: black"
@@ -67,8 +98,34 @@ const handleModalLogout = () => {
   box-shadow: 0px 1px 4px 0px #0c0c0d0d;
   box-shadow: 0px 1px 4px 0px #0c0c0d1a;
 
+  &__avatars {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__loadingprofile {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
+
+  &__loadinguser {
+    width: 150px;
+    height: 20px;
+    border-radius: 5px;
+  }
+
+  &__contain {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &__img {
-    width: 254px;
+    width: 100%;
+    max-width: 200px;
   }
   &__icon {
     transform: rotate(90deg);
@@ -123,6 +180,15 @@ const handleModalLogout = () => {
     cursor: pointer;
     color: black;
     text-decoration: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navbar {
+    &__contain {
+      justify-content: center !important;
+      gap: 10px;
+    }
   }
 }
 </style>

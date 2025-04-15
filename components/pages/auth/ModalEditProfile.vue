@@ -5,15 +5,15 @@ import Button from "~/components/ui/Button.vue";
 
 import imageDefault from "@/assets/images/image-book.png"
 
-interface Props {
-  status: boolean;
-}
+const model = defineModel()
 
-defineProps<Props>();
+const handleClose = () => {
+  model.value = !model.value
+}
 </script>
 
 <template>
-  <div class="component" v-if="status">
+  <div class="component" v-if="model">
     <form action="" class="component__form">
       <h1 class="component__heading1">Edit Profile</h1>
       <div class="component__contain">
@@ -34,7 +34,7 @@ defineProps<Props>();
         </div>
       </div>
       <div class="component__buttons">
-        <Button label="Cancel" variant="secondary" />
+        <Button label="Cancel" variant="secondary" @click="handleClose" />
         <Button label="Update Profile" variant="primary" />
       </div>
     </form>
@@ -51,6 +51,7 @@ defineProps<Props>();
   z-index: 80;
   position: fixed;
   top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;

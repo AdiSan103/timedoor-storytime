@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { Story } from "~/type/module/stories";
 
+import ModalEditCard from "@/components/pages/auth/ModalEditCard.vue";
 import Badge from "@/components/ui/Badge.vue";
+
 import { defineProps } from "vue";
+
+const modalCardStatus = ref(false)
 
 // Define props with TypeScript
 interface Props {
@@ -11,9 +15,15 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const handleModal = () => {
+  modalCardStatus.value = !modalCardStatus.value
+}
+
 </script>
 
 <template>
+  <ModalEditCard v-model="modalCardStatus" />
   <div class="card">
     <div
       :style="{
@@ -23,13 +33,13 @@ defineProps<Props>();
       class="card__background"
     >
       <div class="card__icons">
-        <div class="card__icon">
+        <NuxtLink :to="'/auth/story/edit/' + '123'" class="card__icon">
           <Icon
             name="mage:edit"
             style="color: #fff"
             size="25"
           />
-        </div>
+        </NuxtLink>
         <div class="card__icon">
           <Icon
             name="material-symbols:bookmark-add-outline-rounded"
@@ -37,7 +47,7 @@ defineProps<Props>();
             size="25"
           />
         </div>
-        <div class="card__icon">
+        <div class="card__icon"  @click="handleModal">
           <Icon
             name="tabler:trash"
             style="color: #fff"
@@ -91,7 +101,8 @@ defineProps<Props>();
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 26px;
+        font-size: clamp(1rem,calc(2vw + 1rem),1.2rem);
+
     line-height: 46px;
     letter-spacing: 0%;
     vertical-align: middle;

@@ -1,26 +1,32 @@
 <script lang="ts" setup>
 import type { Story } from "~/type/module/stories";
+import type { User } from "~/type/module/users";
 
 import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/auth/mystory/Modal.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
 import Toast from "~/components/ui/Toast.vue";
-import ModalEditCard from "@/components/pages/auth/ModalEditCard.vue";
 
 import imgNotFound from "~/assets/images/notfound_story.png";
 import CardEdit from "~/components/ui/CardEdit.vue";
+import UserSection from "~/components/pages/auth/UserSection.vue";
 
 // meta
 definePageMeta({
   layout: "home",
-  middleware: ["auth-user"]
+  middleware: ["auth-user"],
 });
 
 // declaration variable
 const { $api } = useNuxtApp();
 const story: Ref<Story[]> = ref([]);
 const storyLoading = ref(false);
+
+const user: Ref<User | undefined> = ref();
+const userLoading = ref(false);
+
+const modalProfileStatus = ref(false)
 
 // function
 const fetchstory = () => {
@@ -39,33 +45,42 @@ const fetchstory = () => {
     });
 };
 
+const fetchDetailUser = () => {
+  userLoading.value = true;
+
+  $api.users
+    .getDetail()
+    .then((res) => {
+      user.value = res.user;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      userLoading.value = false;
+    });
+};
+
 // lifecycle
+fetchDetailUser();
 fetchstory();
 </script>
 
 <template>
   <Toast message="Succesfully for updated data!" :status="false" type="success" />
-  <ModalEditCard :status="false"/>
-  <ModalEditProfile :status="false" />
+  <ModalEditProfile v-model="modalProfileStatus" />
   <section class="mystory">
-    <div class="container user">
-      <img class="user__profile" src="/images/image-book.png" alt="" />
-      <div class="user__content">
-        <p class="user__title">Iswara</p>
-        <p class="user__email">dewiratnaiswara99@gmail.com</p>
-        <p class="user__desc">
-          Avid reader and aspiring writer. Lover of mysteries, thrillers, and sci-fi.
-          Coffee enthusiast and nature explorer. Always on the lookout for new stories and
-          adventures.
-        </p>
-      </div>
-      <Button label="Edit Profile" variant="primary" />
-    </div>
+    <UserSection/>
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
       <Button link="#" label="My Story" variant="success" classCustom="mystory__button" />
-      <Button link="/auth/mybookmark" label="Bookmark" variant="light" classCustom="mystory__button" />
+      <Button
+        link="/auth/mybookmark"
+        label="Bookmark"
+        variant="light"
+        classCustom="mystory__button"
+      />
     </div>
     <div class="mystory__content">
       <div class="mystory__left">
@@ -79,7 +94,7 @@ fetchstory();
           <CardSekeleton v-if="storyLoading" />
           <CardSekeleton v-if="storyLoading" />
           <!--  -->
-          <CardEdit v-for="(item,index) in story" :key="index" :item="item" />
+          <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
         </div>
         <!-- not found -->
         <div class="mystory__notfound">
@@ -150,8 +165,8 @@ fetchstory();
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
+
     letter-spacing: 0%;
   }
 
@@ -172,6 +187,7 @@ fetchstory();
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    object-fit: cover;
     height: 200px;
     width: 100%;
     max-width: 200px;
@@ -180,6 +196,10 @@ fetchstory();
 
   &__content {
     max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   &__title {
@@ -193,7 +213,7 @@ fetchstory();
   &__email {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -201,10 +221,29 @@ fetchstory();
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
     letter-spacing: 0%;
     vertical-align: middle;
     text-align: justify;
+  }
+
+  &__sekeletontitle {
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+  }
+
+  &__sekeletonemail {
+    width: 200px;
+    height: 15px;
+    border-radius: 5px;
+  }
+
+  &__sekeletondesc {
+    width: 100%;
+    max-width: 700px;
+    height: 100px;
+    border-radius: 5px;
   }
 }
 </style>

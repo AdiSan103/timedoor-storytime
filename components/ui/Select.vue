@@ -22,8 +22,8 @@
   &__label {
     font-family: "DM Sans";
     font-weight: 400;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    
     display: block;
     margin-bottom: 8px;
     width: 130px;
@@ -39,8 +39,8 @@
     max-width: 120px;
     font-family: "DM Sans";
     font-weight: 500;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    
     border: none;
     outline: none;
   }

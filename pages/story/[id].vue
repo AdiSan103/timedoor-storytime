@@ -134,7 +134,7 @@ fetchLastestStory();
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 24px;
+    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
     letter-spacing: 0%;
     text-align: center;
     margin: 0;

@@ -1,11 +1,11 @@
-<script lang="ts" setup>
+s<script lang="ts" setup>
 import Button from "~/components/ui/Button.vue";
 </script>
 <template>
   <div class="component">
     <h4>Write your story</h4>
     <p>Share your unique voice with the world – start writing your story today!</p>
-    <Button label="Write Story" variant="primary" />
+    <Button link="/auth/story/create" label="Write Story" variant="primary" />
   </div>
 </template>
 <style lang="scss" scoped>
