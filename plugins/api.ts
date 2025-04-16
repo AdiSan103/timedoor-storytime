@@ -1,5 +1,6 @@
 // Import repository modules
 import Auth from "~/repository/module/auth";
+import Bookmark from "~/repository/module/bookmark";
 import Categories from "~/repository/module/categories";
 import Stories from "~/repository/module/stories";
 import Users from "~/repository/module/users";
@@ -9,7 +10,8 @@ interface IApiInstance {
       categories: Categories;
       stories: Stories;
       auth: Auth;
-      users: Users
+      users: Users,
+      bookmark: Bookmark
  }
  
  export default defineNuxtPlugin(() => {
@@ -19,7 +21,8 @@ interface IApiInstance {
      categories: new Categories,
      stories: new Stories,
      auth: new Auth,
-     users: new Users
+     users: new Users,
+     bookmark: new Bookmark
    }
  
    return {

@@ -9,6 +9,7 @@ defineProps<{
   image_name?: string;
 }>();
 
+const model = defineModel()
 const mime_type = ref("");
 const cropedImage = ref("");
 const autoCrop = ref(false);
@@ -42,23 +43,26 @@ function saveImage() {
   const canvas = cropperRef.value?.getCroppedCanvas();
   if (!canvas) return;
 
+  // Convert canvas to base64 and assign to preview (optional)
   cropedImage.value = canvas.toDataURL();
-  canvas.toBlob((blob: Blob) => {
-    if (!blob) return;
-    const formData = new FormData();
-    formData.append("profile_photo", blob, "name.jpeg");
-    alert("success save");
-    console.log(formData);
 
-    // Uncomment when ready to use axios
-    // axios
-    //   .post(`/api/user/profile-photo`, formData)
-    //   .then((response) => {})
-    //   .catch((error) => {
-    //     console.error(error)
-    //   })
-  }, mime_type.value);
+  // Convert canvas to Blob, then to File
+  canvas.toBlob((blob: Blob | null) => {
+    if (!blob) return;
+
+    const file = new File([blob], "profile_photo.jpeg", {
+      type: mime_type.value || "image/jpeg",
+    });
+
+    // Save the File to the model
+    model.value = file;
+
+    alert("Success save!");
+  }, mime_type.value || "image/jpeg");
 }
+
+
+
 </script>
 
 <template>

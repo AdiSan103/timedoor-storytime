@@ -1,7 +1,7 @@
 import FetchFactory from '../factory'
-import type { FormProfile, FormProfileImage, PropsUserResponse, StoryByUserResponse } from '~/type/module/users'
+import type { FormProfile, FormProfileImage, UserResponse, StoryByUserResponse } from '~/type/module/users'
 
-class Users extends FetchFactory<PropsUserResponse> {
+class Users extends FetchFactory<UserResponse> {
 
  getDetail() {    
     return super.call('/api/user/details', {      

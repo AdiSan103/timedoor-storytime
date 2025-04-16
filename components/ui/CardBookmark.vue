@@ -6,6 +6,7 @@ import type { Story } from "~/type/module/stories";
 import LoadingScreen from "./LoadingScreen.vue";
 import Toast from "./Toast.vue";
 
+const model = defineModel() // for return response
 
 const { $api } = useNuxtApp();
 const route = useRoute();
@@ -41,8 +42,10 @@ const toggleBookmark = () => {
       loading.value = false;
       bookmarkStatus.value = true;
       // 
+      model.value = true // response toggle bookmark done process
+      // 
       setTimeout(() => {
-        bookmarkStatus.value = false;
+        bookmarkStatus.value = true;
       },700);
     });
 }
@@ -169,7 +172,10 @@ const toggleBookmark = () => {
     background-repeat: no-repeat;
     flex-shrink: 0;
     border-radius: 8px;
+    display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
   }
 
   &__bookmark {
@@ -181,9 +187,7 @@ const toggleBookmark = () => {
     align-items: center;
     border-radius: 100px;
     position: absolute;
-    bottom: 10px;
     cursor: pointer;
-    right: 10px;
   }
 
   &__bookmarkactive {
@@ -195,9 +199,7 @@ const toggleBookmark = () => {
     align-items: center;
     border-radius: 100px;
     position: absolute;
-    bottom: 10px;
     cursor: pointer;
-    right: 10px;
   }
 
   &__content {

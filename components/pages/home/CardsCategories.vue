@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Badge from "~/components/ui/Badge.vue";
-import type { Category } from "~/type/module/categoris";
+import type { Category } from "~/type/module/categories";
 
 // Define props with TypeScript
 interface Props {

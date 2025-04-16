@@ -1,29 +1,48 @@
 <script lang="ts" setup>
 import { defineProps } from "vue";
 
+// current page
+const model = defineModel()
+
 // Define props with TypeScript
 interface Props {
   classCustom?: string;
+  total: number;
+  // current_page: number,
+  per_page: number;
+  last_page: number;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const handlePrev = () => {
+  if(model.value != 1) {
+    model.value--;
+  }
+}
+
+const handleNext = () => {
+  if(model.value != props.last_page) {
+    model.value++;
+  }
+}
 </script>
 
 <template>
   <div :class="['items', classCustom]">
     <!-- prev -->
-    <div class="items__item">Prev</div>
+    <div class="items__item" @click="handlePrev">Prev</div>
     <!-- active -->
-    <div class="items__item items__active">1</div>
+    <div class="items__item items__active">{{ model }}</div>
     <!-- list -->
-    <div class="items__item">2</div>
-    <div class="items__item">3</div>
+    <!-- <div class="items__item">2</div> -->
+    <!-- <div class="items__item">3</div> -->
     <!-- .... -->
     <div class="items__item">...</div>
     <!-- last page -->
-    <div class="items__item">10</div>
+    <div class="items__item">{{ last_page }}</div>
     <!-- next -->
-    <div class="items__item">Next</div>
+    <div class="items__item" @click="handleNext">Next</div>
   </div>
 </template>
 

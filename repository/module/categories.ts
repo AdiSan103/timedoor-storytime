@@ -1,7 +1,7 @@
 import FetchFactory from '../factory'
-import type { PropsCategory } from '~/type/module/categoris'
+import type { CategoryResponse } from '@/type/module/categories'
 
-class Categories extends FetchFactory<PropsCategory> {
+class Categories extends FetchFactory<CategoryResponse> {
   
   getCategories() {
       return super.call('/api/categories', {

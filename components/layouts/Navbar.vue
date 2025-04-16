@@ -2,7 +2,6 @@
 import { ref } from "vue";
 
 import Button from "@/components/ui/Button.vue";
-import bg from "@/assets/images/image-book.png";
 import ModalLogout from "@/components/layouts/ModalLogout.vue";
 import type { User } from "@/type/module/users";
 
@@ -52,12 +51,7 @@ fetchDetailUser();
         <img src="/images/logo.png" alt="logo" class="navbar__img" />
       </NuxtLink>
       <div class="d-flex gap-3">
-        <Button
-          link="/auth/register"
-          label="Register"
-          variant="secondary"
-          v-if="!authToken"
-        />
+        <Button link="/auth/register" label="Register" variant="secondary" v-if="!authToken" />
         <Button link="/auth/login" label="Login" variant="primary" v-if="!authToken" />
 
         <div class="navbar__avatar" v-if="authToken">
@@ -67,14 +61,11 @@ fetchDetailUser();
           </div>
           <!--  -->
           <div class="navbar__content" @click="handleMenu" v-if="!userLoading">
-            <img class="navbar__user" :src="user?.profile_image ?? 'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg' " alt="" v-if="!userLoading"/>
+            <img class="navbar__user"
+              :src="user?.profile_image ?? 'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'"
+              alt="" v-if="!userLoading" />
             <span class="navbar__usertitle">{{ user?.name }}</span>
-            <Icon
-              name="weui:arrow-outlined"
-              style="color: black"
-              size="25"
-              class="navbar__icon"
-            />
+            <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
           </div>
           <ul class="navbar__listmenu" v-if="menu">
             <NuxtLink to="/auth/mystory" class="navbar__listitem">My Profile</NuxtLink>
@@ -127,6 +118,7 @@ fetchDetailUser();
     width: 100%;
     max-width: 200px;
   }
+
   &__icon {
     transform: rotate(90deg);
   }
@@ -137,6 +129,7 @@ fetchDetailUser();
     justify-content: center;
     align-items: center;
   }
+
   &__content {
     display: flex;
     gap: 10px;
@@ -174,6 +167,7 @@ fetchDetailUser();
     gap: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   }
+
   &__listitem {
     margin: 0;
     padding: 0;

@@ -16,7 +16,8 @@ interface Props {
 
 defineProps<Props>();
 
-const data = ref("Hello world!");
+const model = defineModel()
+
 const config = computed(() => {
   return {
     licenseKey: "GPL", // Or 'GPL'.
@@ -32,14 +33,14 @@ const config = computed(() => {
     <!-- condition type -->
     <ckeditor
       v-if="type == 'ckeditor'"
-      v-model="data"
+      v-model="model"
       :editor="ClassicEditor"
       :config="config"
       :class="['component ', classCustom]"
     />
     <!--  -->
     <textarea v-if="type == 'basic'" :class="['component ', classCustom]">
-    {{ data }}
+    {{ model }}
     </textarea>
   </div>
 </template>

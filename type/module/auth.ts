@@ -10,7 +10,7 @@ export interface User {
  updated_at: string
 }
 
-export interface PropsAuthResponse {
+export interface AuthResponse {
  message: string,
  data: User;
  token: string,

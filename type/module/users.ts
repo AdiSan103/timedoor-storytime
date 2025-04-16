@@ -8,7 +8,7 @@ export interface User {
  about: string,
 }
 
-export interface PropsUserResponse {
+export interface UserResponse {
  user: User;
 }
 

@@ -3,6 +3,13 @@ export interface StoryImage {
  url: string;
 }
 
+export interface FormData {
+ title: string,
+ content: string,
+ category_id: any,
+ content_images: any
+}
+
 export interface Story {
  id: string;
  title: string;
@@ -23,4 +30,11 @@ export interface Story {
 
 export interface PropsStory {
  data: Story[];
+}
+
+
+export interface KeywordFilter {
+ sort_by?: string | any;
+ search?: string | any;
+ category?: string | any;
 }

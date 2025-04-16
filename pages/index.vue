@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import
-import type { Category, PropsCategory } from "~/type/module/categoris";
+import type { Category, CategoryResponse } from "~/type/module/categories";
 
 import Input from "@/components/ui/Input.vue";
 import CardsLastestStory from "~/components/pages/home/CardsLastestStory.vue";
@@ -35,15 +35,19 @@ const romanceLoading = ref(false);
 
 const search = ref("");
 
-const toastMessage = ref("")
-const toastStatus = ref(false)
+const toastMessage = ref("");
+const toastStatus = ref(false);
 
 // function
 const fetchLastestStory = () => {
   lastestStoryLoading.value = true;
 
+  const keywords = {
+    sort_by: "newest",
+  };
+
   $api.stories
-    .getStories("newest")
+    .getFilter(keywords)
     .then((res) => {
       lastestStory.value = res.data; // ✅ karena res.data.value = PropsStory
     })
@@ -78,8 +82,12 @@ const fetchStoryFilterByCategory = (
 ) => {
   loading.value = true;
 
+  const keywords = {
+    category: slug,
+  };
+
   $api.stories
-    .getStoriesFilterByCategory(slug)
+    .getFilter(keywords)
     .then((res) => {
       data.value = res.data;
       console.log(slug, data.value);
@@ -93,13 +101,13 @@ const fetchStoryFilterByCategory = (
 };
 
 const handleSearch = () => {
-  if(search.value == "") {
+  if (search.value == "") {
     toastStatus.value = true;
-    toastMessage.value = "Pencaharian Kosong..."
+    toastMessage.value = "Pencaharian Kosong...";
   } else {
-    window.location.href = "/story/search/" + search.value
+    window.location.href = "/story/filter?search=" + search.value;
   }
-}
+};
 
 // lifecycle
 fetchLastestStory();
@@ -117,13 +125,9 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
       The world's most-loved social storytelling platform. Story time connects a global
       community of 90 million readers and writers through the power of story.
     </p>
-    <form @submit.prevent="handleSearch">
-      <Input
-        placeholder="Search Story"
-        classCustom="banner__input"
-        icon="iconoir:search"
-        v-model="search"
-      />
+    <form>
+      <Input placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
+        @click="handleSearch" />
     </form>
     <img src="/images/image1.png" alt="" class="banner__image" />
   </section>
@@ -151,7 +155,7 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
   &__title {
     font-family: Playfair Display;
     font-weight: 400;
-    font-size: clamp(1.8rem,calc(5vw + 1rem),5rem);
+    font-size: clamp(1.8rem, calc(5vw + 1rem), 5rem);
     line-height: 74px;
     letter-spacing: 0%;
     text-align: center;
@@ -162,8 +166,8 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
     padding-top: 20px;
     font-family: DM Sans;
     font-weight: 400;
-    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
-    
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
+
     letter-spacing: 0%;
     text-align: center;
     max-width: 1412px;

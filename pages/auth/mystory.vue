@@ -32,8 +32,14 @@ const modalProfileStatus = ref(false)
 const fetchstory = () => {
   storyLoading.value = true;
 
+  const keywords = {
+    sort_by: '',
+    search: '',
+    category: '',
+  }
+  
   $api.stories
-    .getStories("newest")
+    .getFilter(keywords)
     .then((res) => {
       story.value = res.data; // ✅ karena res.data.value = PropsStory
     })
@@ -96,8 +102,11 @@ fetchstory();
           <!--  -->
           <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
         </div>
+        
         <!-- not found -->
-        <div class="mystory__notfound">
+        <div class="mystory__notfound"
+        v-if="story && story.length === 0"
+        >
           <h3 class="mystory__heading1">No Stories Yet</h3>
           <p class="mystory__desc">
             You haven't shared any stories yet. Start your fitness journey today!

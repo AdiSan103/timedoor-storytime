@@ -22,8 +22,14 @@ const storyLoading = ref(false);
 const fetchstory = () => {
   storyLoading.value = true;
 
+  const keywords = {
+    sort_by: 'newest',
+    // search: '',
+    // category: '',
+  }
+
   $api.stories
-    .getStories("newest")
+    .getFilter(keywords)
     .then((res) => {
       story.value = res.data; // ✅ karena res.data.value = PropsStory
     })

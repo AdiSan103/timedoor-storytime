@@ -10,11 +10,16 @@ class FetchFactory<T> {
   ): Promise<T> {
     const config = useRuntimeConfig()
     const token = useCookie("STORYTIME_TOKEN");
-
+    // console.log(url);
+    
     const headers: any = {
       Accept: 'application/json',
       Origin: config.public.appUrl,  
       Authorization: `Bearer ${token.value}`
+    }
+
+    if(url == "/api/stories") {
+      headers['Content-Type'] = 'multipart/form-data';
     }
 
     const defaults: UseFetchOptions<T> = {

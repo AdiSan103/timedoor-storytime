@@ -45,8 +45,14 @@ const fetchstory = () => {
 const fetchLastestStory = () => {
   lastestStoryLoading.value = true;
 
+  const keywords = {
+    sort_by: '',
+    search: '',
+    category: '',
+  }
+
   $api.stories
-    .getStories("newest")
+    .getFilter(keywords)
     .then((res) => {
       lastestStory.value = res.data; // ✅ karena res.data.value = PropsStory
     })

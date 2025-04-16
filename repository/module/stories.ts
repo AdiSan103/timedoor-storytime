@@ -1,4 +1,4 @@
-import type { PropsStory } from '~/type/module/stories'
+import type { PropsStory, FormData, KeywordFilter } from '~/type/module/stories'
 import FetchFactory from '../factory'
 
 class Stories extends FetchFactory<PropsStory> {
@@ -18,27 +18,41 @@ class Stories extends FetchFactory<PropsStory> {
   //   })
   // }
 
-  getStoriesFilterByCategory(slug: string) {
-      return super.call('/api/stories?category=' + slug, {
-        method: 'GET'
-    })
-  }
+  // getStoriesFilterByCategory(slug: string) {
+  //     return super.call('/api/stories?category=' + slug, {
+  //       method: 'GET'
+  //   })
+  // }
 
-  getStories(sort_by: string) {
-    return super.call('/api/stories?sort_by=' + sort_by, {
-      method: 'GET'
-    })
-  }
+  // getStories(sort_by: string) {
+  //   return super.call('/api/stories?sort_by=' + sort_by, {
+  //     method: 'GET'
+  //   })
+  // }
 
-  getSearchStories(search: any) {
-    return super.call('/api/stories?search=' + search, {
-      method: 'GET'
-    })
+  // getSearchStories(search: any) {
+  //   return super.call('/api/stories?search=' + search, {
+  //     method: 'GET'
+  //   })
+  // }
+
+  getFilter(data: KeywordFilter) {
+    return super.call('/api/stories', {
+      method: 'GET',
+      query: data
+    }) 
   }
 
   getDetailStory(id: any) {
     return super.call('/api/stories/' + id, {
       method: 'GET'
+    })
+  }
+
+  addStory(data: FormData) {
+    return super.call('/api/stories', {
+      method: 'POST',
+      body: data
     })
   }
 }

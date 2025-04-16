@@ -33,10 +33,13 @@ const [password] = defineField("password");
 // function
 const onSubmit = handleSubmit(() => {
   loading.value = true;
-  const formLogin = {
-    username_or_email: username_or_email.value,
-    password: password.value,
-  };
+  
+  const formLogin = new FormData();
+
+  formLogin.append('username_or_email', username_or_email.value);
+  formLogin.append('password', password.value);
+
+  console.log('form Login', formLogin);
 
   $api.auth
     .login(formLogin)

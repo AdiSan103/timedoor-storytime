@@ -8,15 +8,16 @@ interface Props {
   classCustom?: string;
   optionValue: string;
   optionLabel: string;
+  modelValue: string;
+  error?: string
 }
+// defineProps<Props>();
+const props = defineProps<Props>();
 
-defineProps<Props>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+}>();
 
-// type == 'password'
-const togglePassword = ref(true);
-const handlePassword = () => {
-  togglePassword.value = !togglePassword.value;
-};
 </script>
 
 <template>
@@ -24,14 +25,13 @@ const handlePassword = () => {
     <label for="" class="component__label">{{ label }}</label>
     <div :class="['component ', classCustom]">
       <!-- condition type password -->
-      <select
-        class="component__input"
-      >
-      <option :value="item[`${optionValue}`]" v-for="(item, index) in options" :key="index">
-        {{ item[`${optionLabel}`] }}
+      <select class="component__input" :value="modelValue" @change="emit('update:modelValue', $event.target.value)">
+        <option :value="item[`${optionValue}`]" v-for="(item, index) in options" :key="index">
+          {{ item[`${optionLabel}`] }}
         </option>
       </select>
     </div>
+    <p class="component__error">{{ error }}</p>
   </div>
 </template>
 
@@ -71,6 +71,12 @@ const handlePassword = () => {
 
   &__password {
     cursor: pointer;
+  }
+
+  &__error {
+    color: red;
+    font-style: italic;
+    margin-top: 5px;
   }
 }
 </style>

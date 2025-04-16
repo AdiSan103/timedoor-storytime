@@ -1,4 +1,4 @@
-export interface PropsCategory  {
+export interface CategoryResponse  {
  message:string,
  data: Category[]
 }
