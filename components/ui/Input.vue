@@ -27,24 +27,14 @@ const handlePassword = () => {
     <label for="" class="component__label">{{ label }}</label>
     <div :class="['component ', classCustom, error ? 'component--error' : '']">
       <!-- condition type password -->
-      <input
-        :type="togglePassword === false ? 'text' : type"
-        :placeholder="placeholder"
-        class="component__input"
-        v-model="model"
-      />
+      <input :type="togglePassword === false ? 'text' : type" :placeholder="placeholder" class="component__input"
+        v-model="model" />
       <Icon :name="icon" style="color: black" size="25" v-if="icon" />
       <!-- type password -->
-      <Icon
-        class="component__password"
-        :name="togglePassword ? 'ph:eye-light' : 'mdi-light:eye-off'"
-        style="color: black"
-        size="25"
-        v-if="type == 'password'"
-        @click="handlePassword"
-      />
+      <Icon class="component__password" :name="togglePassword ? 'ph:eye-light' : 'mdi-light:eye-off'"
+        style="color: black" size="25" v-if="type == 'password'" @click="handlePassword" />
     </div>
-    <p class="component__error">{{error}}</p>
+    <p class="component__error">{{ error }}</p>
   </div>
 </template>
 
@@ -76,7 +66,7 @@ const handlePassword = () => {
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     letter-spacing: 0%;
     vertical-align: middle;
     margin-bottom: 10px;
@@ -89,7 +79,7 @@ const handlePassword = () => {
   &__error {
     color: red;
     font-style: italic;
-    margin-top:5px;
+    margin-top: 5px;
   }
 
   &--error {

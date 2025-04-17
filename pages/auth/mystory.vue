@@ -26,18 +26,18 @@ const storyLoading = ref(false);
 const user: Ref<User | undefined> = ref();
 const userLoading = ref(false);
 
-const modalProfileStatus = ref(false)
+const modalProfileStatus = ref(false);
 
 // function
 const fetchstory = () => {
   storyLoading.value = true;
 
   const keywords = {
-    sort_by: '',
-    search: '',
-    category: '',
-  }
-  
+    // sort_by: "",
+    // search: "",
+    // category: "",
+  };
+
   $api.stories
     .getFilter(keywords)
     .then((res) => {
@@ -76,17 +76,12 @@ fetchstory();
   <Toast message="Succesfully for updated data!" :status="false" type="success" />
   <ModalEditProfile v-model="modalProfileStatus" />
   <section class="mystory">
-    <UserSection/>
+    <UserSection />
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
       <Button link="#" label="My Story" variant="success" classCustom="mystory__button" />
-      <Button
-        link="/auth/mybookmark"
-        label="Bookmark"
-        variant="light"
-        classCustom="mystory__button"
-      />
+      <Button link="/auth/mybookmark" label="Bookmark" variant="light" classCustom="mystory__button" />
     </div>
     <div class="mystory__content">
       <div class="mystory__left">
@@ -102,11 +97,9 @@ fetchstory();
           <!--  -->
           <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
         </div>
-        
+
         <!-- not found -->
-        <div class="mystory__notfound"
-        v-if="story && story.length === 0"
-        >
+        <div class="mystory__notfound" v-if="!storyLoading && story.length === 0">
           <h3 class="mystory__heading1">No Stories Yet</h3>
           <p class="mystory__desc">
             You haven't shared any stories yet. Start your fitness journey today!
@@ -214,7 +207,7 @@ fetchstory();
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -253,6 +246,22 @@ fetchstory();
     max-width: 700px;
     height: 100px;
     border-radius: 5px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .mystory {
+    &__content {
+      flex-direction: column;
+    }
+
+    &__left {
+      width: 100%;
+    }
+
+    &__right {
+      width: 100%;
+    }
   }
 }
 </style>

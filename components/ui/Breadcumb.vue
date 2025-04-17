@@ -19,9 +19,10 @@
     padding: 20px 10px;
     font-family: DM Sans;
     font-weight: 500;
-    font-size: 20px;
+    font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
   }
+
   &__separator {
     margin: 0 20px;
     color: $color3;

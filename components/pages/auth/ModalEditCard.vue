@@ -1,21 +1,66 @@
 <script lang="ts" setup>
 import Button from "~/components/ui/Button.vue";
+import Toast from '@/components/ui/Toast.vue'
+import LoadingScreen from '@/components/ui/LoadingScreen.vue'
 
-const model = defineModel()
+const model = defineModel();
+const { $api } = useNuxtApp();
+const bookmarkStatus = ref(false);
+const bookmarkToast = ref(false);
+const bookmarkMessage = ref("");
+const loading = ref(false);
 
-const handleClose = () => {
-  model.value = !model.value
+interface Props {
+  id: string;
 }
+
+const props = defineProps<Props>();
+
+// function
+const handleClose = () => {
+  model.value = !model.value;
+};
+
+const handleDelete = () => {
+  loading.value = true;
+
+  $api.stories
+    .removeStory(props.id)
+    .then((res) => {
+      bookmarkMessage.value = res.message;
+      bookmarkToast.value = true;
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 700);
+    })
+    .catch((err) => {
+      alert('error system..')
+      console.log('error', err);
+    })
+    .finally(() => {
+      loading.value = false;
+      bookmarkStatus.value = true;
+      // 
+      model.value = false;
+      //
+      setTimeout(() => {
+        bookmarkStatus.value = false;
+      }, 700);
+    });
+};
 </script>
 
 <template>
-  <div class="component"  v-if="model">
+  <LoadingScreen v-if="loading" />
+  <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast" />
+  <div class="component" v-if="model">
     <div class="component__contain">
       <h2 class="component__title">Delete Story</h2>
       <p class="component__desc">Are you sure want to delete this story?</p>
       <div class="component__buttons">
         <Button label="Cancel" variant="secondary" @click="handleClose" />
-        <Button label="Delete" variant="primary" />
+        <Button label="Delete" variant="primary" @click="handleDelete" />
       </div>
     </div>
   </div>
@@ -36,7 +81,7 @@ const handleClose = () => {
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     line-height: 46px;
     letter-spacing: 0%;
     text-align: center;
@@ -45,7 +90,7 @@ const handleClose = () => {
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 27px;
     letter-spacing: 0%;
     text-align: center;

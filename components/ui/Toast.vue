@@ -45,7 +45,7 @@ const handleToggle = () => {
     padding-left: 5px;
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 20px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 26px;
     letter-spacing: 0%;
     text-align: center;
@@ -60,7 +60,7 @@ const handleToggle = () => {
     align-items: center;
     margin: auto;
     border-radius: 10px;
-    min-width: 500px;
+    min-width: 300px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
 

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type { User } from "~/type/module/users";
 
+import Button from '@/components/ui/Button.vue'
+import ModalEditProfile from '@/components/pages/auth/ModalEditProfile.vue'
+
 // meta
 definePageMeta({
   layout: "home",
@@ -12,6 +15,8 @@ const { $api } = useNuxtApp();
 
 const user: Ref<User | undefined> = ref();
 const userLoading = ref(false);
+
+const modelProfile = ref(false)
 
 // function
 const fetchDetailUser = () => {
@@ -30,11 +35,16 @@ const fetchDetailUser = () => {
     });
 };
 
+const handleModelProfile = () => {
+  modelProfile.value = !modelProfile.value
+}
+
 // lifecycle
 fetchDetailUser();
 </script>
 
 <template>
+  <ModalEditProfile v-model="modelProfile" />
   <div class="container user placeholder-glow">
     <div class="user__profile placeholder" v-if="userLoading"></div>
     <div class="user__content" v-if="userLoading">
@@ -43,15 +53,9 @@ fetchDetailUser();
       <div class="user__sekeletondesc placeholder"></div>
     </div>
     <!-- -->
-    <img
-      class="user__profile"
-      :src="
-        user?.profile_image ??
-        'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'
-      "
-      alt=""
-      v-if="!userLoading"
-    />
+    <img class="user__profile" :src="user?.profile_image ??
+      'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'
+      " alt="" v-if="!userLoading" />
     <div class="user__content" v-if="!userLoading">
       <p class="user__title">{{ user?.name }}</p>
       <p class="user__email">{{ user?.email }}</p>
@@ -59,6 +63,7 @@ fetchDetailUser();
         {{ user?.about }}
       </p>
     </div>
+    <Button type="button" label="Edit Profile" variant="primary" @click="handleModelProfile" />
   </div>
 </template>
 
@@ -94,7 +99,7 @@ fetchDetailUser();
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -133,6 +138,20 @@ fetchDetailUser();
     max-width: 700px;
     height: 100px;
     border-radius: 5px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .user {
+    flex-direction: column;
+    padding: 10px;
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 </style>

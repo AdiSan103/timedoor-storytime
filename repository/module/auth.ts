@@ -17,7 +17,11 @@ class Auth extends FetchFactory<UserAuthRequest> {
     })
   }
 
-  logout() {}
+  logout() {
+    return super.call('/api/logout', {
+      method: 'POST',
+    })
+  }
 }
 
 export default Auth

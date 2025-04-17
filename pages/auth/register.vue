@@ -105,46 +105,18 @@ const onSubmit = handleSubmit(() => {
     <div class="register__right">
       <h3 class="register__heading2">Create Account</h3>
       <form action="" class="register__form" @submit.prevent="onSubmit">
-        <Input
-          v-model="name"
-          :error="errors.name"
-          placeholder="Enter Your Name"
-          label="Name"
-          type="text"
-        />
-        <Input
-          v-model="username"
-          :error="errors.username"
-          placeholder="Enter Your Username"
-          label="Username"
-          type="text"
-        />
-        <Input
-          v-model="email"
-          :error="errors.email"
-          placeholder="Enter Your Email"
-          label="Email"
-          type="email"
-        />
-        <Input
-          v-model="password"
-          :error="errors.password"
-          placeholder="Enter Your Password"
-          label="Password"
-          type="password"
-        />
-        <Input
-          v-model="password_confirmation"
-          :error="errors.password_confirmation"
-          placeholder="Re-enter your chosen password"
-          label="Confirm Passowrd"
-          type="password"
-        />
+        <Input v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
+        <Input v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
+          type="text" />
+        <Input v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
+        <Input v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
+          type="password" />
+        <Input v-model="password_confirmation" :error="errors.password_confirmation"
+          placeholder="Re-enter your chosen password" label="Confirm Passowrd" type="password" />
         <Button variant="primary" label="Create Account" classCustom="register__button" />
-        <span class="register__link"
-          >Already have an account?
-          <NuxtLink to="/#" class="register__login">Login</NuxtLink></span
-        >
+        <span class="register__link">Already have an account?
+          <NuxtLink to="/#" class="register__login">Login</NuxtLink>
+        </span>
       </form>
     </div>
   </section>
@@ -176,7 +148,7 @@ const onSubmit = handleSubmit(() => {
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 20px;
+    font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -194,7 +166,7 @@ const onSubmit = handleSubmit(() => {
   &__link {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 23px;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -204,7 +176,7 @@ const onSubmit = handleSubmit(() => {
   &__login {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 23px;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -244,8 +216,23 @@ const onSubmit = handleSubmit(() => {
     flex-direction: column;
     gap: 10px;
   }
+
   &__button {
     width: 250px;
+  }
+}
+
+@media screen and (max-width:900px) {
+  .register {
+    flex-direction: column;
+
+    &__left {
+      display: none;
+    }
+
+    &__right {
+      width: 100%;
+    }
   }
 }
 </style>

@@ -90,7 +90,6 @@ const fetchstory = () => {
     });
 };
 
-
 // fetch category
 const fetchCategories = () => {
   selectLoading.value = true;
@@ -123,10 +122,10 @@ const handleResetKeyword = () => {
   sort_by.value = "";
   search.value = "";
   category.value = "";
-  // 
+  //
   toastStatus.value = true;
   toastMessage.value = "Reset Keyword...";
-}
+};
 
 // lifecycle
 fetchCategories();
@@ -190,7 +189,7 @@ fetchstory();
 
   &__selects {
     display: flex;
-    gap: 20px;
+    gap: 40px;
   }
 
   &__input {
@@ -235,6 +234,23 @@ fetchstory();
     flex-direction: column;
     gap: 20px;
     width: 50%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .cards {
+    &__items {
+      display: none;
+    }
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 10px;
+
+    &__selects {
+      flex-direction: column;
+    }
   }
 }
 </style>

@@ -6,7 +6,6 @@ import type { Story } from "~/type/module/stories";
 import LoadingScreen from "./LoadingScreen.vue";
 import Toast from "./Toast.vue";
 
-
 const { $api } = useNuxtApp();
 const route = useRoute();
 const bookmarkStatus = ref(false);
@@ -25,11 +24,11 @@ const props = defineProps<Props>();
 const toggleBookmark = () => {
   loading.value = true;
   const dataForm = {
-    story_id : props.item.id
+    story_id: props.item.id
   }
-  
+
   $api.bookmark.toggle(dataForm)
-  .then((res) => {
+    .then((res) => {
       bookmarkMessage.value = res.message;
       bookmarkToast.value = true;
     })
@@ -43,35 +42,24 @@ const toggleBookmark = () => {
       // 
       setTimeout(() => {
         bookmarkStatus.value = false;
-      },700);
+      }, 700);
     });
 }
 </script>
 
 <template>
-  <LoadingScreen v-if="loading"/>
-  <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast"/>
+  <LoadingScreen v-if="loading" />
+  <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast" />
   <div class="card">
-    <div
-      :style="{
-        backgroundImage: `url(${item.content_images[0].url})`,
-        minHeight: (height ?? 300) + 'px',
-      }"
-      class="card__background"
-    >
+    <div :style="{
+      backgroundImage: `url(${item.content_images[0].url})`,
+      minHeight: (height ?? 300) + 'px',
+    }" class="card__background">
       <div class="card__bookmark" v-if="!bookmarkStatus" @click="toggleBookmark">
-        <Icon
-          name="material-symbols:bookmark-add-outline-rounded"
-          style="color: #fff"
-          size="25"
-        />
+        <Icon name="material-symbols:bookmark-add-outline-rounded" style="color: #fff" size="25" />
       </div>
       <div class="card__bookmarkactive" v-if="bookmarkStatus" @click="toggleBookmark">
-        <Icon
-          name="material-symbols:bookmark"
-          style="color: #fff"
-          size="25"
-        />
+        <Icon name="material-symbols:bookmark" style="color: #fff" size="25" />
       </div>
     </div>
     <NuxtLink :to="`/story/${item.id}`" class="card__link">
@@ -83,10 +71,7 @@ const toggleBookmark = () => {
       </div>
       <div class="card__footer">
         <div class="card_footerleft">
-          <div
-            :style="{ backgroundImage: `url(${item.user.profile_image})` }"
-            class="card__user"
-          ></div>
+          <div :style="{ backgroundImage: `url(${item.user.profile_image})` }" class="card__user"></div>
           <p class="card__label">{{ item.user.name }}</p>
         </div>
         <div class="card_footerright">

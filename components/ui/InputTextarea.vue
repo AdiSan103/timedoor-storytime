@@ -31,13 +31,8 @@ const config = computed(() => {
   <div>
     <label for="" class="component__label">{{ label }}</label>
     <!-- condition type -->
-    <ckeditor
-      v-if="type == 'ckeditor'"
-      v-model="model"
-      :editor="ClassicEditor"
-      :config="config"
-      :class="['component ', classCustom]"
-    />
+    <ckeditor v-if="type == 'ckeditor'" v-model="model" :editor="ClassicEditor" :config="config"
+      :class="['component ', classCustom]" />
     <!--  -->
     <textarea v-if="type == 'basic'" :class="['component ', classCustom]">
     {{ model }}
@@ -66,7 +61,7 @@ const config = computed(() => {
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     letter-spacing: 0%;
     vertical-align: middle;
     margin-bottom: 10px;

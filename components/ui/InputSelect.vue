@@ -63,7 +63,7 @@ const emit = defineEmits<{
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     letter-spacing: 0%;
     vertical-align: middle;
     margin-bottom: 10px;

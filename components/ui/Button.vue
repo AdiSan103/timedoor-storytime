@@ -15,18 +15,15 @@ defineProps<Props>();
 </script>
 
 <template>
-  <button
-    :class="[
-      'base',
-      classCustom,
-      variant == 'primary' ? ' base--primary ' : '',
-      variant == 'secondary' ? ' base--secondary ' : '',
-      variant == 'success' ? ' base--success ' : '',
-      variant == 'light' ? ' base--light ' : '',
-      type == 'disabled' ? ' base--disabled ' : '',
-    ]"
-    :disabled="type === 'disabled'"
-  >
+  <button :class="[
+    'base',
+    classCustom,
+    variant == 'primary' ? ' base--primary ' : '',
+    variant == 'secondary' ? ' base--secondary ' : '',
+    variant == 'success' ? ' base--success ' : '',
+    variant == 'light' ? ' base--light ' : '',
+    type == 'disabled' ? ' base--disabled ' : '',
+  ]" :disabled="type === 'disabled'">
     <NuxtLink :to="link" v-if="link">
       {{ label }}
     </NuxtLink>
@@ -46,8 +43,10 @@ defineProps<Props>();
   border-radius: 8px;
   font-family: DM Sans;
   font-weight: 500;
-  font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
-  
+  font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
+  outline: none;
+  border: none;
+
   letter-spacing: 0%;
   vertical-align: middle;
 
@@ -57,7 +56,7 @@ defineProps<Props>();
     color: $color1;
 
     a {
-      color: $color1!important;
+      color: $color1 !important;
       text-decoration: none;
     }
 
@@ -74,7 +73,7 @@ defineProps<Props>();
     background-color: $color1;
 
     a {
-      color: $color8!important;
+      color: $color8 !important;
       text-decoration: none;
     }
   }
@@ -85,7 +84,7 @@ defineProps<Props>();
     font-weight: bold;
 
     a {
-      color:$color3!important;
+      color: $color3 !important;
       text-decoration: none;
     }
   }
@@ -95,9 +94,9 @@ defineProps<Props>();
     border: none;
     font-weight: bold;
 
-    
+
     a {
-      color:$color3!important;
+      color: $color3 !important;
       text-decoration: none;
     }
   }

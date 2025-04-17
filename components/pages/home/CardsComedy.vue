@@ -18,8 +18,8 @@ defineProps<Props>();
   <section class="container">
     <div class="cards__contain">
       <h2 class="cards__title">Comedy</h2>
-      <NuxtLink to="/#" class="cards__link"
-        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      <NuxtLink to="/story/filter?category=comedy" class="cards__link">Explore More
+        <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>
     </div>
     <Separator />
@@ -45,11 +45,12 @@ defineProps<Props>();
     line-height: 58px;
     letter-spacing: 0%;
   }
+
   &__link {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
-    
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
+
     letter-spacing: 0%;
     vertical-align: middle;
     cursor: pointer;
@@ -59,6 +60,7 @@ defineProps<Props>();
       text-decoration: underline;
     }
   }
+
   &__contain {
     display: flex;
     justify-content: space-between;

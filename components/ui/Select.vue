@@ -29,14 +29,13 @@ const emit = defineEmits<{
         </option>
       </select>
     </div>
-    <p class="select__error">{{ error }}</p>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .select {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
 
@@ -52,6 +51,8 @@ const emit = defineEmits<{
   &__wrapper {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: end;
     max-width: 300px;
   }
 

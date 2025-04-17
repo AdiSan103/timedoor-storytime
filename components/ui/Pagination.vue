@@ -16,13 +16,13 @@ interface Props {
 const props = defineProps<Props>();
 
 const handlePrev = () => {
-  if(model.value != 1) {
+  if (model.value != 1) {
     model.value--;
   }
 }
 
 const handleNext = () => {
-  if(model.value != props.last_page) {
+  if (model.value != props.last_page) {
     model.value++;
   }
 }
@@ -62,14 +62,14 @@ const handleNext = () => {
     background-color: $color2;
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 20px;
+    font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
     border-radius: 5px;
   }
-  
+
   &__active {
-      background-color: $color3;
-      color: $color1;
-    }
+    background-color: $color3;
+    color: $color1;
+  }
 }
 </style>

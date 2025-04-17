@@ -18,32 +18,15 @@ defineProps<Props>();
     <h2>More Categories</h2>
     <Separator />
     <div class="categories__items" v-if="items">
-      <Badge 
-        classCustom="categories__item"
-        :label="item.name"
-        :link="'/story/category/' + item.name"
-        v-for="( item, index) in items"
-        :key="index"
-      />
+      <Badge classCustom="categories__item" :label="item.name" :link="'/story/filter?category=' + item.name"
+        v-for="(item, index) in items" :key="index" />
       <!--  -->
     </div>
     <div class="categories__items" v-if="loading">
-      <Badge
-        classCustom="categories__item placeholder placeholder-glow"
-        label="Loading..."
-      />
-      <Badge
-        classCustom="categories__item placeholder placeholder-glow"
-        label="Loading..."
-      />
-      <Badge
-        classCustom="categories__item placeholder placeholder-glow"
-        label="Loading..."
-      />
-      <Badge
-        classCustom="categories__item placeholder placeholder-glow"
-        label="Loading..."
-      />
+      <Badge classCustom="categories__item placeholder placeholder-glow" label="Loading..." />
+      <Badge classCustom="categories__item placeholder placeholder-glow" label="Loading..." />
+      <Badge classCustom="categories__item placeholder placeholder-glow" label="Loading..." />
+      <Badge classCustom="categories__item placeholder placeholder-glow" label="Loading..." />
     </div>
   </section>
 </template>
@@ -64,6 +47,7 @@ defineProps<Props>();
     line-height: 58px;
     letter-spacing: 0%;
   }
+
   &__items {
     gap: 20px;
     display: flex;
@@ -71,8 +55,9 @@ defineProps<Props>();
     overflow-y: hidden;
     white-space: nowrap;
   }
+
   &__item {
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     padding: 25px 20px;
   }
 }

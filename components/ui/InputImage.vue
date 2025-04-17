@@ -69,37 +69,21 @@ function saveImage() {
   <div class="inputimage">
     <p class="inputimage__title">Cover Image</p>
     <div class="inputimage__contain" v-if="!dialog">
-    <!--  -->
+      <!--  -->
       <img :src="image_name" class="inputimage__image" v-if="image_name"></img>
       <Icon name="ph:image-thin" style="color: black" size="100" v-else />
 
       <label for="inputimage" class="inputimage__label">Choose image</label>
-      <input
-        class="inputimage__action"
-        ref="FileInput"
-        type="file"
-        style="display: none"
-        name="inputimage"
-        id="inputimage"
-        @change="onFileSelect"
-      />
+      <input class="inputimage__action" ref="FileInput" type="file" style="display: none" name="inputimage"
+        id="inputimage" @change="onFileSelect" />
     </div>
     <div v-if="dialog" width="500" class="dialog">
-      <VueCropper
-        v-show="selectedFile"
-        ref="cropperRef"
-        :src="selectedFile"
-        alt="Source Image"
-      />
+      <VueCropper v-show="selectedFile" ref="cropperRef" :src="selectedFile" alt="Source Image" />
       <div class="dialog__buttons">
-        <Button
-          label="Crop"
-          variant="primary"
-          @click="
-            saveImage();
-            dialog = false;
-          "
-        />
+        <Button label="Crop" variant="primary" @click="
+          saveImage();
+        dialog = false;
+        " />
         <Button variant="secondary" @click="dialog = false" label="Cancel" />
       </div>
     </div>
@@ -111,7 +95,7 @@ function saveImage() {
   &__title {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -135,7 +119,7 @@ function saveImage() {
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     letter-spacing: 0%;
     cursor: pointer;
     width: 100%;

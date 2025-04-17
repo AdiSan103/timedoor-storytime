@@ -49,6 +49,12 @@ class Stories extends FetchFactory<PropsStory> {
     })
   }
 
+  removeStory(id: any) {
+    return super.call('/api/stories/' + id, {
+      method: 'DELETE'
+    })
+  }
+
   addStory(data: FormData) {
     return super.call('/api/stories', {
       method: 'POST',

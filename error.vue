@@ -2,11 +2,7 @@
   <NuxtLayout name="home">
     <section class="container error">
       <div class="error__left">
-        <img
-          src="/images/undraw_server_down.svg"
-          alt="server down"
-          class="error__image"
-        />
+        <img src="/images/undraw_server_down.svg" alt="server down" class="error__image" />
       </div>
       <div class="error__right">
         <h1 class="error__heading1">404</h1>
@@ -45,6 +41,7 @@ import Button from "@/components/ui/Button.vue";
     letter-spacing: 0%;
     text-align: center;
   }
+
   &__heading2 {
     font-family: Playfair Display;
     font-weight: 600;
@@ -56,7 +53,7 @@ import Button from "@/components/ui/Button.vue";
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 14px;
+    font-size: clamp(11px, 1vw + 0.5rem, 14px);
     letter-spacing: 0%;
     text-align: center;
     margin-top: 20px;

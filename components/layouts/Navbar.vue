@@ -4,6 +4,7 @@ import { ref } from "vue";
 import Button from "@/components/ui/Button.vue";
 import ModalLogout from "@/components/layouts/ModalLogout.vue";
 import type { User } from "@/type/module/users";
+import LoadingScreen from "../ui/LoadingScreen.vue";
 
 // declaration variable
 const { $api } = useNuxtApp();
@@ -13,7 +14,7 @@ const authToken = useCookie("STORYTIME_TOKEN");
 const statusModalLogout = ref(false);
 
 const user: Ref<User | undefined> = ref();
-const userLoading = ref(false);
+const userLoading = ref(false)
 
 const handleMenu = () => {
   menu.value = !menu.value;
@@ -61,9 +62,9 @@ fetchDetailUser();
           </div>
           <!--  -->
           <div class="navbar__content" @click="handleMenu" v-if="!userLoading">
-            <img class="navbar__user"
-              :src="user?.profile_image ?? 'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'"
-              alt="" v-if="!userLoading" />
+            <img class="navbar__user" :src="user?.profile_image ??
+              'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'
+              " alt="" v-if="!userLoading" />
             <span class="navbar__usertitle">{{ user?.name }}</span>
             <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
           </div>
@@ -150,13 +151,14 @@ fetchDetailUser();
   &__usertitle {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     vertical-align: middle;
   }
 
   &__listmenu {
     position: absolute;
     top: 50px;
+    right: 2px;
     width: 150px;
     background-color: $color1;
     list-style: none;
@@ -180,8 +182,12 @@ fetchDetailUser();
 @media screen and (max-width: 600px) {
   .navbar {
     &__contain {
-      justify-content: center !important;
+      justify-content: space-between !important;
       gap: 10px;
+    }
+
+    &__usertitle {
+      display: none;
     }
   }
 }

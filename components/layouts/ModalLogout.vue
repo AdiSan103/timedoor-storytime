@@ -5,7 +5,22 @@ import Toast from "~/components/ui/Toast.vue";
 const model = defineModel();
 const toastStatus = ref(false);
 
+const { $api } = useNuxtApp();
+
 const handleLogout = () => {
+
+  $api.auth
+    .getDetail()
+    .then((res) => {
+      user.value = res.user;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      userLoading.value = false;
+    });
+
   // show toast
   toastStatus.value = true;
   // close popup
@@ -52,7 +67,7 @@ const handleCancel = () => {
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     line-height: 46px;
     letter-spacing: 0%;
     text-align: center;
@@ -61,7 +76,7 @@ const handleCancel = () => {
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 27px;
     letter-spacing: 0%;
     text-align: center;

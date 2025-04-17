@@ -59,12 +59,7 @@ watch([storyPage, toggleStatus], () => {
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
-      <Button
-        link="/auth/mystory"
-        label="My Story"
-        variant="light"
-        classCustom="mystory__button"
-      />
+      <Button link="/auth/mystory" label="My Story" variant="light" classCustom="mystory__button" />
       <Button link="#" label="Bookmark" variant="success" classCustom="mystory__button" />
     </div>
     <div class="mystory__content">
@@ -82,18 +77,10 @@ watch([storyPage, toggleStatus], () => {
           <CardBookmark v-for="(item, index) in story.data" :key="index" :item="item" v-model="toggleStatus" />
         </div>
         <!-- pagination -->
-        <Pagination
-          classCustom="mystory__pagination"
-          :total="story.meta?.total"
-          :per_page="story.meta?.per_page"
-          :last_page="story.meta?.last_page"
-          v-model="storyPage"
-        />
+        <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
+          :last_page="story.meta?.last_page" v-model="storyPage" />
         <!-- not found -->
-        <div
-          class="mystory__notfound"
-          v-if="story && story.data && story.data.length === 0"
-        >
+        <div class="mystory__notfound" v-if="story && story.data && story.data.length === 0">
           <h3 class="mystory__heading1">No Bookmarks Yet</h3>
           <p class="mystory__desc">
             You haven't saved any bookmarks yet. Explore and bookmark your top workouts!
@@ -203,7 +190,7 @@ watch([storyPage, toggleStatus], () => {
   &__title {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     letter-spacing: 0%;
     vertical-align: middle;
   }
@@ -223,6 +210,22 @@ watch([storyPage, toggleStatus], () => {
     letter-spacing: 0%;
     vertical-align: middle;
     text-align: justify;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .mystory {
+    &__content {
+      flex-direction: column;
+    }
+
+    &__left {
+      width: 100%;
+    }
+
+    &__right {
+      width: 100%;
+    }
   }
 }
 </style>

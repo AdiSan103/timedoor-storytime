@@ -19,12 +19,14 @@ const handleClose = () => {
       <div class="component__contain">
         <div class="component__left">
           <div class="component__user">
-            <img :src="imageDefault" alt="image user" class="component__image"/>
+            <img :src="imageDefault" alt="image user" class="component__image" />
             <Button label="Change Picture" variant="secondary" />
           </div>
           <Input label="Name" placeholder="Name" />
           <Input label="Email" placeholder="Email" type="email" />
-          <ClientOnly> <InputTextarea type="basic" label="About Me" /></ClientOnly>
+          <ClientOnly>
+            <InputTextarea type="basic" label="About Me" />
+          </ClientOnly>
         </div>
         <div class="component__right">
           <h1 class="component__heading1">Change Password</h1>
@@ -83,7 +85,7 @@ const handleClose = () => {
   &__heading1 {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 36px;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
     line-height: 46px;
     letter-spacing: 0%;
   }

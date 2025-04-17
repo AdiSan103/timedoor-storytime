@@ -19,8 +19,8 @@ defineProps<Props>();
   <section :class="['cards container ', classCustom]">
     <div class="cards__contain">
       <h2 class="cards__title">Latest Story</h2>
-      <NuxtLink to="/#" class="cards__link"
-        >Explore More <Icon name="formkit:arrowright" style="color: black" size="18" />
+      <NuxtLink to="/story/filter?sort_by=newest" class="cards__link">Explore More
+        <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>
     </div>
     <Separator />
@@ -31,7 +31,7 @@ defineProps<Props>();
       <CardSekeleton v-if="loading" />
       <CardSekeleton v-if="loading" />
       <!--  -->
-      <Card v-for="(item,index) in items" :item="item" :key="index" v-else />
+      <Card v-for="(item, index) in items" :item="item" :key="index" v-else />
     </div>
   </section>
 </template>
@@ -63,8 +63,8 @@ defineProps<Props>();
   &__link {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
-    
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
+
     letter-spacing: 0%;
     vertical-align: middle;
     cursor: pointer;

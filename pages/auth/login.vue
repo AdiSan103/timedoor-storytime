@@ -33,7 +33,7 @@ const [password] = defineField("password");
 // function
 const onSubmit = handleSubmit(() => {
   loading.value = true;
-  
+
   const formLogin = new FormData();
 
   formLogin.append('username_or_email', username_or_email.value);
@@ -70,25 +70,14 @@ const onSubmit = handleSubmit(() => {
       <img :src="logoImg" alt="logo" class="login__logo" />
       <h3 class="login__heading2">Login</h3>
       <form action="" class="login__form" @submit.prevent="onSubmit">
-        <Input
-          placeholder="Enter your username or email"
-          label="Username/Email"
-          type="text"
-          v-model="username_or_email"
-          :error="errors.username_or_email"
-        />
-        <Input
-          placeholder="Enter your choosen password"
-          label="Password"
-          type="password"
-          v-model="password"
-          :error="errors.password"
-        />
+        <Input placeholder="Enter your username or email" label="Username/Email" type="text" v-model="username_or_email"
+          :error="errors.username_or_email" />
+        <Input placeholder="Enter your choosen password" label="Password" type="password" v-model="password"
+          :error="errors.password" />
         <Button variant="primary" label="Login" classCustom="login__button" />
-        <span class="login__link"
-          >Don't have an account?
-          <NuxtLink to="/#" class="login__register">Register</NuxtLink></span
-        >
+        <span class="login__link">Don't have an account?
+          <NuxtLink to="/#" class="login__register">Register</NuxtLink>
+        </span>
       </form>
     </div>
     <div class="login__right">
@@ -128,7 +117,7 @@ const onSubmit = handleSubmit(() => {
   &__desc {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 20px;
+    font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
     vertical-align: middle;
     margin: 20px 0;
@@ -148,7 +137,7 @@ const onSubmit = handleSubmit(() => {
   &__link {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 23px;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -158,7 +147,7 @@ const onSubmit = handleSubmit(() => {
   &__register {
     font-family: DM Sans;
     font-weight: 700;
-    font-size: 18px;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
     line-height: 23px;
     letter-spacing: 0%;
     vertical-align: middle;
@@ -198,8 +187,24 @@ const onSubmit = handleSubmit(() => {
     flex-direction: column;
     gap: 30px;
   }
+
   &__button {
     width: 150px;
+  }
+}
+
+@media screen and (max-width:900px) {
+  .login {
+    flex-direction: column;
+
+    &__left {
+      width: 100%;
+    }
+
+    &__right {
+      width: 100%;
+      display: none;
+    }
   }
 }
 </style>

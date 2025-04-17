@@ -41,33 +41,18 @@ const handlePopup = () => {
       <Icon name="icon-park-solid:close-one" style="color: white" size="60" />
     </div>
     <div class="container">
-      <swiper
-        :style="{
-          '--swiper-navigation-color': '#fff',
-          '--swiper-pagination-color': '#fff',
-        }"
-        :loop="true"
-        :spaceBetween="10"
-        :navigation="true"
-        :thumbs="{ swiper: thumbsSwiper }"
-        :modules="modules"
-        class="mySwiper2"
-      >
+      <swiper :style="{
+        '--swiper-navigation-color': '#fff',
+        '--swiper-pagination-color': '#fff',
+      }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
+        class="mySwiper2">
         <swiper-slide v-for="n in 10" :key="n">
           <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
         </swiper-slide>
       </swiper>
 
-      <swiper
-        @swiper="setThumbsSwiper"
-        :loop="true"
-        :spaceBetween="10"
-        :slidesPerView="4"
-        :freeMode="true"
-        :watchSlidesProgress="true"
-        :modules="modules"
-        class="mySwiper"
-      >
+      <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
+        :watchSlidesProgress="true" :modules="modules" class="mySwiper">
         <swiper-slide v-for="n in 10" :key="n">
           <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
         </swiper-slide>
@@ -76,33 +61,18 @@ const handlePopup = () => {
   </div>
   <!-- slider -->
   <div>
-    <swiper
-      :style="{
-        '--swiper-navigation-color': '#fff',
-        '--swiper-pagination-color': '#fff',
-      }"
-      :loop="true"
-      :spaceBetween="10"
-      :navigation="true"
-      :thumbs="{ swiper: thumbsSwiper }"
-      :modules="modules"
-      class="mySwiper2"
-    >
+    <swiper :style="{
+      '--swiper-navigation-color': '#fff',
+      '--swiper-pagination-color': '#fff',
+    }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
+      class="mySwiper2">
       <swiper-slide v-for="n in 10" :key="n" @click="handlePopup">
         <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
       </swiper-slide>
     </swiper>
 
-    <swiper
-      @swiper="setThumbsSwiper"
-      :loop="true"
-      :spaceBetween="10"
-      :slidesPerView="4"
-      :freeMode="true"
-      :watchSlidesProgress="true"
-      :modules="modules"
-      class="mySwiper"
-    >
+    <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
+      :watchSlidesProgress="true" :modules="modules" class="mySwiper">
       <swiper-slide v-for="n in 10" :key="n">
         <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
       </swiper-slide>
@@ -118,7 +88,7 @@ const handlePopup = () => {
 
 .swiper-slide {
   text-align: center;
-  font-size: 18px;
+  font-size: clamp(16px, 1vw + 0.5rem, 18px);
 
   /* Center slide text vertically */
   display: flex;

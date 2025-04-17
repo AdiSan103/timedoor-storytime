@@ -27,11 +27,12 @@ import FacebookIcon from "@/assets/images/facebook.svg";
   &__title {
     font-family: DM Sans;
     font-weight: 500;
-    font-size: 20px;
+    font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
     vertical-align: middle;
     margin: 0;
   }
+
   &__socialmedia {
     display: flex;
     justify-content: center;
@@ -40,7 +41,7 @@ import FacebookIcon from "@/assets/images/facebook.svg";
   }
 }
 
-@media screen and (max-width:600px){
+@media screen and (max-width:600px) {
   .footer {
     flex-direction: column;
     text-align: center;
