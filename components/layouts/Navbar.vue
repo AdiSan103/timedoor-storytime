@@ -1,49 +1,3 @@
-<script setup lang="ts">
-import { ref } from "vue";
-
-import Button from "@/components/ui/Button.vue";
-import ModalLogout from "@/components/layouts/ModalLogout.vue";
-import type { User } from "@/type/module/users";
-import LoadingScreen from "../ui/LoadingScreen.vue";
-
-// declaration variable
-const { $api } = useNuxtApp();
-
-const menu = ref(false);
-const authToken = useCookie("STORYTIME_TOKEN");
-const statusModalLogout = ref(false);
-
-const user: Ref<User | undefined> = ref();
-const userLoading = ref(false)
-
-const handleMenu = () => {
-  menu.value = !menu.value;
-};
-
-const handleModalLogout = () => {
-  statusModalLogout.value = !statusModalLogout.value;
-};
-
-const fetchDetailUser = () => {
-  userLoading.value = true;
-
-  $api.users
-    .getDetail()
-    .then((res) => {
-      user.value = res.user;
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      userLoading.value = false;
-    });
-};
-
-// lifecycle
-fetchDetailUser();
-</script>
-
 <template>
   <ModalLogout v-model="statusModalLogout" />
   <nav class="navbar">
@@ -52,8 +6,8 @@ fetchDetailUser();
         <img src="/images/logo.png" alt="logo" class="navbar__img" />
       </NuxtLink>
       <div class="d-flex gap-3">
-        <Button link="/auth/register" label="Register" variant="secondary" v-if="!authToken" />
-        <Button link="/auth/login" label="Login" variant="primary" v-if="!authToken" />
+        <Button link="/register" label="Register" variant="secondary" v-if="!authToken" />
+        <Button link="/login" label="Login" variant="primary" v-if="!authToken" />
 
         <div class="navbar__avatar" v-if="authToken">
           <div class="placeholder-glow navbar__avatars" v-if="userLoading">
@@ -69,7 +23,7 @@ fetchDetailUser();
             <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
           </div>
           <ul class="navbar__listmenu" v-if="menu">
-            <NuxtLink to="/auth/mystory" class="navbar__listitem">My Profile</NuxtLink>
+            <NuxtLink to="/profile/mystory" class="navbar__listitem">My Profile</NuxtLink>
             <span class="navbar__listitem" @click="handleModalLogout">Log Out</span>
           </ul>
         </div>
@@ -77,6 +31,32 @@ fetchDetailUser();
     </div>
   </nav>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+import Button from "@/components/ui/Button.vue";
+import ModalLogout from "@/components/layouts/ModalLogout.vue";
+import type { User } from "@/type/module/users";
+import LoadingScreen from "../ui/LoadingScreen.vue";
+
+// declaration variable
+const { $api } = useNuxtApp();
+const menu = ref(false);
+const authToken = useCookie("STORYTIME_TOKEN");
+const statusModalLogout = ref(false);
+const { user, userLoading } = useUser();
+
+const handleMenu = () => {
+  menu.value = !menu.value;
+};
+
+const handleModalLogout = () => {
+  statusModalLogout.value = !statusModalLogout.value;
+};
+
+</script>
+
 
 <style scoped lang="scss">
 @import "@/assets/main.scss";

@@ -90,7 +90,7 @@ const fetchStoryFilterByCategory = (
     .getFilter(keywords)
     .then((res) => {
       data.value = res.data;
-      console.log(slug, data.value);
+      // console.log(slug, data.value);
     })
     .catch((err) => {
       console.error(err);
@@ -105,7 +105,7 @@ const handleSearch = () => {
     toastStatus.value = true;
     toastMessage.value = "Pencaharian Kosong...";
   } else {
-    window.location.href = "/story/filter?search=" + search.value;
+    window.location.href = "/story?search=" + search.value;
   }
 };
 
@@ -131,7 +131,6 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
     </form>
     <img src="/images/image1.png" alt="" class="banner__image" />
   </section>
-
   <CardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
   <CardsComedy :items="comedy" :loading="comedyLoading" />
   <CardsRomance :items="romance" :loading="romanceLoading" />

@@ -18,7 +18,7 @@ defineProps<Props>();
     <h2>More Categories</h2>
     <Separator />
     <div class="categories__items" v-if="items">
-      <Badge classCustom="categories__item" :label="item.name" :link="'/story/filter?category=' + item.name"
+      <Badge classCustom="categories__item" :label="item.name" :link="'/story?category=' + item.name"
         v-for="(item, index) in items" :key="index" />
       <!--  -->
     </div>

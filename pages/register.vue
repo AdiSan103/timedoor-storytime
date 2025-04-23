@@ -3,7 +3,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 import logoImg from "@/assets/images/logo.png";
-import imgLogin from "@/assets/images/login.png";
+import imgRegister from "@/assets/images/register.png";
 import Input from "~/components/ui/Input.vue";
 import Button from "~/components/ui/Button.vue";
 import LoadingScreen from "@/components/ui/LoadingScreen.vue";
@@ -14,11 +14,19 @@ const { $api } = useNuxtApp();
 const loading = ref(false);
 const token = useCookie("STORYTIME_TOKEN");
 const toastStatus = ref(false);
+const toastMessage = ref("");
+const toastType = ref<"success" | "info">("success");
 
 // Schema for form validation
 const schema = yup.object({
-  username_or_email: yup.string().required("email or username is required"),
+  name: yup.string().required("Name is required"),
+  username: yup.string().required("username is required"),
   password: yup.string().required("Password is required"),
+  email: yup.string().required("email is required"),
+  password_confirmation: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Please confirm your password"),
 });
 
 // Use vee-validate for form management and validation
@@ -27,33 +35,50 @@ const { defineField, handleSubmit, errors, resetForm } = useForm({
 });
 
 // Define fields using defineField for individual input management
-const [username_or_email] = defineField("username_or_email");
+const [username] = defineField("username");
+const [name] = defineField("name");
+const [email] = defineField("email");
 const [password] = defineField("password");
+const [password_confirmation] = defineField("password_confirmation");
 
 // function
 const onSubmit = handleSubmit(() => {
   loading.value = true;
 
-  const formLogin = new FormData();
-
-  formLogin.append('username_or_email', username_or_email.value);
-  formLogin.append('password', password.value);
-
-  console.log('form Login', formLogin);
+  const formRegister = {
+    username: username.value,
+    email: email.value,
+    name: name.value,
+    password: password.value,
+    password_confirmation: password_confirmation.value,
+  };
 
   $api.auth
-    .login(formLogin)
+    .register(formRegister)
     .then((res) => {
       console.log(res);
       token.value = res.token;
+
+      // start toast
       toastStatus.value = true;
 
-      setTimeout(() => {
-        window.location.href = '/auth/mystory'
-      }, 700)
+      // check
+      if (res.token && res.token !== "") {
+        //  success flow
+        toastMessage.value = "Success Register!";
+        toastType.value = "success";
+
+        setTimeout(() => {
+          window.location.href = "/profile/mystory";
+        }, 700);
+      } else {
+        //  failure flow
+        toastMessage.value = "Your account has been register!";
+        toastType.value = "info";
+      }
     })
     .catch((err) => {
-      alert('Username or Password incorrect!')
+      alert("!Error!");
       console.log(err);
     })
     .finally(() => {
@@ -63,30 +88,36 @@ const onSubmit = handleSubmit(() => {
 </script>
 
 <template>
-  <Toast type="success" message="Login Successfully!" v-model="toastStatus" />
+  <Toast :type="toastType" :message="toastMessage" v-model="toastStatus" />
   <LoadingScreen v-if="loading" />
-  <section class="login container">
-    <div class="login__left">
-      <img :src="logoImg" alt="logo" class="login__logo" />
-      <h3 class="login__heading2">Login</h3>
-      <form action="" class="login__form" @submit.prevent="onSubmit">
-        <Input placeholder="Enter your username or email" label="Username/Email" type="text" v-model="username_or_email"
-          :error="errors.username_or_email" />
-        <Input placeholder="Enter your choosen password" label="Password" type="password" v-model="password"
-          :error="errors.password" />
-        <Button variant="primary" label="Login" classCustom="login__button" />
-        <span class="login__link">Don't have an account?
-          <NuxtLink to="/#" class="login__register">Register</NuxtLink>
+  <section class="register container">
+    <div class="register__left">
+      <img :src="logoImg" alt="logo" class="register__logo" />
+      <h1 class="register__heading1">
+        Join the World’s Most-Loved Social Storytelling Platform!
+      </h1>
+      <p class="register__desc">
+        Create an account to explore interesting articles, connect with like-minded
+        people, and share your own stories.
+      </p>
+      <img :src="imgRegister" alt="image register" class="register__image" />
+    </div>
+    <div class="register__right">
+      <h3 class="register__heading2">Create Account</h3>
+      <form action="" class="register__form" @submit.prevent="onSubmit">
+        <Input v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
+        <Input v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
+          type="text" />
+        <Input v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
+        <Input v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
+          type="password" />
+        <Input v-model="password_confirmation" :error="errors.password_confirmation"
+          placeholder="Re-enter your chosen password" label="Confirm Passowrd" type="password" />
+        <Button variant="primary" label="Create Account" classCustom="register__button" />
+        <span class="register__link">Already have an account?
+          <NuxtLink to="/#" class="register__login">Login</NuxtLink>
         </span>
       </form>
-    </div>
-    <div class="login__right">
-      <h1 class="login__heading1">Welcome Back to Story Time!</h1>
-      <p class="login__desc">
-        Dive back into captivating stories, follow your favorite authors, and continue
-        sharing your own tales.
-      </p>
-      <img :src="imgLogin" alt="image login" class="login__image" />
     </div>
   </section>
 </template>
@@ -94,7 +125,7 @@ const onSubmit = handleSubmit(() => {
 <style lang="scss" scoped>
 @import "@/assets/main.scss";
 
-.login {
+.register {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,8 +151,6 @@ const onSubmit = handleSubmit(() => {
     font-size: clamp(18px, 1vw + 0.5rem, 21px);
     letter-spacing: 0%;
     vertical-align: middle;
-    margin: 20px 0;
-    padding-bottom: 40px;
   }
 
   &__heading2 {
@@ -144,7 +173,7 @@ const onSubmit = handleSubmit(() => {
     margin-top: 30px;
   }
 
-  &__register {
+  &__login {
     font-family: DM Sans;
     font-weight: 700;
     font-size: clamp(16px, 1vw + 0.5rem, 18px);
@@ -162,7 +191,7 @@ const onSubmit = handleSubmit(() => {
     display: flex;
   }
 
-  &__right {
+  &__left {
     width: 50%;
     background-color: $color2;
     display: flex;
@@ -176,7 +205,7 @@ const onSubmit = handleSubmit(() => {
     margin: 20px;
   }
 
-  &__left {
+  &__right {
     padding: 30px;
     width: 50%;
     max-width: 800px;
@@ -185,25 +214,24 @@ const onSubmit = handleSubmit(() => {
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 10px;
   }
 
   &__button {
-    width: 150px;
+    width: 250px;
   }
 }
 
 @media screen and (max-width:900px) {
-  .login {
+  .register {
     flex-direction: column;
 
     &__left {
-      width: 100%;
+      display: none;
     }
 
     &__right {
       width: 100%;
-      display: none;
     }
   }
 }

@@ -10,7 +10,8 @@ interface Props {
   classCustom?: string;
   icon?: string;
   label?: string;
-  error?: string
+  error?: string;
+  disabled?: boolean;
 }
 
 defineProps<Props>();
@@ -28,7 +29,7 @@ const handlePassword = () => {
     <div :class="['component ', classCustom, error ? 'component--error' : '']">
       <!-- condition type password -->
       <input :type="togglePassword === false ? 'text' : type" :placeholder="placeholder" class="component__input"
-        v-model="model" />
+        :disabled="disabled" v-model="model" />
       <Icon :name="icon" style="color: black" size="25" v-if="icon" />
       <!-- type password -->
       <Icon class="component__password" :name="togglePassword ? 'ph:eye-light' : 'mdi-light:eye-off'"
@@ -46,20 +47,25 @@ const handlePassword = () => {
   gap: 8px;
   border-width: 2px;
   border-radius: 8px;
-  padding-top: 15px;
-  padding-right: 30px;
-  padding-bottom: 15px;
-  padding-left: 30px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border: 2px solid #cccccc;
 
   &__input {
     width: 100%;
     border: none;
+    padding-top: 15px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+    padding-left: 30px;
 
     &:focus {
       border: none;
       outline: none;
+    }
+
+    &:disabled {
+      background-color: rgb(245, 243, 243);
+      cursor: not-allowed;
     }
   }
 

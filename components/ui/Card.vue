@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import bg from "@/assets/images/image-book.png";
+import imageDefault from "@/assets/images/404.png";
 import Badge from "@/components/ui/Badge.vue";
 import { defineProps } from "vue";
 import type { Story } from "~/type/module/stories";
@@ -52,7 +52,7 @@ const toggleBookmark = () => {
   <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast" />
   <div class="card">
     <div :style="{
-      backgroundImage: `url(${item.content_images[0].url})`,
+      backgroundImage: `url(${item.content_images[0] ? item.content_images[0].url : imageDefault})`,
       minHeight: (height ?? 300) + 'px',
     }" class="card__background">
       <div class="card__bookmark" v-if="!bookmarkStatus" @click="toggleBookmark">
@@ -65,9 +65,8 @@ const toggleBookmark = () => {
     <NuxtLink :to="`/story/${item.id}`" class="card__link">
       <div class="card__content">
         <h3 class="card__title">{{ item.title.slice(0, 26) }}</h3>
-        <p class="card__label">
-          {{ item.preview_content.slice(0, 100) + "..." }}
-        </p>
+        <span class="card__label" v-html="item.preview_content.slice(0, 100)">
+        </span> ...
       </div>
       <div class="card__footer">
         <div class="card_footerleft">

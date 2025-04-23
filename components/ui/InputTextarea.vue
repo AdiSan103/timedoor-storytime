@@ -34,7 +34,7 @@ const config = computed(() => {
     <ckeditor v-if="type == 'ckeditor'" v-model="model" :editor="ClassicEditor" :config="config"
       :class="['component ', classCustom]" />
     <!--  -->
-    <textarea v-if="type == 'basic'" :class="['component ', classCustom]">
+    <textarea v-if="type == 'basic'" :class="['component ', classCustom]" v-model="model">
     {{ model }}
     </textarea>
   </div>

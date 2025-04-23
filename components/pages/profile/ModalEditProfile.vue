@@ -1,0 +1,206 @@
+<template>
+  <LoadingScreen v-if="loading" />
+  <div class="component" v-if="model">
+    <form action="" class="component__form" @submit.prevent="onSubmit">
+      <h1 class="component__heading1">Edit Profile</h1>
+      <div class="component__contain">
+        <div class="component__left">
+          <div class="component__user">
+            <img :src="imageDefault" alt="image user" class="component__image" />
+            <Button label="Change Picture" variant="secondary" />
+          </div>
+          <Input label="Name" placeholder="Name" v-model="name" :error="errors.name" />
+          <Input :disabled="true" label="Email" placeholder="Email" type="email" v-model="user.email" />
+          <ClientOnly>
+            <InputTextarea v-model="about" type="basic" label="About Me" />
+          </ClientOnly>
+        </div>
+        <div class="component__right">
+          <h1 class="component__heading1">Change Password</h1>
+          <Input label="Olda Password" :error="errors.old_password" placeholder="Enter your old password"
+            v-model="old_password" />
+          <Input label="New Password" :error="errors.new_password" placeholder="Enter your new password"
+            v-model="new_password" />
+          <Input label="Confirm New Passsword" :error="errors.new_password_confirmation"
+            placeholder="Re-enter your new passsword" v-model="new_password_confirmation" />
+        </div>
+      </div>
+      <div class="component__buttons">
+        <Button label="Cancel" variant="secondary" @click="handleClose" />
+        <Button label="Update Profile" variant="primary" type="submit" />
+      </div>
+    </form>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useForm } from "vee-validate";
+import * as yup from "yup";
+import { onMounted } from 'vue'
+
+import Input from "~/components/ui/Input.vue";
+import InputTextarea from "~/components/ui/InputTextarea.vue";
+import Button from "~/components/ui/Button.vue";
+import LoadingScreen from '@/components/ui/LoadingScreen.vue'
+
+import imageDefault from "@/assets/images/image-book.png"
+
+// variable
+const { $api } = useNuxtApp();
+const { user, userLoading } = useUser();
+const model = defineModel()
+const loading = ref(false);
+
+// Schema for form validation
+const schema = yup.object({
+  name: yup.string().required('Name is required'),
+  about: yup.string(),
+  old_password: yup.string().required('Old password is required'),
+  new_password: yup.string().required('New password is required'),
+  new_password_confirmation: yup
+    .string()
+    .required('Confirm password is required')
+    .oneOf([yup.ref('new_password')], 'Passwords must match'),
+});
+
+// Use vee-validate for form management and validation
+const { defineField, handleSubmit, errors, resetForm, setFieldValue } = useForm({
+  validationSchema: schema,
+});
+
+// Define fields using defineField for individual input management
+const [name] = defineField("name");
+const [about] = defineField("about");
+const [old_password] = defineField("old_password");
+const [new_password] = defineField("new_password");
+const [new_password_confirmation] = defineField("new_password_confirmation");
+
+// function
+const handleClose = () => {
+  model.value = !model.value
+}
+
+const onSubmit = handleSubmit(() => {
+  loading.value = true;
+
+  const formData = new FormData();
+
+  formData.append("name", name.value);
+  formData.append("about", about.value);
+  formData.append("old_password", old_password.value);
+  formData.append("new_password", new_password.value);
+  formData.append("new_password_confirmation", new_password_confirmation.value);
+
+  // Ensure content_images.value is treated as an array
+  // const imageArray = Array.isArray(content_images.value)
+  //   ? content_images.value
+  //   : [content_images.value]; // wrap in array if it's a single file
+
+  // imageArray.forEach((file: File) => {
+  //   formData.append("content_images[]", file); // correctly append as array
+  // });
+
+  console.log("data form", formData);
+
+  // console.log("type images");
+  // console.log(typeof content_images.value); // Should be "object"
+  // console.log(content_images.value); // Should show File or File[]
+
+  $api.users
+    .updateProfile(formData)
+    .then((res) => {
+      console.log('success response : ', res);
+    })
+    .catch((err) => {
+      console.log('error : ', err);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+});
+
+// on Mounted
+// Auto-fill form when user data is available
+onMounted(() => {
+  if (user.value) {
+    setFieldValue("name", user.value.name);
+    setFieldValue("about", user.value.about || '-');
+    // Note: Password fields are not auto-filled for security reasons
+  }
+});
+</script>
+
+
+<style lang="scss" scoped>
+@import "@/assets/main.scss";
+
+.component {
+  background-color: rgba(0, 0, 0, 0.214);
+  min-height: 100vh;
+  width: 100vw;
+  z-index: 80;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__form {
+    width: 100%;
+    max-width: 1200px;
+    padding: 30px;
+    background-color: $color1;
+    border-radius: 10px;
+  }
+
+  &__user {
+    display: flex;
+    gap: 20px;
+    justify-content: start;
+    align-items: center;
+  }
+
+  &__image {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+  }
+
+  &__heading1 {
+    font-family: DM Sans;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
+    line-height: 46px;
+    letter-spacing: 0%;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  &__left {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__contain {
+    display: flex;
+    gap: 30px;
+  }
+}
+</style>

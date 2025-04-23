@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Story } from "~/type/module/stories";
 
-import ModalEditCard from "@/components/pages/auth/ModalEditCard.vue";
+import ModalEditCard from "@/components/pages/profile/ModalEditCard.vue";
 import Badge from "@/components/ui/Badge.vue";
 import Toast from '@/components/ui/Toast.vue'
 import LoadingScreen from '@/components/ui/LoadingScreen.vue'
@@ -65,7 +65,7 @@ const toggleBookmark = () => {
       minHeight: (height ?? 300) + 'px',
     }" class="card__background">
       <div class="card__icons">
-        <NuxtLink :to="'/auth/story/edit/' + '123'" class="card__icon">
+        <NuxtLink :to="'/profile/story/edit/' + '123'" class="card__icon">
           <Icon name="mage:edit" style="color: #fff" size="25" />
         </NuxtLink>
         <!--  -->

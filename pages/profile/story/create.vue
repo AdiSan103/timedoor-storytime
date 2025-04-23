@@ -1,3 +1,30 @@
+<template>
+  <LoadingScreen v-if="loading" />
+  <section class="form container">
+    <div class="form__nav">
+      <Icon name="formkit:arrowleft" style="color: black" size="25" />
+      <h3 class="form__heading1">Write Story</h3>
+    </div>
+    <form action="" class="form__contain" @submit.prevent="onSubmit">
+      <Input placeholder="Enter a story title" label="Title" v-model="title" :error="errors.title" />
+      <InputSelect label="Category" :options="selectOptions" v-model="category_id" :error="errors.category_id"
+        optionValue="id" optionLabel="name" />
+      <ClientOnly>
+        <InputTextarea type="ckeditor" label="Content" v-model="content" />
+      </ClientOnly>
+      <p class="text-danger fst-italic">{{ errors.content }}</p>
+      <div class="my-4">
+        <label for="fileUpload" class="block mb-2 text-sm font-medium text-gray-700">Upload Image</label>
+        <InputImage label="Upload your image" v-model="content_images" :error="errors.content_images" />
+      </div>
+      <div class="form__actions">
+        <Button variant="secondary" label="Cancel" />
+        <Button label="Post Story" variant="primary" />
+      </div>
+    </form>
+  </section>
+</template>
+
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
@@ -101,13 +128,6 @@ const onSubmit = handleSubmit(() => {
     formData.append("content_images[]", file); // correctly append as array
   });
 
-  // const formData = new FormData();
-
-  // formData.append("title", title.value);
-  // formData.append("content", content.value);
-  // formData.append("category_id", category_id.value);
-  // formData.append("content_images[]", content_images.value);
-
   console.log("data form", formData);
 
   // console.log("type images");
@@ -129,66 +149,6 @@ const onSubmit = handleSubmit(() => {
 
 fetchCategories();
 </script>
-
-<template>
-  <LoadingScreen v-if="loading" />
-  <section class="form container">
-    <div class="form__nav">
-      <Icon name="formkit:arrowleft" style="color: black" size="25" />
-      <h3 class="form__heading1">Write Story</h3>
-    </div>
-    <form action="" class="form__contain" @submit.prevent="onSubmit">
-      <Input
-        placeholder="Enter a story title"
-        label="Title"
-        v-model="title"
-        :error="errors.title"
-      />
-      <InputSelect
-        label="Category"
-        :options="selectOptions"
-        v-model="category_id"
-        :error="errors.category_id"
-        optionValue="id"
-        optionLabel="name"
-      />
-      <ClientOnly>
-        <InputTextarea type="ckeditor" label="Content" v-model="content" />
-      </ClientOnly>
-      <p class="component__error">{{ errors.content }}</p>
-      <div class="my-4">
-        <label for="fileUpload" class="block mb-2 text-sm font-medium text-gray-700"
-          >Upload Image</label
-        >
-        <input
-          type="file"
-          id="fileUpload"
-          accept="image/*"
-          :multiple="allowMultiple"
-          @change="handleFileChange"
-          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-        />
-
-        <div v-if="previewUrls.length > 0" class="mt-4">
-          <p class="text-sm font-semibold mb-2">Preview:</p>
-          <div class="flex gap-4 flex-wrap">
-            <img
-              v-for="(url, index) in previewUrls"
-              :key="index"
-              :src="url"
-              class="w-32 h-32 object-cover rounded border"
-              alt="Preview"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="form__actions">
-        <Button variant="secondary" label="Cancel" />
-        <Button label="Post Story" variant="primary" />
-      </div>
-    </form>
-  </section>
-</template>
 
 <style lang="scss" scoped>
 .form {

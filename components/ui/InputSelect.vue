@@ -23,7 +23,7 @@ const emit = defineEmits<{
 <template>
   <div>
     <label for="" class="component__label">{{ label }}</label>
-    <div :class="['component ', classCustom]">
+    <div :class="['component ', classCustom, error ? 'component--error' : '']">
       <!-- condition type password -->
       <select class="component__input" :value="modelValue" @change="emit('update:modelValue', $event.target.value)">
         <option :value="item[`${optionValue}`]" v-for="(item, index) in options" :key="index">
@@ -77,6 +77,10 @@ const emit = defineEmits<{
     color: red;
     font-style: italic;
     margin-top: 5px;
+  }
+
+  &--error {
+    border: red solid 2px;
   }
 }
 </style>

@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import type { Story } from "~/type/module/stories";
-import type { User } from "~/type/module/users";
+import type { Story } from "~/type/module/bookmark";
 
 import Button from "@/components/ui/Button.vue";
-import Modal from "~/components/pages/auth/mystory/Modal.vue";
+import Modal from "~/components/pages/profile/mystory/Modal.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
-import ModalEditProfile from "~/components/pages/auth/ModalEditProfile.vue";
-import Toast from "~/components/ui/Toast.vue";
+import CardBookmark from "~/components/ui/CardBookmark.vue";
+import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
+import UserSection from "~/components/pages/profile/UserSection.vue";
+import Pagination from "@/components/ui/Pagination.vue";
 
-import imgNotFound from "~/assets/images/notfound_story.png";
-import CardEdit from "~/components/ui/CardEdit.vue";
-import UserSection from "~/components/pages/auth/UserSection.vue";
+import imgNotFound from "~/assets/images/notfound_bookmark.png";
 
 // meta
 definePageMeta({
@@ -20,68 +19,48 @@ definePageMeta({
 
 // declaration variable
 const { $api } = useNuxtApp();
-const story: Ref<Story[]> = ref([]);
+const story: Ref<BookmarksResponse> = ref([]);
 const storyLoading = ref(false);
-
-const user: Ref<User | undefined> = ref();
-const userLoading = ref(false);
-
-const modalProfileStatus = ref(false);
+const storyPage = ref(1);
+const toggleStatus = ref(false);
 
 // function
 const fetchstory = () => {
+  story.value = [];
   storyLoading.value = true;
 
-  const keywords = {
-    // sort_by: "",
-    // search: "",
-    // category: "",
-  };
-
-  $api.stories
-    .getFilter(keywords)
+  $api.bookmark
+    .getAllByUser(storyPage.value)
     .then((res) => {
-      story.value = res.data; // ✅ karena res.data.value = PropsStory
+      story.value = res; // ✅ karena res.data.value = PropsStory
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
       storyLoading.value = false;
+      toggleStatus.value = false; // change back if before value true ( response from cardBookmark )
     });
 };
 
-const fetchDetailUser = () => {
-  userLoading.value = true;
-
-  $api.users
-    .getDetail()
-    .then((res) => {
-      user.value = res.user;
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      userLoading.value = false;
-    });
-};
-
-// lifecycle
-fetchDetailUser();
+console.log("Fetching data...");
 fetchstory();
+// lifecycle
+watch([storyPage, toggleStatus], () => {
+  console.log("Fetching data...");
+  fetchstory();
+});
 </script>
 
 <template>
-  <Toast message="Succesfully for updated data!" :status="false" type="success" />
-  <ModalEditProfile v-model="modalProfileStatus" />
+  <ModalEditProfile :status="false" />
   <section class="mystory">
     <UserSection />
   </section>
   <section class="mystory__items container">
     <div class="mystory__badges">
-      <Button link="#" label="My Story" variant="success" classCustom="mystory__button" />
-      <Button link="/auth/mybookmark" label="Bookmark" variant="light" classCustom="mystory__button" />
+      <Button link="/profile/mystory" label="My Story" variant="light" classCustom="mystory__button" />
+      <Button link="#" label="Bookmark" variant="success" classCustom="mystory__button" />
     </div>
     <div class="mystory__content">
       <div class="mystory__left">
@@ -95,14 +74,16 @@ fetchstory();
           <CardSekeleton v-if="storyLoading" />
           <CardSekeleton v-if="storyLoading" />
           <!--  -->
-          <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
+          <CardBookmark v-for="(item, index) in story.data" :key="index" :item="item" v-model="toggleStatus" />
         </div>
-
+        <!-- pagination -->
+        <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
+          :last_page="story.meta?.last_page" v-model="storyPage" v-if="story.data.length != 0" />
         <!-- not found -->
-        <div class="mystory__notfound" v-if="!storyLoading && story.length === 0">
-          <h3 class="mystory__heading1">No Stories Yet</h3>
+        <div class="mystory__notfound" v-if="story && story.data && story.data.length === 0">
+          <h3 class="mystory__heading1">No Bookmarks Yet</h3>
           <p class="mystory__desc">
-            You haven't shared any stories yet. Start your fitness journey today!
+            You haven't saved any bookmarks yet. Explore and bookmark your top workouts!
           </p>
           <img :src="imgNotFound" alt="not found" class="mystory__image" />
         </div>
@@ -116,6 +97,13 @@ fetchstory();
 
 .mystory {
   background-color: $color2;
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+  }
 
   &__badges {
     display: flex;
@@ -189,7 +177,6 @@ fetchstory();
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    object-fit: cover;
     height: 200px;
     width: 100%;
     max-width: 200px;
@@ -198,10 +185,6 @@ fetchstory();
 
   &__content {
     max-width: 700px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
   }
 
   &__title {
@@ -227,25 +210,6 @@ fetchstory();
     letter-spacing: 0%;
     vertical-align: middle;
     text-align: justify;
-  }
-
-  &__sekeletontitle {
-    width: 150px;
-    height: 30px;
-    border-radius: 5px;
-  }
-
-  &__sekeletonemail {
-    width: 200px;
-    height: 15px;
-    border-radius: 5px;
-  }
-
-  &__sekeletondesc {
-    width: 100%;
-    max-width: 700px;
-    height: 100px;
-    border-radius: 5px;
   }
 }
 

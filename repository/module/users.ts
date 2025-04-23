@@ -12,6 +12,7 @@ class Users extends FetchFactory<UserResponse> {
  updateProfile(data: FormProfile ) {
   return super.call('/api/user/update-profile', {
     method: 'PUT',
+    body: data
   });
  }
 

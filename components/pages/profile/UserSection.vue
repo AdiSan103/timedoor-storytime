@@ -2,7 +2,7 @@
 import type { User } from "~/type/module/users";
 
 import Button from '@/components/ui/Button.vue'
-import ModalEditProfile from '@/components/pages/auth/ModalEditProfile.vue'
+import ModalEditProfile from '@/components/pages/profile/ModalEditProfile.vue'
 
 // meta
 definePageMeta({

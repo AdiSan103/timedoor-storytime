@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
  const authToken = useCookie('STORYTIME_TOKEN')
 
  if (!authToken.value || authToken.value === '') {
-  return navigateTo('/auth/login')
+  return navigateTo('/login')
  } else {
   console.log('😁 status : ','authentication success')
   // console.log('token: ', authToken.value)
