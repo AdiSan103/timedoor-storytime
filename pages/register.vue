@@ -9,6 +9,15 @@ import Button from "~/components/ui/Button.vue";
 import LoadingScreen from "@/components/ui/LoadingScreen.vue";
 import Toast from "~/components/ui/Toast.vue";
 
+// meta
+useSeoMeta({
+  title: "Register Apps",
+  ogTitle: "Register Apps",
+  // description: 'This is my amazing site, let me tell you all about it.',
+  // ogDescription: 'This is my amazing site, let me tell you all about it.',
+})
+
+
 // Initialize variable
 const { $api } = useNuxtApp();
 const loading = ref(false);

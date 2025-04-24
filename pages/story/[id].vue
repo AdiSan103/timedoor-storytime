@@ -1,3 +1,38 @@
+<template>
+  <Breadcumb />
+  <div class="detail container">
+    <!--  -->
+    <DetailSekeleton v-if="storyLoading" />
+    <!--  -->
+    <section v-if="!storyLoading" class="detail__title">
+      <p class="detail__label">{{ story.created_at }}</p>
+      <h1 class="detail__title">{{ story.title }}</h1>
+      <div class="detail__avatar">
+        <div :style="{ backgroundImage: `url(${bg})` }" class="detail__user"></div>
+        <p class="detail__label">Author : {{ story.user.name }}</p>
+      </div>
+      <div class="detail__bookmark">
+        <Icon name="material-symbols:bookmark-add-outline-rounded" style="color: #fff" size="25" />
+      </div>
+    </section>
+    <section v-if="!storyLoading" class="detail__content">
+      <div class="detail__contentleft">
+        <SliderThumbs :items="story.content_images" />
+      </div>
+      <div class="detail__contentright" v-html="story.content">
+      </div>
+    </section>
+
+    <section>
+      <h3 class="detail__heading3">Similiar Story</h3>
+      <Separator />
+      <div class="detail__items">
+        <Card v-for="(item, index) in lastestStory" :key="index" :item="item" />
+      </div>
+    </section>
+  </div>
+</template>
+
 <script setup lang="ts">
 import type { Story } from "~/type/module/stories";
 
@@ -32,6 +67,14 @@ const fetchstory = () => {
     .getDetailStory(id.value)
     .then((res) => {
       story.value = res.data; // ✅ karena res.data.value = PropsStory
+
+      // meta
+      useSeoMeta({
+        title: story.value.title,
+        ogTitle: story.value.title,
+        // description: 'This is my amazing site, let me tell you all about it.',
+        // ogDescription: 'This is my amazing site, let me tell you all about it.',
+      })
     })
     .catch((err) => {
       console.log(err);
@@ -69,53 +112,17 @@ fetchstory();
 fetchLastestStory();
 </script>
 
-<template>
-  <Breadcumb />
-  <div class="detail container">
-    <!--  -->
-    <DetailSekeleton v-if="storyLoading" />
-    <!--  -->
-    <section v-if="!storyLoading" class="detail__title">
-      <p class="detail__label">{{ story.created_at }}</p>
-      <h1 class="detail__title">{{ story.title }}</h1>
-      <div class="detail__avatar">
-        <div :style="{ backgroundImage: `url(${bg})` }" class="detail__user"></div>
-        <p class="detail__label">Author : {{ story.user.name }}</p>
-      </div>
-      <div class="detail__bookmark">
-        <Icon
-          name="material-symbols:bookmark-add-outline-rounded"
-          style="color: #fff"
-          size="25"
-        />
-      </div>
-    </section>
-    <section v-if="!storyLoading" class="detail__content">
-      <div class="detail__contentleft">
-        <SliderThumbs :items="story.content_images" />
-      </div>
-      <div class="detail__contentright" v-html="story.content">
-      </div>
-    </section>
-
-    <section>
-      <h3 class="detail__heading3">Similiar Story</h3>
-      <Separator />
-      <div class="detail__items">
-        <Card v-for="(item, index) in lastestStory" :key="index" :item="item" />
-      </div>
-    </section>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 @import "@/assets/main.scss";
+
 .detail {
   &__title {
     text-align: center;
     margin-bottom: 50px;
     position: relative;
   }
+
   &__heading2 {
     font-family: Playfair Display;
     font-weight: 600;
@@ -124,6 +131,7 @@ fetchLastestStory();
     margin-bottom: 40px;
     margin-top: 100px;
   }
+
   &__bookmark {
     background-color: $color3;
     width: 40px;
@@ -137,14 +145,16 @@ fetchLastestStory();
     cursor: pointer;
     right: 0;
   }
+
   &__label {
     font-family: DM Sans;
     font-weight: 400;
-    font-size: clamp(1rem,calc(1vw + 0.5rem),2rem);
+    font-size: clamp(1rem, calc(1vw + 0.5rem), 2rem);
     letter-spacing: 0%;
     text-align: center;
     margin: 0;
   }
+
   &__title {
     font-family: Playfair Display;
     font-weight: 700;
