@@ -9,7 +9,6 @@ import CardsRomance from "~/components/pages/home/CardsRomance.vue";
 import CardsHorror from "~/components/pages/home/CardsHorror.vue";
 import type { PropsStory, Story } from "~/type/module/stories";
 import CardsCategories from "~/components/pages/home/CardsCategories.vue";
-import Toast from "~/components/ui/Toast.vue";
 
 // meta
 definePageMeta({
@@ -17,7 +16,7 @@ definePageMeta({
 });
 
 // declaration variable
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 const lastestStory: Ref<Story[]> = ref([]);
 const lastestStoryLoading = ref(false);
 
@@ -34,9 +33,6 @@ const romance: Ref<Story[]> = ref([]);
 const romanceLoading = ref(false);
 
 const search = ref("");
-
-const toastMessage = ref("");
-const toastStatus = ref(false);
 
 // function
 const fetchLastestStory = () => {
@@ -100,12 +96,34 @@ const fetchStoryFilterByCategory = (
     });
 };
 
-const handleSearch = () => {
+const handleSearch = async () => {
   if (search.value == "") {
-    toastStatus.value = true;
-    toastMessage.value = "Pencaharian Kosong...";
+    const array = [
+      'A world of stories awaits. Find your book today',
+      'Find the book that speaks to you',
+      'Books that spark imagination — discover yours now!',
+      'Turn the page to something amazing.',
+      'Every story begins with a book. Find yours today.',
+      'Escape the ordinary — one page at a time.',
+      'Fuel your mind, feed your soul. Find a book now!',
+      'Stories that stay with you — waiting to be read.'
+    ];
+
+    $toast(array[Math.floor(Math.random() * array.length)], {
+      type: "info",
+      position: "top-center",
+      autoClose: 3000,
+      transition: "zoom",
+      dangerouslyHTMLString: true
+    });
+
   } else {
-    window.location.href = "/story?search=" + search.value;
+    await navigateTo({
+      path: '/story',
+      query: {
+        search: search.value
+      }
+    });
   }
 };
 
@@ -118,7 +136,6 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
 </script>
 
 <template>
-  <Toast :message="toastMessage" type="info" v-model="toastStatus" />
   <section class="container banner">
     <h1 class="banner__title">Welcome to Storytime</h1>
     <p class="banner__desc">

@@ -12,7 +12,7 @@ defineProps<Props>();
 
 <template>
   <h3 class="container title">{{ query ?? 'All Story' }}</h3>
-  <Breadcumb/>
+  <Breadcumb />
 </template>
 
 <style lang="scss" scoped>
@@ -27,5 +27,4 @@ defineProps<Props>();
   margin-top: 30px;
   margin-bottom: 40px;
 }
-
 </style>

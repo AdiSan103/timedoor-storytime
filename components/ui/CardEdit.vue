@@ -3,16 +3,12 @@ import type { Story } from "~/type/module/stories";
 
 import ModalEditCard from "@/components/pages/profile/ModalEditCard.vue";
 import Badge from "@/components/ui/Badge.vue";
-import Toast from '@/components/ui/Toast.vue'
 import LoadingScreen from '@/components/ui/LoadingScreen.vue'
 
 import { defineProps } from "vue";
 
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 const modalCardStatus = ref(false)
-const bookmarkStatus = ref(false);
-const bookmarkToast = ref(false);
-const bookmarkMessage = ref('');
 const loading = ref(false)
 
 // Define props with TypeScript
@@ -35,21 +31,27 @@ const toggleBookmark = () => {
   }
 
   $api.bookmark.toggle(dataForm)
-    .then((res) => {
-      bookmarkMessage.value = res.message;
-      bookmarkToast.value = true;
+    .then((res: any) => {
+      $toast(res.message, {
+        type: "info",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
     })
     .catch((err) => {
-      bookmarkMessage.value = "error message";
+      $toast("Error Message", {
+        type: "error",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
       console.log(err);
     })
     .finally(() => {
       loading.value = false;
-      bookmarkStatus.value = true;
-      // 
-      setTimeout(() => {
-        bookmarkStatus.value = false;
-      }, 700);
     });
 }
 
@@ -57,23 +59,19 @@ const toggleBookmark = () => {
 
 <template>
   <LoadingScreen v-if="loading" />
-  <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast" />
   <ModalEditCard v-model="modalCardStatus" :id="item.id" />
   <div class="card">
     <div :style="{
-      backgroundImage: `url(${item.content_images[0].url})`,
-      minHeight: (height ?? 300) + 'px',
+      backgroundImage: `url('${item.content_images?.[0]?.url || 'https://placehold.co/600x600'}')`,
+      minHeight: (height || 300) + 'px',
     }" class="card__background">
       <div class="card__icons">
         <NuxtLink :to="'/profile/story/edit/' + '123'" class="card__icon">
           <Icon name="mage:edit" style="color: #fff" size="25" />
         </NuxtLink>
         <!--  -->
-        <div class="card__icon card__bookmark" v-if="!bookmarkStatus" @click="toggleBookmark">
+        <div class="card__icon card__bookmark" @click="toggleBookmark">
           <Icon name="material-symbols:bookmark-add-outline-rounded" style="color: #fff" size="25" />
-        </div>
-        <div class="card__icon card__bookmarkactive" v-if="bookmarkStatus" @click="toggleBookmark">
-          <Icon name="material-symbols:bookmark" style="color: #fff" size="25" />
         </div>
         <!--  -->
         <div class="card__icon" @click="handleModal">
@@ -88,11 +86,13 @@ const toggleBookmark = () => {
       </p>
     </div>
     <div class="card__footer">
-      <div class="card_footerleft">
-        <div :style="{ backgroundImage: `url(${item.user.profile_image})` }" class="card__user"></div>
-        <p class="card__label">{{ item.user.name }}</p>
+      <div class="card__footerleft">
+        <div :style="{ backgroundImage: `url(${item.user.profile_image ?? 'https://placehold.co/600x600'})` }"
+          class="card__user"></div>
+        <p class="card__label">{{ item.user.name.length > 9 ? item.user.name.slice(0, 9) + '...' : item.user.name }}
+        </p>
       </div>
-      <div class="card_footerright">
+      <div class="card__footerright">
         <p class="card__label">{{ item.created_at }}</p>
         <Badge />
       </div>
@@ -112,6 +112,18 @@ const toggleBookmark = () => {
   position: relative;
   border: none;
   outline: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &__footerright,
+  &__footerleft {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+
 
   &__footer {
     padding: 10px;

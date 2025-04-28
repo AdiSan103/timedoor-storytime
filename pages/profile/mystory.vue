@@ -6,7 +6,6 @@ import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/profile/mystory/Modal.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
-import Toast from "~/components/ui/Toast.vue";
 
 import imgNotFound from "~/assets/images/notfound_story.png";
 import CardEdit from "~/components/ui/CardEdit.vue";
@@ -73,7 +72,6 @@ fetchstory();
 </script>
 
 <template>
-  <Toast message="Succesfully for updated data!" :status="false" type="success" />
   <ModalEditProfile v-model="modalProfileStatus" />
   <section class="mystory">
     <UserSection />

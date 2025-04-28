@@ -15,6 +15,7 @@ export interface Story {
  title: string;
  preview_content: string;
  content_images: StoryImage[];
+ content: string;
  user: {
   name: string;
   profile_image: string | null;

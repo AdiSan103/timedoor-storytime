@@ -15,6 +15,11 @@ $color10: #d5e6d4;
 $color11: #364934;
 
 
+// default font
+* {
+ font-family: "DM Sans";
+}
+
 @font-face {
  font-family: "DM Sans";
  src: url(@/assets/font/DM_Sans/DMSans-VariableFont_opsz,wght.ttf) format("truetype");

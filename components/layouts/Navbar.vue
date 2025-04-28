@@ -10,15 +10,16 @@
         <Button link="/login" label="Login" variant="primary" v-if="!authToken" />
 
         <div class="navbar__avatar" v-if="authToken">
-          <div class="placeholder-glow navbar__avatars" v-if="userLoading">
-            <div class="placeholder navbar__loadingprofile"></div>
-            <div class="placeholder navbar__loadinguser"></div>
+          <div v-if="userLoading">
+            <div class="placeholder-glow navbar__avatars">
+              <div class="placeholder navbar__loadingprofile"></div>
+              <div class="placeholder navbar__loadinguser"></div>
+            </div>
           </div>
           <!--  -->
           <div class="navbar__content" @click="handleMenu" v-if="!userLoading">
-            <img class="navbar__user" :src="user?.profile_image ??
-              'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'
-              " alt="" v-if="!userLoading" />
+            <img class="navbar__user" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
+              'https://placehold.co/600x600'" alt="" v-if="!userLoading" />
             <span class="navbar__usertitle">{{ user?.name }}</span>
             <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
           </div>

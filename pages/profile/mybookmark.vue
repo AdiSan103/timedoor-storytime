@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Story } from "~/type/module/bookmark";
+import type { BookmarksResponse, Story } from "~/type/module/bookmark";
 
 import Button from "@/components/ui/Button.vue";
 import Modal from "~/components/pages/profile/mystory/Modal.vue";
@@ -7,7 +7,7 @@ import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import CardBookmark from "~/components/ui/CardBookmark.vue";
 import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
 import UserSection from "~/components/pages/profile/UserSection.vue";
-import Pagination from "@/components/ui/Pagination.vue";
+// import Pagination from "@/components/ui/Pagination.vue";
 
 import imgNotFound from "~/assets/images/notfound_bookmark.png";
 
@@ -19,7 +19,7 @@ definePageMeta({
 
 // declaration variable
 const { $api } = useNuxtApp();
-const story: Ref<BookmarksResponse> = ref([]);
+const story: Ref<BookmarksResponse | any> = ref([]);
 const storyLoading = ref(false);
 const storyPage = ref(1);
 const toggleStatus = ref(false);
@@ -43,7 +43,6 @@ const fetchstory = () => {
     });
 };
 
-console.log("Fetching data...");
 fetchstory();
 // lifecycle
 watch([storyPage, toggleStatus], () => {
@@ -77,8 +76,8 @@ watch([storyPage, toggleStatus], () => {
           <CardBookmark v-for="(item, index) in story.data" :key="index" :item="item" v-model="toggleStatus" />
         </div>
         <!-- pagination -->
-        <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
-          :last_page="story.meta?.last_page" v-model="storyPage" v-if="story.data.length != 0" />
+        <!-- <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
+          :last_page="story.meta?.last_page" v-model="storyPage" v-if="story.data.length != 0" /> -->
         <!-- not found -->
         <div class="mystory__notfound" v-if="story && story.data && story.data.length === 0">
           <h3 class="mystory__heading1">No Bookmarks Yet</h3>

@@ -7,7 +7,6 @@ import imgLogin from "@/assets/images/login.png";
 import Input from "~/components/ui/Input.vue";
 import Button from "~/components/ui/Button.vue";
 import LoadingScreen from "@/components/ui/LoadingScreen.vue";
-import Toast from "~/components/ui/Toast.vue";
 
 // meta
 useSeoMeta({
@@ -18,14 +17,13 @@ useSeoMeta({
 })
 
 // Initialize variable
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 const loading = ref(false);
 const token = useCookie("STORYTIME_TOKEN");
-const toastStatus = ref(false);
 
 // Schema for form validation
 const schema = yup.object({
-  username_or_email: yup.string().required("email or username is required"),
+  username_or_email: yup.string().email("must be valid email").required("email or username is required"),
   password: yup.string().required("Password is required"),
 });
 
@@ -42,7 +40,7 @@ const [password] = defineField("password");
 const onSubmit = handleSubmit(() => {
   loading.value = true;
 
-  const formLogin = new FormData();
+  const formLogin: any = new FormData();
 
   formLogin.append("username_or_email", username_or_email.value);
   formLogin.append("password", password.value);
@@ -51,18 +49,28 @@ const onSubmit = handleSubmit(() => {
 
   $api.auth
     .login(formLogin)
-    .then((res) => {
+    .then(async (res) => {
       console.log(res);
       token.value = res.token;
-      toastStatus.value = true;
+      $toast("Welcome back! You’ve successfully logged in.", {
+        type: "success",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
 
-      setTimeout(() => {
-        window.location.href = "/profile/mystory";
-      }, 700);
+      await navigateTo("/profile/mystory");
     })
     .catch((err) => {
-      alert("Username or Password incorrect!");
       console.log(err);
+      $toast("Oops! That username or password doesn’t match our records.", {
+        type: "error",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
     })
     .finally(() => {
       loading.value = false;
@@ -70,8 +78,8 @@ const onSubmit = handleSubmit(() => {
 });
 </script>
 
+
 <template>
-  <Toast type="success" message="Login Successfully!" v-model="toastStatus" />
   <LoadingScreen v-if="loading" />
   <section class="login container">
     <div class="login__left">
@@ -84,7 +92,7 @@ const onSubmit = handleSubmit(() => {
           :error="errors.password" />
         <Button variant="primary" label="Login" classCustom="login__button" />
         <span class="login__link">Don't have an account?
-          <NuxtLink to="/#" class="login__register">Register</NuxtLink>
+          <NuxtLink to="/register" class="login__register">Register</NuxtLink>
         </span>
       </form>
     </div>

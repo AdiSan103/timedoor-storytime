@@ -4,7 +4,6 @@ import Select from "~/components/ui/Select.vue";
 import Card from "~/components/ui/Card.vue";
 import type { Story } from "~/type/module/stories";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
-import Toast from "~/components/ui/Toast.vue";
 import type { Category } from "~/type/module/categories";
 
 // meta
@@ -13,7 +12,7 @@ definePageMeta({
 });
 
 // declaration variable
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 const story: Ref<Story[]> = ref([]);
 const storyLoading = ref(false);
 const route = useRoute();
@@ -21,9 +20,6 @@ const route = useRoute();
 const sort_by: Ref<string | any> = ref(route.query.sort_by);
 const category: Ref<string | any> = ref(route.query.category);
 const search: Ref<string | any> = ref(route.query.search);
-// toast
-const toastMessage = ref("");
-const toastStatus = ref(false);
 // select
 const selectLoading = ref(false);
 const selectCategory: Ref<Category[]> = ref([]);
@@ -47,7 +43,7 @@ const selectOrder = [
 ];
 
 // handle search
-const handleSearchPage = () => {
+const handleSearchPage = async () => {
   const queryParams = new URLSearchParams();
 
   if (sort_by.value) {
@@ -62,7 +58,10 @@ const handleSearchPage = () => {
     queryParams.append("search", search.value);
   }
 
-  window.location.href = "/story?" + queryParams.toString();
+  const finalLink = "/story?" + queryParams.toString();
+
+  await navigateTo(finalLink);
+  fetchstory();
 };
 
 // fetch story
@@ -110,8 +109,13 @@ const fetchCategories = () => {
 // handle search
 const handleSearch = () => {
   if (search.value == "") {
-    toastStatus.value = true;
-    toastMessage.value = "Pencaharian Kosong...";
+    $toast("Discover stories matching your search!", {
+      type: "info",
+      position: "top-center",
+      autoClose: 3000,
+      transition: "zoom",
+      dangerouslyHTMLString: true
+    });
   } else {
     handleSearchPage();
   }
@@ -122,9 +126,16 @@ const handleResetKeyword = () => {
   sort_by.value = "";
   search.value = "";
   category.value = "";
-  //
-  toastStatus.value = true;
-  toastMessage.value = "Reset Keyword...";
+  // 
+  $toast("Reset keywords....", {
+    type: "info",
+    position: "top-center",
+    autoClose: 3000,
+    transition: "zoom",
+    dangerouslyHTMLString: true
+  });
+
+  handleSearchPage();
 };
 
 // lifecycle
@@ -133,7 +144,6 @@ fetchstory();
 </script>
 
 <template>
-  <Toast :message="toastMessage" type="info" v-model="toastStatus" />
 
   <section class="form">
     <!-- condition select -->

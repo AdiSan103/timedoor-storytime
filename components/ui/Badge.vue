@@ -9,10 +9,10 @@ defineProps<Props>();
 </script>
 
 <template>
-  <NuxtLink v-if="link" :to="link" :class="['badge', classCustom]">
+  <NuxtLink v-if="link" :to="link" :class="['badgeitem', classCustom]">
     {{ label }}
   </NuxtLink>
-  <div v-else :class="['badge', classCustom]">
+  <div v-else :class="['badgeitem', classCustom]">
     {{ label }}
   </div>
 </template>
@@ -20,11 +20,14 @@ defineProps<Props>();
 <style lang="scss" scoped>
 @import "@/assets/main.scss";
 
-.badge {
+.badgeitem {
   display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: $color2;
   padding: 3px 6px;
   border-radius: 6px;
+  text-align: center;
 
   font-family: DM Sans;
   font-weight: 400;

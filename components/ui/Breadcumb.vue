@@ -1,7 +1,41 @@
+<script setup lang="ts">
+const route = useRoute()
+
+const breadcrumbs = computed(() => {
+  const paths = []
+
+  // Always start with 'story'
+  paths.push('story')
+
+  if (route.params.id) {
+    // If the URL is like /story/100
+    paths.push(route.params.id)
+  } else {
+    // If the URL is /story?query=params
+    const { sort_by, category, search } = route.query
+
+    if (sort_by) {
+      paths.push(sort_by)
+    }
+    if (category) {
+      paths.push(category)
+    }
+    if (search) {
+      paths.push(search)
+    }
+  }
+
+  return paths
+})
+</script>
+
 <template>
   <div class="breadcumb">
     <div class="breadcumb__contain container">
-      Home <span class="breadcumb__separator">/</span> All Story
+      <span v-for="(item, index) in breadcrumbs" :key="index">
+        {{ item }}
+        <span v-if="index < breadcrumbs.length - 1" class="breadcumb__separator"> / </span>
+      </span>
     </div>
   </div>
 </template>

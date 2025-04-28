@@ -1,13 +1,9 @@
 <script lang="ts" setup>
 import Button from "~/components/ui/Button.vue";
-import Toast from '@/components/ui/Toast.vue'
 import LoadingScreen from '@/components/ui/LoadingScreen.vue'
 
 const model = defineModel();
-const { $api } = useNuxtApp();
-const bookmarkStatus = ref(false);
-const bookmarkToast = ref(false);
-const bookmarkMessage = ref("");
+const { $api, $toast } = useNuxtApp();
 const loading = ref(false);
 
 interface Props {
@@ -27,33 +23,37 @@ const handleDelete = () => {
   $api.stories
     .removeStory(props.id)
     .then((res) => {
-      bookmarkMessage.value = res.message;
-      bookmarkToast.value = true;
+      $toast("Successfully Logout", {
+        type: "success",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
 
       setTimeout(() => {
         window.location.reload();
       }, 700);
     })
     .catch((err) => {
-      alert('error system..')
-      console.log('error', err);
+      $toast("Error Logout",
+        {
+          type: "error",
+          position: "top-center",
+          autoClose: 3000,
+          transition: "zoom",
+          dangerouslyHTMLString: true
+        }); console.log('error', err);
     })
     .finally(() => {
       loading.value = false;
-      bookmarkStatus.value = true;
-      // 
       model.value = false;
-      //
-      setTimeout(() => {
-        bookmarkStatus.value = false;
-      }, 700);
     });
 };
 </script>
 
 <template>
   <LoadingScreen v-if="loading" />
-  <Toast type="info" :message="bookmarkMessage" v-model="bookmarkToast" />
   <div class="component" v-if="model">
     <div class="component__contain">
       <h2 class="component__title">Delete Story</h2>

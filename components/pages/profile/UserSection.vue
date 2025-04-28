@@ -4,12 +4,6 @@ import type { User } from "~/type/module/users";
 import Button from '@/components/ui/Button.vue'
 import ModalEditProfile from '@/components/pages/profile/ModalEditProfile.vue'
 
-// meta
-definePageMeta({
-  layout: "home",
-  middleware: ["auth-user"],
-});
-
 // declaration variable
 const { $api } = useNuxtApp();
 
@@ -53,9 +47,9 @@ fetchDetailUser();
       <div class="user__sekeletondesc placeholder"></div>
     </div>
     <!-- -->
-    <img class="user__profile" :src="user?.profile_image ??
-      'https://timestory.tmdsite.my.id/storage/story_images/dSMgu5TBx3Gz3M5G.jpg'
-      " alt="" v-if="!userLoading" />
+    <img class="user__profile" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
+      'https://placehold.co/600x600'
+      " alt="image user" v-if="!userLoading" />
     <div class="user__content" v-if="!userLoading">
       <p class="user__title">{{ user?.name }}</p>
       <p class="user__email">{{ user?.email }}</p>
@@ -63,7 +57,7 @@ fetchDetailUser();
         {{ user?.about }}
       </p>
     </div>
-    <Button type="button" label="Edit Profile" variant="primary" @click="handleModelProfile" />
+    <Button v-if="!userLoading" type="button" label="Edit Profile" variant="primary" @click="handleModelProfile" />
   </div>
 </template>
 

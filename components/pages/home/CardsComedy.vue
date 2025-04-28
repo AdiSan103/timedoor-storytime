@@ -3,6 +3,8 @@ import type { Story } from "~/type/module/stories";
 
 import Card from "@/components/ui/Card.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
+import Separator from '@/components/ui/Separator.vue'
+
 
 // Define props with TypeScript
 interface Props {

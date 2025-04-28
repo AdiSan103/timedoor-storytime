@@ -1,3 +1,37 @@
+<template>
+  <LoadingScreen v-if="loading" />
+  <section class="register container">
+    <div class="register__left">
+      <img :src="logoImg" alt="logo" class="register__logo" />
+      <h1 class="register__heading1">
+        Join the World’s Most-Loved Social Storytelling Platform!
+      </h1>
+      <p class="register__desc">
+        Create an account to explore interesting articles, connect with like-minded
+        people, and share your own stories.
+      </p>
+      <img :src="imgRegister" alt="image register" class="register__image" />
+    </div>
+    <div class="register__right">
+      <h3 class="register__heading2">Create Account</h3>
+      <form action="" class="register__form" @submit.prevent="onSubmit">
+        <Input v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
+        <Input v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
+          type="text" />
+        <Input v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
+        <Input v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
+          type="password" />
+        <Input v-model="password_confirmation" :error="errors.password_confirmation"
+          placeholder="Re-enter your chosen password" label="Confirm Passowrd" type="password" />
+        <Button variant="primary" label="Create Account" classCustom="register__button" />
+        <span class="register__link">Already have an account?
+          <NuxtLink to="/login" class="register__login">Login</NuxtLink>
+        </span>
+      </form>
+    </div>
+  </section>
+</template>
+
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
@@ -7,7 +41,6 @@ import imgRegister from "@/assets/images/register.png";
 import Input from "~/components/ui/Input.vue";
 import Button from "~/components/ui/Button.vue";
 import LoadingScreen from "@/components/ui/LoadingScreen.vue";
-import Toast from "~/components/ui/Toast.vue";
 
 // meta
 useSeoMeta({
@@ -19,12 +52,9 @@ useSeoMeta({
 
 
 // Initialize variable
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 const loading = ref(false);
 const token = useCookie("STORYTIME_TOKEN");
-const toastStatus = ref(false);
-const toastMessage = ref("");
-const toastType = ref<"success" | "info">("success");
 
 // Schema for form validation
 const schema = yup.object({
@@ -68,22 +98,30 @@ const onSubmit = handleSubmit(() => {
       console.log(res);
       token.value = res.token;
 
-      // start toast
-      toastStatus.value = true;
-
       // check
       if (res.token && res.token !== "") {
         //  success flow
-        toastMessage.value = "Success Register!";
-        toastType.value = "success";
+        // message
+        $toast("Success Registered", {
+          type: "success",
+          position: "top-center",
+          autoClose: 3000,
+          transition: "zoom",
+          dangerouslyHTMLString: true
+        });
 
-        setTimeout(() => {
-          window.location.href = "/profile/mystory";
+        setTimeout(async () => {
+          await navigateTo("/profile/mystory");
         }, 700);
       } else {
         //  failure flow
-        toastMessage.value = "Your account has been register!";
-        toastType.value = "info";
+        $toast("Your cccount has been registered", {
+          type: "info",
+          position: "top-center",
+          autoClose: 3000,
+          transition: "zoom",
+          dangerouslyHTMLString: true
+        });
       }
     })
     .catch((err) => {
@@ -95,41 +133,6 @@ const onSubmit = handleSubmit(() => {
     });
 });
 </script>
-
-<template>
-  <Toast :type="toastType" :message="toastMessage" v-model="toastStatus" />
-  <LoadingScreen v-if="loading" />
-  <section class="register container">
-    <div class="register__left">
-      <img :src="logoImg" alt="logo" class="register__logo" />
-      <h1 class="register__heading1">
-        Join the World’s Most-Loved Social Storytelling Platform!
-      </h1>
-      <p class="register__desc">
-        Create an account to explore interesting articles, connect with like-minded
-        people, and share your own stories.
-      </p>
-      <img :src="imgRegister" alt="image register" class="register__image" />
-    </div>
-    <div class="register__right">
-      <h3 class="register__heading2">Create Account</h3>
-      <form action="" class="register__form" @submit.prevent="onSubmit">
-        <Input v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
-        <Input v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
-          type="text" />
-        <Input v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
-        <Input v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
-          type="password" />
-        <Input v-model="password_confirmation" :error="errors.password_confirmation"
-          placeholder="Re-enter your chosen password" label="Confirm Passowrd" type="password" />
-        <Button variant="primary" label="Create Account" classCustom="register__button" />
-        <span class="register__link">Already have an account?
-          <NuxtLink to="/#" class="register__login">Login</NuxtLink>
-        </span>
-      </form>
-    </div>
-  </section>
-</template>
 
 <style lang="scss" scoped>
 @import "@/assets/main.scss";

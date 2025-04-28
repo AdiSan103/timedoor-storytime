@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 import "swiper/css";
@@ -19,13 +18,12 @@ const modules = [FreeMode, Navigation, Thumbs];
 interface Props {
   classCustom?: string;
   classCustomItems?: string;
-  loading: boolean;
-  items: Story[];
+  items?: StoryImage[];
 }
 
 defineProps<Props>();
 
-const setThumbsSwiper = (swiperInstance) => {
+const setThumbsSwiper = (swiperInstance: any) => {
   thumbsSwiper.value = swiperInstance;
 };
 
@@ -46,16 +44,20 @@ const handlePopup = () => {
         '--swiper-pagination-color': '#fff',
       }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
         class="mySwiper2">
-        <swiper-slide v-for="n in 10" :key="n">
-          <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
-        </swiper-slide>
+        <div v-for="(item, index) in items" :key="index">
+          <swiper-slide>
+            <img :src="item.url" />
+          </swiper-slide>
+        </div>
       </swiper>
 
       <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
         :watchSlidesProgress="true" :modules="modules" class="mySwiper">
-        <swiper-slide v-for="n in 10" :key="n">
-          <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
-        </swiper-slide>
+        <div v-for="(item, index) in items" :key="index">
+          <swiper-slide>
+            <img :src="item.url" />
+          </swiper-slide>
+        </div>
       </swiper>
     </div>
   </div>
@@ -66,16 +68,20 @@ const handlePopup = () => {
       '--swiper-pagination-color': '#fff',
     }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
       class="mySwiper2">
-      <swiper-slide v-for="n in 10" :key="n" @click="handlePopup">
-        <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
-      </swiper-slide>
+      <div v-for="(item, index) in items" :key="index" @click="handlePopup">
+        <swiper-slide>
+          <img :src="item.url" />
+        </swiper-slide>
+      </div>
     </swiper>
 
     <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
       :watchSlidesProgress="true" :modules="modules" class="mySwiper">
-      <swiper-slide v-for="n in 10" :key="n">
-        <img :src="`https://swiperjs.com/demos/images/nature-${n}.jpg`" />
-      </swiper-slide>
+      <div v-for="(item, index) in items" :key="index">
+        <swiper-slide>
+          <img :src="item.url" />
+        </swiper-slide>
+      </div>
     </swiper>
   </div>
 </template>

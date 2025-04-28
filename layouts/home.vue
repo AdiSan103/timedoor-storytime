@@ -1,9 +1,9 @@
 <template>
- <main>
-   <Navbar/>
-   <slot />
-   <Footer/>
- </main>
+  <main>
+    <Navbar />
+    <slot />
+    <Footer />
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -12,9 +12,8 @@ import Footer from '~/components/layouts/Footer.vue';
 </script>
 
 <style lang="css">
-main{
- position: relative;
- overflow-x: hidden;
+main {
+  position: relative;
+  overflow-x: hidden;
 }
 </style>
-

@@ -1,37 +1,39 @@
 <script setup lang="ts">
+import { navigateTo } from '#app' // 👈 Add this
 import Button from "../ui/Button.vue";
-import Toast from "~/components/ui/Toast.vue";
 
 const model = defineModel();
-const toastStatus = ref(false);
+const router = useRouter()
 
-const { $api } = useNuxtApp();
+const { $api, $toast } = useNuxtApp();
 
 const handleLogout = () => {
 
   $api.auth
-    .getDetail()
+    .logout()
     .then((res) => {
-      user.value = res.user;
+      // show toast
+      $toast("Succesfully Logout!", {
+        type: "success",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });      // close popup
+      handleCancel();
+      // remove token
+      const authToken = useCookie("STORYTIME_TOKEN");
+      authToken.value = null;
+      // redirect home 
+      console.log('- test logout -')
+      router.push('/')
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      userLoading.value = false;
-    });
 
-  // show toast
-  toastStatus.value = true;
-  // close popup
-  handleCancel();
-  // remove token
-  const authToken = useCookie("STORYTIME_TOKEN");
-  authToken.value = null;
-  // redirect home page
-  setTimeout(() => {
-    window.location.href = "/"
-  }, 1000)
+    });
 };
 
 const handleCancel = () => {
@@ -39,7 +41,6 @@ const handleCancel = () => {
 };
 </script>
 <template>
-  <Toast type="success" message="Logout Successfully!" v-model="toastStatus" />
   <div class="popup" v-if="model">
     <div class="popup__contain">
       <h2 class="popup__title">Logout</h2>

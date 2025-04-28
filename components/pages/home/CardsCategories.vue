@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Badge from "~/components/ui/Badge.vue";
 import type { Category } from "~/type/module/categories";
+import Separator from '@/components/ui/Separator.vue'
 
 // Define props with TypeScript
 interface Props {
