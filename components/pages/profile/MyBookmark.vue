@@ -1,28 +1,17 @@
 <script lang="ts" setup>
-import type { BookmarksResponse, Story } from "~/type/module/bookmark";
+import type { BookmarksResponse } from "~/type/module/bookmark";
 
-import Button from "@/components/ui/Button.vue";
-import Modal from "~/components/pages/profile/mystory/Modal.vue";
 import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import CardBookmark from "~/components/ui/CardBookmark.vue";
-import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
-import UserSection from "~/components/pages/profile/UserSection.vue";
 // import Pagination from "@/components/ui/Pagination.vue";
 
 import imgNotFound from "~/assets/images/notfound_bookmark.png";
-
-// meta
-definePageMeta({
-  layout: "home",
-  middleware: ["auth-user"],
-});
 
 // declaration variable
 const { $api } = useNuxtApp();
 const story: Ref<BookmarksResponse | any> = ref([]);
 const storyLoading = ref(false);
 const storyPage = ref(1);
-const toggleStatus = ref(false);
 
 // function
 const fetchstory = () => {
@@ -39,54 +28,34 @@ const fetchstory = () => {
     })
     .finally(() => {
       storyLoading.value = false;
-      toggleStatus.value = false; // change back if before value true ( response from cardBookmark )
     });
 };
 
-fetchstory();
 // lifecycle
-watch([storyPage, toggleStatus], () => {
-  console.log("Fetching data...");
-  fetchstory();
-});
+fetchstory();
 </script>
 
 <template>
-  <ModalEditProfile :status="false" />
-  <section class="mystory">
-    <UserSection />
-  </section>
-  <section class="mystory__items container">
-    <div class="mystory__badges">
-      <Button link="/profile/mystory" label="My Story" variant="light" classCustom="mystory__button" />
-      <Button link="#" label="Bookmark" variant="success" classCustom="mystory__button" />
+  <section class="mystory__items">
+    <div class="mystory__cards">
+      <!--  -->
+      <CardSekeleton v-if="storyLoading" />
+      <CardSekeleton v-if="storyLoading" />
+      <CardSekeleton v-if="storyLoading" />
+      <CardSekeleton v-if="storyLoading" />
+      <!--  -->
+      <CardBookmark v-for="(item, index) in story.data" :key="index" :item="item" />
     </div>
-    <div class="mystory__content">
-      <div class="mystory__left">
-        <Modal />
-      </div>
-      <div class="mystory__right">
-        <div class="mystory__cards">
-          <!--  -->
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <!--  -->
-          <CardBookmark v-for="(item, index) in story.data" :key="index" :item="item" v-model="toggleStatus" />
-        </div>
-        <!-- pagination -->
-        <!-- <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
+    <!-- pagination -->
+    <!-- <Pagination classCustom="mystory__pagination" :total="story.meta?.total" :per_page="story.meta?.per_page"
           :last_page="story.meta?.last_page" v-model="storyPage" v-if="story.data.length != 0" /> -->
-        <!-- not found -->
-        <div class="mystory__notfound" v-if="story && story.data && story.data.length === 0">
-          <h3 class="mystory__heading1">No Bookmarks Yet</h3>
-          <p class="mystory__desc">
-            You haven't saved any bookmarks yet. Explore and bookmark your top workouts!
-          </p>
-          <img :src="imgNotFound" alt="not found" class="mystory__image" />
-        </div>
-      </div>
+    <!-- not found -->
+    <div class="mystory__notfound" v-if="story && story.data && story.data.length === 0">
+      <h3 class="mystory__heading1">No Bookmarks Yet</h3>
+      <p class="mystory__desc">
+        You haven't saved any bookmarks yet. Explore and bookmark your top workouts!
+      </p>
+      <img :src="imgNotFound" alt="not found" class="mystory__image" />
     </div>
   </section>
 </template>

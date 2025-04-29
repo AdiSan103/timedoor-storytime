@@ -18,7 +18,7 @@ defineProps<Props>();
 <template>
   <section class="container">
     <div class="cards__contain">
-      <h2 class="cards__title">Horror</h2>
+      <h2 class="cards__title" data-aos="fade-left">Horror</h2>
       <NuxtLink to="/story?category=horror" class=" cards__link">Explore More
         <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>

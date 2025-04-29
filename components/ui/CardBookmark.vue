@@ -9,6 +9,7 @@ const model = defineModel() // for return response
 
 const { $api, $toast } = useNuxtApp();
 const loading = ref(false)
+const trashStatus = ref("ACTIVE") // // value : "ACTIVE | "ANIMATE" | "NONACTIVE" // this is for if content has been deleted...
 
 // Define props with TypeScript
 interface Props {
@@ -33,9 +34,16 @@ const toggleBookmark = () => {
         transition: "zoom",
         dangerouslyHTMLString: true
       });
+
+      // add animmate..
+      trashStatus.value = 'ANIMATE';
+
+      setTimeout(() => {
+        trashStatus.value = "NONACTIVE"; // content will be trash...
+      }, 700);
     })
     .catch((err) => {
-      $toast("Successfully Logout", {
+      $toast("Error..", {
         type: "info",
         position: "top-center",
         autoClose: 3000,
@@ -53,9 +61,9 @@ const toggleBookmark = () => {
 
 <template>
   <LoadingScreen v-if="loading" />
-  <div class="card">
+  <div :class="['card ', { 'card__animate': trashStatus === 'ANIMATE' }]" v-if="trashStatus !== 'NONACTIVE'">
     <div :style="{
-      backgroundImage: `url(${item.content_images[0].url})`,
+      backgroundImage: `url(${item.content_images[0] ? item.content_images[0].url : 'https://placehold.co/600x600'})`,
       minHeight: (height ?? 300) + 'px',
     }" class="card__background">
       <div class="card__bookmark" @click="toggleBookmark">
@@ -96,6 +104,14 @@ const toggleBookmark = () => {
   border: none;
   outline: none;
   text-decoration: none;
+  transition: 0.2s;
+  opacity: 1;
+
+  &__animate {
+    transition: ease-in-out 0.7s;
+    opacity: 0;
+    transform: scale(0.5);
+  }
 
   &__footer {
     padding: 10px;

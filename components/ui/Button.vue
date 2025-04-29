@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import { NuxtLink } from "#components";
-import { defineProps } from "vue";
-
-// Define props with TypeScript
-interface Props {
-  label: string;
-  link?: string;
-  variant?: "primary" | "secondary" | "success" | "light";
-  type?: "button" | "submit" | "reset" | "disabled";
-  classCustom?: string;
-}
-
-defineProps<Props>();
-</script>
-
 <template>
   <button :class="[
     'base',
@@ -31,8 +15,28 @@ defineProps<Props>();
   </button>
 </template>
 
+<script setup lang="ts">
+import { NuxtLink } from "#components";
+import { defineProps } from "vue";
+
+// Define props with TypeScript
+interface Props {
+  label: string;
+  link?: string;
+  variant?: "primary" | "secondary" | "success" | "light";
+  type?: "button" | "submit" | "reset" | "disabled";
+  classCustom?: string;
+}
+
+defineProps<Props>();
+</script>
+
 <style scoped lang="scss">
 @import "@/assets/main.scss";
+
+a {
+  text-decoration: none !important;
+}
 
 .base {
   transition: 0.5s;
@@ -57,7 +61,6 @@ defineProps<Props>();
 
     a {
       color: $color1 !important;
-      text-decoration: none;
     }
 
     &:hover {
@@ -74,7 +77,6 @@ defineProps<Props>();
 
     a {
       color: $color8 !important;
-      text-decoration: none;
     }
   }
 
@@ -85,7 +87,6 @@ defineProps<Props>();
 
     a {
       color: $color3 !important;
-      text-decoration: none;
     }
   }
 
@@ -93,11 +94,10 @@ defineProps<Props>();
     background-color: white;
     border: none;
     font-weight: bold;
-
+    color: $color3 !important;
 
     a {
       color: $color3 !important;
-      text-decoration: none;
     }
   }
 }

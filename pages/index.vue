@@ -1,3 +1,23 @@
+<template>
+  <section class="container banner">
+    <h1 class="banner__title" data-aos="fade-up">Welcome to Storytime</h1>
+    <p class="banner__desc" data-aos="fade-up">
+      The world's most-loved social storytelling platform. Story time connects a global
+      community of 90 million readers and writers through the power of story.
+    </p>
+    <form data-aos="zoom-in">
+      <Input placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
+        @click="handleSearch" />
+    </form>
+    <img src="/images/image1.png" alt="" class="banner__image" data-aos="zoom-in" />
+  </section>
+  <CardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
+  <CardsComedy :items="comedy" :loading="comedyLoading" />
+  <CardsRomance :items="romance" :loading="romanceLoading" />
+  <CardsHorror :items="horror" :loading="horrorLoading" />
+  <CardsCategories :items="categories" :loading="categoriesLoading" />
+</template>
+
 <script setup lang="ts">
 // import
 import type { Category, CategoryResponse } from "~/type/module/categories";
@@ -135,25 +155,6 @@ fetchStoryFilterByCategory("Horror", horror, horrorLoading);
 fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
 </script>
 
-<template>
-  <section class="container banner">
-    <h1 class="banner__title">Welcome to Storytime</h1>
-    <p class="banner__desc">
-      The world's most-loved social storytelling platform. Story time connects a global
-      community of 90 million readers and writers through the power of story.
-    </p>
-    <form>
-      <Input placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
-        @click="handleSearch" />
-    </form>
-    <img src="/images/image1.png" alt="" class="banner__image" />
-  </section>
-  <CardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
-  <CardsComedy :items="comedy" :loading="comedyLoading" />
-  <CardsRomance :items="romance" :loading="romanceLoading" />
-  <CardsHorror :items="horror" :loading="horrorLoading" />
-  <CardsCategories :items="categories" :loading="categoriesLoading" />
-</template>
 
 <style lang="scss" scoped>
 /* width */

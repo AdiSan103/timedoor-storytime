@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type { Story } from "~/type/module/stories";
 
-import ModalEditCard from "@/components/pages/profile/ModalEditCard.vue";
 import Badge from "@/components/ui/Badge.vue";
 import LoadingScreen from '@/components/ui/LoadingScreen.vue'
+import Button from "@/components/ui/Button.vue";
 
 import { defineProps } from "vue";
 
 const { $api, $toast } = useNuxtApp();
-const modalCardStatus = ref(false)
 const loading = ref(false)
+const modalPopup = ref(false)
+const trashStatus = ref("ACTIVE") // // value : "ACTIVE | "ANIMATE" | "NONACTIVE" // this is for if content has been deleted...
 
 // Define props with TypeScript
 interface Props {
@@ -18,10 +19,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-const handleModal = () => {
-  modalCardStatus.value = !modalCardStatus.value
-}
 
 // function
 const toggleBookmark = () => {
@@ -55,12 +52,65 @@ const toggleBookmark = () => {
     });
 }
 
+const handleModal = () => {
+  modalPopup.value = !modalPopup.value
+}
+
+const handleDelete = () => {
+  loading.value = true;
+
+  $api.stories
+    .removeStory(props.item.id)
+    .then((res) => {
+      $toast("Successfully Logout", {
+        type: "success",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });
+
+      // add animmate..
+      trashStatus.value = 'ANIMATE';
+
+      setTimeout(() => {
+        trashStatus.value = "NONACTIVE"; // content will be trash...
+      }, 700);
+    })
+    .catch((err) => {
+      $toast("This is not your story. Please contact the admin to delete this content.",
+        {
+          type: "error",
+          position: "top-center",
+          autoClose: 3000,
+          transition: "zoom",
+          dangerouslyHTMLString: true
+        }); console.log('error', err);
+    })
+    .finally(() => {
+      loading.value = false;
+      modalPopup.value = false;
+
+    });
+};
+
 </script>
 
 <template>
   <LoadingScreen v-if="loading" />
-  <ModalEditCard v-model="modalCardStatus" :id="item.id" />
-  <div class="card">
+  <!-- modal -->
+  <div class="component" v-if="modalPopup">
+    <div class="component__contain">
+      <h2 class="component__title">Delete Story</h2>
+      <p class="component__desc">Are you sure want to delete this story?</p>
+      <div class="component__buttons">
+        <Button label="Cancel" variant="secondary" @click="handleModal" />
+        <Button label="Delete" variant="primary" @click="handleDelete" />
+      </div>
+    </div>
+  </div>
+  <!-- card -->
+  <div :class="['card ', { 'card__animate': trashStatus === 'ANIMATE' }]" v-if="trashStatus !== 'NONACTIVE'">
     <div :style="{
       backgroundImage: `url('${item.content_images?.[0]?.url || 'https://placehold.co/600x600'}')`,
       minHeight: (height || 300) + 'px',
@@ -81,14 +131,14 @@ const toggleBookmark = () => {
     </div>
     <div class="card__content">
       <h3 class="card__title">{{ item.title.slice(0, 26) }}</h3>
-      <p class="card__label">
-        {{ item.preview_content.slice(0, 200) }}
+      <p class="card__label" v-html="item.preview_content.slice(0, 200)">
       </p>
     </div>
     <div class="card__footer">
       <div class="card__footerleft">
-        <div :style="{ backgroundImage: `url(${item.user.profile_image ?? 'https://placehold.co/600x600'})` }"
-          class="card__user"></div>
+        <div :style="{
+          backgroundImage: `url(${item.user.profile_image ? item.user.profile_image : 'https://placehold.co/600x600'})`,
+        }" class="card__user"></div>
         <p class="card__label">{{ item.user.name.length > 9 ? item.user.name.slice(0, 9) + '...' : item.user.name }}
         </p>
       </div>
@@ -115,6 +165,13 @@ const toggleBookmark = () => {
   text-decoration: none;
   cursor: pointer;
   transition: 0.2s;
+  opacity: 1;
+
+  &__animate {
+    transition: ease-in-out 0.7s;
+    opacity: 0;
+    transform: scale(0.5);
+  }
 
   &__footerright,
   &__footerleft {
@@ -235,6 +292,57 @@ const toggleBookmark = () => {
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: normal;
+  }
+}
+
+// modal
+.component {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.29);
+  z-index: 80;
+  width: 100vw;
+  height: 100vh;
+
+  &__title {
+    font-family: DM Sans;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
+    line-height: 46px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+
+  &__desc {
+    font-family: DM Sans;
+    font-weight: 400;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
+    line-height: 27px;
+    letter-spacing: 0%;
+    text-align: center;
+    margin: 2px 0 40px 0;
+  }
+
+  &__contain {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px;
+    border-radius: 10px;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
   }
 }
 </style>

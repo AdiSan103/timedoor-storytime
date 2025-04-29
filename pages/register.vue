@@ -111,7 +111,7 @@ const onSubmit = handleSubmit(() => {
         });
 
         setTimeout(async () => {
-          await navigateTo("/profile/mystory");
+          await navigateTo("/profile");
         }, 700);
       } else {
         //  failure flow

@@ -60,7 +60,7 @@ const onSubmit = handleSubmit(() => {
         dangerouslyHTMLString: true
       });
 
-      await navigateTo("/profile/mystory");
+      await navigateTo("/profile");
     })
     .catch((err) => {
       console.log(err);

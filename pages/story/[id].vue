@@ -34,13 +34,13 @@ const fetchstory = () => {
 
   $api.stories
     .getDetailStory(id.value)
-    .then((res) => {
+    .then((res: any) => {
       story.value = res.data; // ✅ karena res.data.value = PropsStory
 
       // meta
       useSeoMeta({
-        title: story.value.title,
-        ogTitle: story.value.title,
+        title: story?.value?.title,
+        ogTitle: story?.value?.title,
         // description: 'This is my amazing site, let me tell you all about it.',
         // ogDescription: 'This is my amazing site, let me tell you all about it.',
       })
@@ -123,12 +123,12 @@ fetchLastestStory();
     <DetailSekeleton v-if="storyLoading" />
     <!--  -->
     <section v-if="!storyLoading" class="detail__title">
-      <p class="detail__label">{{ story?.created_at }}</p>
-      <h1 class="detail__title">{{ story?.title }}</h1>
-      <div class="detail__avatar">
+      <p class="detail__label" data-aos="fade-up">{{ story?.created_at }}</p>
+      <h1 class="detail__title" data-aos="fade-up">{{ story?.title }}</h1>
+      <div class="detail__avatar" data-aos="fade-up">
         <div :style="{ backgroundImage: `url(${story?.user.profile_image ?? 'https://placehold.co/600x600'})` }"
           class="detail__user"></div>
-        <p class="detail__label">Author : {{ story?.user.name }}</p>
+        <p class="detail__label" data-aos="fade-up">Author : {{ story?.user.name }}</p>
       </div>
       <!--  -->
       <div class="detail__bookmark" @click="toggleBookmark">

@@ -32,7 +32,7 @@ const toggleBookmark = () => {
       });
     })
     .catch((err) => {
-      $toast("Please login your account before..", {
+      $toast("Authentication required. Please login..", {
         type: "error",
         position: "top-center",
         autoClose: 3000,

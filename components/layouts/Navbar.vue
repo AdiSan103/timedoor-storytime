@@ -24,7 +24,7 @@
             <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
           </div>
           <ul class="navbar__listmenu" v-if="menu">
-            <NuxtLink to="/profile/mystory" class="navbar__listitem">My Profile</NuxtLink>
+            <NuxtLink to="/profile" class="navbar__listitem">My Profile</NuxtLink>
             <span class="navbar__listitem" @click="handleModalLogout">Log Out</span>
           </ul>
         </div>

@@ -19,7 +19,7 @@ defineProps<Props>();
 <template>
   <section :class="['cards container ', classCustom]">
     <div class="cards__contain">
-      <h2 class="cards__title">Latest Story</h2>
+      <h2 class="cards__title" data-aos="fade-left">Latest Story</h2>
       <NuxtLink to="/story?sort_by=newest" class="cards__link">Explore More
         <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>

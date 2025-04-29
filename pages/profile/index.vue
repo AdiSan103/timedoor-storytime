@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import type { Story } from "~/type/module/stories";
 import type { User } from "~/type/module/users";
 
-import Button from "@/components/ui/Button.vue";
-import Modal from "~/components/pages/profile/mystory/Modal.vue";
-import CardSekeleton from "~/components/ui/CardSekeleton.vue";
+import Modal from "~/components/pages/profile/Modal.vue";
 import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
-
-import imgNotFound from "~/assets/images/notfound_story.png";
-import CardEdit from "~/components/ui/CardEdit.vue";
+import NavTabs from "~/components/pages/profile/NavTabs.vue"
 import UserSection from "~/components/pages/profile/UserSection.vue";
+import MyBookmark from "~/components/pages/profile/MyBookmark.vue"
+import MyStory from "~/components/pages/profile/MyStory.vue"
 
 // meta
 definePageMeta({
@@ -19,37 +16,13 @@ definePageMeta({
 
 // declaration variable
 const { $api } = useNuxtApp();
-const story: Ref<Story[]> = ref([]);
-const storyLoading = ref(false);
 
 const user: Ref<User | undefined> = ref();
 const userLoading = ref(false);
-
+const navtabsStatus = ref("LEFT") // value : "LEFT" | "RIGHT"
 const modalProfileStatus = ref(false);
 
 // function
-const fetchstory = () => {
-  storyLoading.value = true;
-
-  const keywords = {
-    // sort_by: "",
-    // search: "",
-    // category: "",
-  };
-
-  $api.stories
-    .getFilter(keywords)
-    .then((res) => {
-      story.value = res.data; // ✅ karena res.data.value = PropsStory
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      storyLoading.value = false;
-    });
-};
-
 const fetchDetailUser = () => {
   userLoading.value = true;
 
@@ -68,7 +41,6 @@ const fetchDetailUser = () => {
 
 // lifecycle
 fetchDetailUser();
-fetchstory();
 </script>
 
 <template>
@@ -77,32 +49,27 @@ fetchstory();
     <UserSection />
   </section>
   <section class="mystory__items container">
-    <div class="mystory__badges">
-      <Button link="#" label="My Story" variant="success" classCustom="mystory__button" />
-      <Button link="/profile/mybookmark" label="Bookmark" variant="light" classCustom="mystory__button" />
+    <!--  -->
+    <NavTabs v-if="!userLoading" v-model="navtabsStatus" />
+    <div class="navtabs placeholder-glow" v-if="userLoading">
+      <div class="navtabs__item placeholder"></div>
+      <div class="navtabs__item placeholder"></div>
     </div>
+    <!--  -->
     <div class="mystory__content">
-      <div class="mystory__left">
-        <Modal />
+      <div class="mystory__left  placeholder-glow">
+        <Modal v-if="!userLoading" />
+        <div class="mystory__modal placeholder" v-if="userLoading">
+        </div>
       </div>
       <div class="mystory__right">
-        <div class="mystory__cards">
-          <!--  -->
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <CardSekeleton v-if="storyLoading" />
-          <!--  -->
-          <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
+        <!-- MyStory -->
+        <div v-if="navtabsStatus == 'LEFT'">
+          <MyStory />
         </div>
-
-        <!-- not found -->
-        <div class="mystory__notfound" v-if="!storyLoading && story.length === 0">
-          <h3 class="mystory__heading1">No Stories Yet</h3>
-          <p class="mystory__desc">
-            You haven't shared any stories yet. Start your fitness journey today!
-          </p>
-          <img :src="imgNotFound" alt="not found" class="mystory__image" />
+        <!-- MyBookMark -->
+        <div v-if="navtabsStatus == 'RIGHT'">
+          <MyBookmark />
         </div>
       </div>
     </div>
@@ -115,15 +82,15 @@ fetchstory();
 .mystory {
   background-color: $color2;
 
-  &__badges {
-    display: flex;
-    gap: 10px;
-    padding: 30px 0;
-  }
+  // &__badges {
+  //   display: flex;
+  //   gap: 10px;
+  //   padding: 30px 0;
+  // }
 
-  &__button {
-    padding: 40px;
-  }
+  // &__button {
+  //   padding: 40px;
+  // }
 
   &__content {
     display: flex;
@@ -173,6 +140,25 @@ fetchstory();
   &__image {
     width: 100%;
     max-width: 500px;
+  }
+
+  &__modal {
+    height: 300px;
+    width: 100%;
+    border-radius: 10px;
+  }
+}
+
+.navtabs {
+  display: flex;
+  gap: 20px;
+  max-width: 400px;
+  margin: 30px 0;
+
+  &__item {
+    height: 100px;
+    width: 160px;
+    border-radius: 10px;
   }
 }
 
