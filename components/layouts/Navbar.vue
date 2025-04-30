@@ -1,33 +1,66 @@
 <template>
-  <ModalLogout v-model="statusModalLogout" />
-  <nav class="navbar">
-    <div class="navbar__contain container">
+  <!-- modal -->
+  <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content py-4">
+        <div class="modal-body">
+          <h2 class="modal__title">Logout</h2>
+          <p class="modal__desc">Are you sure want to logout?</p>
+        </div>
+        <div class="modal__buttons">
+          <Button label="Cancel" data-bs-dismiss="modal" variant="secondary" @click="handleCancel" />
+          <Button label="Logout" variant="primary" @click="handleLogout" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- nav -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
       <NuxtLink to="/">
         <img src="/images/logo.png" alt="logo" class="navbar__img" />
       </NuxtLink>
-      <div class="d-flex gap-3">
-        <Button link="/register" label="Register" variant="secondary" v-if="!authToken" />
-        <Button link="/login" label="Login" variant="primary" v-if="!authToken" />
-
-        <div class="navbar__avatar" v-if="authToken">
-          <div v-if="userLoading">
-            <div class="placeholder-glow navbar__avatars">
-              <div class="placeholder navbar__loadingprofile"></div>
-              <div class="placeholder navbar__loadinguser"></div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#modalLogout"
+        aria-controls="modalLogout" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse d-lg-flex justify-content-lg-end navbar-collapse" id="modalLogout">
+        <!-- content -->
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a v-if="authToken" class="nav-link dropdown-toggle d-flex gap-3 justify-content-center align-items-center"
+              href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <!-- loading.. -->
+              <div v-if="userLoading">
+                <div class="placeholder-glow navbar__avatars">
+                  <div class="placeholder navbar__loadingprofile"></div>
+                  <div class="placeholder navbar__loadinguser"></div>
+                </div>
+              </div>
+              <!-- loading end... -->
+              <div v-else>
+                <img class="navbar__user" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
+                  'https://placehold.co/600x600'" alt="" />
+                <span class="navbar__usertitle">{{ user?.name }}</span>
+              </div>
+            </a>
+            <div v-if="!authToken" class="d-flex justify-content-center gap-3">
+              <Button link="/register" label="Register" variant="secondary" />
+              <Button link="/login" label="Login" variant="primary" />
             </div>
-          </div>
-          <!--  -->
-          <div class="navbar__content" @click="handleMenu" v-if="!userLoading">
-            <img class="navbar__user" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
-              'https://placehold.co/600x600'" alt="" v-if="!userLoading" />
-            <span class="navbar__usertitle">{{ user?.name }}</span>
-            <Icon name="weui:arrow-outlined" style="color: black" size="25" class="navbar__icon" />
-          </div>
-          <ul class="navbar__listmenu" v-if="menu">
-            <NuxtLink to="/profile" class="navbar__listitem">My Profile</NuxtLink>
-            <span class="navbar__listitem" @click="handleModalLogout">Log Out</span>
-          </ul>
-        </div>
+            <ul class="dropdown-menu px-4 text-center">
+              <li>
+                <NuxtLink to="/profile" class="navbar__listitem">My Profile</NuxtLink>
+              </li>
+              <hr>
+              <li>
+                <span type="button" class="navbar__listitem" data-bs-toggle="modal" data-bs-target="#modalLogout">
+                  Log Out
+                </span>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -37,23 +70,45 @@
 import { ref } from "vue";
 
 import Button from "@/components/ui/Button.vue";
-import ModalLogout from "@/components/layouts/ModalLogout.vue";
-import type { User } from "@/type/module/users";
-import LoadingScreen from "../ui/LoadingScreen.vue";
 
 // declaration variable
-const { $api } = useNuxtApp();
 const menu = ref(false);
 const authToken = useCookie("STORYTIME_TOKEN");
-const statusModalLogout = ref(false);
 const { user, userLoading } = useUser();
+const router = useRouter()
+const { $api, $toast } = useNuxtApp();
 
+// function
 const handleMenu = () => {
   menu.value = !menu.value;
 };
 
-const handleModalLogout = () => {
-  statusModalLogout.value = !statusModalLogout.value;
+const handleLogout = () => {
+  $api.auth
+    .logout()
+    .then((res) => {
+      // show toast
+      $toast("Succesfully Logout!", {
+        type: "success",
+        position: "top-center",
+        autoClose: 3000,
+        transition: "zoom",
+        dangerouslyHTMLString: true
+      });      // close popup
+      handleCancel();
+      // remove token
+      const authToken = useCookie("STORYTIME_TOKEN");
+      authToken.value = null;
+      // redirect home 
+      console.log('- test logout -')
+      router.push('/')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+
+    });
 };
 
 </script>
@@ -61,6 +116,7 @@ const handleModalLogout = () => {
 
 <style scoped lang="scss">
 @import "@/assets/main.scss";
+
 
 .navbar {
   position: sticky;
@@ -137,17 +193,10 @@ const handleModalLogout = () => {
   }
 
   &__listmenu {
-    position: absolute;
-    top: 50px;
-    right: 2px;
     width: 150px;
     background-color: $color1;
-    list-style: none;
     padding: 15px 20px;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   }
 
@@ -157,6 +206,47 @@ const handleModalLogout = () => {
     cursor: pointer;
     color: black;
     text-decoration: none;
+  }
+}
+
+.modal {
+
+  &__title {
+    font-family: DM Sans;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw + 1rem, 36px);
+    line-height: 46px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+
+  &__desc {
+    font-family: DM Sans;
+    font-weight: 400;
+    font-size: clamp(16px, 1vw + 0.5rem, 18px);
+    line-height: 27px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+
+  &__contain {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 10px;
+    background-color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    gap: 10px;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
   }
 }
 

@@ -78,13 +78,15 @@ const toggleBookmark = () => {
         </p>
       </div>
       <div class="card__footer">
-        <div class="card_footerleft">
-          <div :style="{ backgroundImage: `url(${item.user.profile_image})` }" class="card__user"></div>
+        <div class="card__footerleft">
+          <div
+            :style="{ backgroundImage: `url(${item.user.profile_image ? item.user.profile_image : 'https://placehold.co/600x600'})` }"
+            class="card__user"></div>
           <p class="card__label">{{ item.user.name }}</p>
         </div>
-        <div class="card_footerright">
+        <div class="card__footerright">
           <p class="card__label">{{ item.created_at }}</p>
-          <Badge />
+          <Badge :label="item.category.name" />
         </div>
       </div>
     </NuxtLink>
@@ -106,6 +108,16 @@ const toggleBookmark = () => {
   text-decoration: none;
   transition: 0.2s;
   opacity: 1;
+
+  &__footerleft {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__footerright {
+    display: flex;
+    gap: 10px;
+  }
 
   &__animate {
     transition: ease-in-out 0.7s;

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { User } from "~/type/module/users";
 
-import Button from '@/components/ui/Button.vue'
-import ModalEditProfile from '@/components/pages/profile/ModalEditProfile.vue'
+import Button from "@/components/ui/Button.vue";
+import ModalEditProfile from "@/components/pages/profile/ModalEditProfile.vue";
 
 // declaration variable
 const { $api } = useNuxtApp();
@@ -10,7 +10,7 @@ const { $api } = useNuxtApp();
 const user: Ref<User | undefined> = ref();
 const userLoading = ref(false);
 
-const modelProfile = ref(false)
+const modelProfile = ref(false);
 
 // function
 const fetchDetailUser = () => {
@@ -30,15 +30,14 @@ const fetchDetailUser = () => {
 };
 
 const handleModelProfile = () => {
-  modelProfile.value = !modelProfile.value
-}
+  modelProfile.value = !modelProfile.value;
+};
 
 // lifecycle
 fetchDetailUser();
 </script>
 
 <template>
-  <ModalEditProfile v-model="modelProfile" />
   <div class="container user placeholder-glow">
     <div class="user__profile placeholder" v-if="userLoading"></div>
     <div class="user__content" v-if="userLoading">
@@ -47,8 +46,9 @@ fetchDetailUser();
       <div class="user__sekeletondesc placeholder"></div>
     </div>
     <!-- -->
-    <img class="user__profile" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
-      'https://placehold.co/600x600'
+    <img class="user__profile" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/'
+      ? user.profile_image
+      : 'https://placehold.co/600x600'
       " alt="image user" v-if="!userLoading" />
     <div class="user__content" v-if="!userLoading">
       <p class="user__title">{{ user?.name }}</p>
@@ -57,7 +57,7 @@ fetchDetailUser();
         {{ user?.about }}
       </p>
     </div>
-    <Button v-if="!userLoading" type="button" label="Edit Profile" variant="primary" @click="handleModelProfile" />
+    <ModalEditProfile />
   </div>
 </template>
 

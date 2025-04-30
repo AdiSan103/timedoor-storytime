@@ -2,7 +2,6 @@
 import type { User } from "~/type/module/users";
 
 import Modal from "~/components/pages/profile/Modal.vue";
-import ModalEditProfile from "~/components/pages/profile/ModalEditProfile.vue";
 import NavTabs from "~/components/pages/profile/NavTabs.vue"
 import UserSection from "~/components/pages/profile/UserSection.vue";
 import MyBookmark from "~/components/pages/profile/MyBookmark.vue"
@@ -44,7 +43,6 @@ fetchDetailUser();
 </script>
 
 <template>
-  <ModalEditProfile v-model="modalProfileStatus" />
   <section class="mystory">
     <UserSection />
   </section>
