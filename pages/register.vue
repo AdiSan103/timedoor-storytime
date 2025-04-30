@@ -61,7 +61,7 @@ const schema = yup.object({
   name: yup.string().required("Name is required"),
   username: yup.string().required("username is required"),
   password: yup.string().required("Password is required"),
-  email: yup.string().required("email is required"),
+  email: yup.string().email().required("email is required"),
   password_confirmation: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
@@ -94,7 +94,7 @@ const onSubmit = handleSubmit(() => {
 
   $api.auth
     .register(formRegister)
-    .then((res) => {
+    .then(async (res) => {
       console.log(res);
       token.value = res.token;
 
@@ -110,9 +110,7 @@ const onSubmit = handleSubmit(() => {
           dangerouslyHTMLString: true
         });
 
-        setTimeout(async () => {
-          await navigateTo("/profile");
-        }, 700);
+        await navigateTo("/profile");
       } else {
         //  failure flow
         $toast("Your cccount has been registered", {

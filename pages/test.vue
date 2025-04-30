@@ -1,5 +1,7 @@
 <script setup>
 const { $toast } = useNuxtApp();
+// const { $toast,$bModal } = useNuxtApp();
+
 
 nextTick(() => {
  if (process.client) {
@@ -12,6 +14,9 @@ const notify = () => {
  // or
  // toast.info('toastify success');
 };
+// const handleClick = () => {
+//  $bModal.show('exampleModal');
+// }
 </script>
 
 <template>
