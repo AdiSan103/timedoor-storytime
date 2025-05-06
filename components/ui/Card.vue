@@ -47,8 +47,8 @@ const toggleBookmark = () => {
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
-  <div class="card">
+  <UiLoadingScreen v-if="loading" />
+  <div class="card col">
     <div :style="{
       backgroundImage: `url(${item.content_images[0] ? item.content_images[0].url : 'https://placehold.co/600x600'})`,
       minHeight: (height ?? 300) + 'px',
@@ -94,9 +94,22 @@ const toggleBookmark = () => {
   text-decoration: none;
   cursor: pointer;
   transition: 0.2s;
+  justify-content: space-between;
+  margin: 20px 10px;
+  padding: 0;
+
+  &__background {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    border-radius: 8px;
+    position: relative;
+    transition: 0.2s;
+  }
 
   &:hover {
-    transform: scale(0.99);
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 10px;
   }
@@ -156,16 +169,6 @@ const toggleBookmark = () => {
     height: 30px;
     width: 30px;
     border-radius: 100%;
-  }
-
-  &__background {
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-shrink: 0;
-    border-radius: 8px;
-    position: relative;
   }
 
   &__bookmark {

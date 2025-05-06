@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import Navbar from "~/components/layouts/Navbar.vue";
-import Nav from "~/components/layouts/Nav.vue";
-import Footer from "~/components/layouts/Footer.vue";
-
 const route = useRoute();
 const query = ref(route.params.id);
 
@@ -10,12 +6,12 @@ const query = ref(route.params.id);
 
 <template>
   <main>
-    <Navbar />
-    <Nav :query="query" />
+    <LayoutsNavbar />
+    <LayoutsNav :query="query" />
     <div class="container">
       <slot />
     </div>
-    <Footer />
+    <LayoutsFooter />
   </main>
 </template>
 

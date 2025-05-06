@@ -12,6 +12,7 @@ interface Props {
   classCustom?: string;
   label?: string;
   type: "basic" | "ckeditor";
+  error: string;
 }
 
 defineProps<Props>();
@@ -37,6 +38,7 @@ const config = computed(() => {
     <textarea v-if="type == 'basic'" :class="['component ', classCustom]" v-model="model">
     {{ model }}
     </textarea>
+    <p class="text-danger fst-italic">{{ error }}</p>
   </div>
 </template>
 

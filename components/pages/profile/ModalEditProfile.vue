@@ -1,6 +1,6 @@
 <template>
   <!-- Button trigger modal -->
-  <Button type="button" label="Edit Profile" data-bs-toggle="modal" data-bs-target="#modalProfile" variant="primary"
+  <UiButton type="button" label="Edit Profile" data-bs-toggle="modal" data-bs-target="#modalProfile" variant="primary"
     @click="handleModelProfile" />
 
   <!-- Modal -->
@@ -15,27 +15,27 @@
               <div class="component__left">
                 <div class="component__user">
                   <img :src="imageDefault" alt="image user" class="component__image" />
-                  <Button label="Change Picture" variant="secondary" />
+                  <UiButton label="Change Picture" variant="secondary" />
                 </div>
-                <Input label="Name" placeholder="Name" v-model="name" :error="errors.name" />
-                <Input :disabled="true" label="Email" placeholder="Email" type="email" v-model="user.email" />
+                <UiInput label="Name" placeholder="Name" v-model="name" :error="errors.name" />
+                <UiInput :disabled="true" label="Email" placeholder="Email" type="email" v-model="user.email" />
                 <ClientOnly>
-                  <InputTextarea v-model="about" type="basic" label="About Me" />
+                  <UiInputtextarea v-model="about" type="basic" label="About Me" />
                 </ClientOnly>
               </div>
               <div class="component__right">
                 <h1 class="component__heading1">Change Password</h1>
-                <Input label="Olda Password" :error="errors.old_password" placeholder="Enter your old password"
+                <UiInput label="Olda Password" :error="errors.old_password" placeholder="Enter your old password"
                   v-model="old_password" />
-                <Input label="New Password" :error="errors.new_password" placeholder="Enter your new password"
+                <UiInput label="New Password" :error="errors.new_password" placeholder="Enter your new password"
                   v-model="new_password" />
-                <Input label="Confirm New Passsword" :error="errors.new_password_confirmation"
+                <UiInput label="Confirm New Passsword" :error="errors.new_password_confirmation"
                   placeholder="Re-enter your new passsword" v-model="new_password_confirmation" />
               </div>
             </div>
             <div class="component__buttons">
-              <Button label="Cancel" variant="secondary" data-bs-dismiss="modal" aria-label="Close" />
-              <Button label="Update Profile" variant="primary" type="submit" />
+              <UiButton label="Cancel" variant="secondary" data-bs-dismiss="modal" aria-label="Close" />
+              <UiButton label="Update Profile" variant="primary" type="submit" />
             </div>
           </form>
 
@@ -151,7 +151,7 @@ onMounted(() => {
 }
 
 .component {
-  max-width:800px;
+  max-width: 800px;
 
   &__form {
     width: 100%;

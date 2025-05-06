@@ -13,6 +13,7 @@
     "@ckeditor/ckeditor5-vue": "^7.3.0",
     "@nuxt/icon": "1.11.0",
     "@nuxtjs/composition-api": "^0.34.0",
+    "@nuxtjs/sitemap": "^7.2.10",
     "@pinia/nuxt": "^0.11.0",
     "@popperjs/core": "^2.11.8",
     "advanced-cropper": "^0.17.1",
@@ -35,6 +36,7 @@
     "@types/vue-cropperjs": "^4.1.6",
     "eslint-plugin-import": "^2.31.0",
     "sass": "^1.87.0",
-    "sass-loader": "^16.0.5"
+    "sass-loader": "^16.0.5",
+    "vite-plugin-vsharp": "^1.8.1"
   }
 }

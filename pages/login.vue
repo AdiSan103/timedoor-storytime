@@ -4,9 +4,6 @@ import * as yup from "yup";
 
 import logoImg from "@/assets/images/logo.png";
 import imgLogin from "@/assets/images/login.png";
-import Input from "~/components/ui/Input.vue";
-import Button from "~/components/ui/Button.vue";
-import LoadingScreen from "@/components/ui/LoadingScreen.vue";
 
 // meta
 useSeoMeta({
@@ -14,7 +11,7 @@ useSeoMeta({
   ogTitle: "Login Apps",
   // description: 'This is my amazing site, let me tell you all about it.',
   // ogDescription: 'This is my amazing site, let me tell you all about it.',
-})
+});
 
 // Initialize variable
 const { $api, $toast } = useNuxtApp();
@@ -23,7 +20,10 @@ const token = useCookie("STORYTIME_TOKEN");
 
 // Schema for form validation
 const schema = yup.object({
-  username_or_email: yup.string().email("must be valid email").required("email or username is required"),
+  username_or_email: yup
+    .string()
+    .email("must be valid email")
+    .required("email or username is required"),
   password: yup.string().required("Password is required"),
 });
 
@@ -57,7 +57,7 @@ const onSubmit = handleSubmit(() => {
         position: "top-center",
         autoClose: 3000,
         transition: "zoom",
-        dangerouslyHTMLString: true
+        dangerouslyHTMLString: true,
       });
 
       await navigateTo("/profile");
@@ -69,7 +69,7 @@ const onSubmit = handleSubmit(() => {
         position: "top-center",
         autoClose: 3000,
         transition: "zoom",
-        dangerouslyHTMLString: true
+        dangerouslyHTMLString: true,
       });
     })
     .finally(() => {
@@ -78,21 +78,20 @@ const onSubmit = handleSubmit(() => {
 });
 </script>
 
-
 <template>
-  <LoadingScreen v-if="loading" />
+  <UiLoadingScreen v-if="loading" />
   <section class="login container">
     <div class="login__left">
       <img :src="logoImg" alt="logo" class="login__logo" />
       <h3 class="login__heading2">Login</h3>
       <form action="" class="login__form" @submit.prevent="onSubmit">
-        <Input placeholder="Enter your username or email" label="Username/Email" type="text" v-model="username_or_email"
-          :error="errors.username_or_email" />
-        <Input placeholder="Enter your choosen password" label="Password" type="password" v-model="password"
+        <UiInput placeholder="Enter your username or email" label="Username/Email" type="text"
+          v-model="username_or_email" :error="errors.username_or_email" />
+        <UiInput placeholder="Enter your choosen password" label="Password" type="password" v-model="password"
           :error="errors.password" />
-        <Button variant="primary" label="Login" classCustom="login__button" />
+        <UiButton variant="primary" label="Login" classCustom="login__button" />
         <span class="login__link">Don't have an account?
-          <NuxtLink to="/register" class="login__register">Register</NuxtLink>
+          <NuxtLink :prefetch="false" to="/register" class="login__register">Register</NuxtLink>
         </span>
       </form>
     </div>

@@ -8,7 +8,7 @@
           <p class="modal__desc">Are you sure want to logout?</p>
         </div>
         <div class="modal__buttons">
-          <Button label="Cancel" data-bs-dismiss="modal" variant="secondary" @click="handleCancel" />
+          <Button label="Cancel" data-bs-dismiss="modal" variant="secondary" />
           <Button label="Logout" variant="primary" @click="handleLogout" />
         </div>
       </div>
@@ -50,7 +50,7 @@
             </div>
             <ul class="dropdown-menu px-4 text-center">
               <li>
-                <NuxtLink to="/profile" class="navbar__listitem">My Profile</NuxtLink>
+                <NuxtLink to="/profile" :prefetch="false" class="navbar__listitem">My Profile</NuxtLink>
               </li>
               <hr>
               <li>
@@ -95,7 +95,6 @@ const handleLogout = () => {
         transition: "zoom",
         dangerouslyHTMLString: true
       });      // close popup
-      handleCancel();
       // remove token
       const authToken = useCookie("STORYTIME_TOKEN");
       authToken.value = null;
@@ -190,6 +189,7 @@ const handleLogout = () => {
     font-weight: 700;
     font-size: clamp(16px, 1vw + 0.5rem, 18px);
     vertical-align: middle;
+    margin-left: 10px;
   }
 
   &__listmenu {

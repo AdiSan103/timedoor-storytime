@@ -2,10 +2,10 @@
   <section class="mystory__items">
     <div class="mystory__cards">
       <!--  -->
-      <CardSekeleton v-if="storyLoading" />
-      <CardSekeleton v-if="storyLoading" />
-      <CardSekeleton v-if="storyLoading" />
-      <CardSekeleton v-if="storyLoading" />
+      <UiCardSekeleton v-if="storyLoading" />
+      <UiCardSekeleton v-if="storyLoading" />
+      <UiCardSekeleton v-if="storyLoading" />
+      <UiCardSekeleton v-if="storyLoading" />
       <!--  -->
       <CardEdit v-for="(item, index) in story" :key="index" :item="item" />
     </div>

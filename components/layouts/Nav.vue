@@ -12,7 +12,7 @@ defineProps<Props>();
 
 <template>
   <h3 class="container title">{{ query ?? 'All Story' }}</h3>
-  <Breadcumb />
+  <UiBreadcumb />
 </template>
 
 <style lang="scss" scoped>

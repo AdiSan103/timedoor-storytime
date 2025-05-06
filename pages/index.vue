@@ -5,30 +5,23 @@
       The world's most-loved social storytelling platform. Story time connects a global
       community of 90 million readers and writers through the power of story.
     </p>
-    <form data-aos="zoom-in">
-      <Input placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
+    <form data-aos="zoom-in" @submit.prevent="handleSearch">
+      <UiInput placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
         @click="handleSearch" />
     </form>
     <img src="/images/image1.png" alt="" class="banner__image" data-aos="zoom-in" />
   </section>
-  <CardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
-  <CardsComedy :items="comedy" :loading="comedyLoading" />
-  <CardsRomance :items="romance" :loading="romanceLoading" />
-  <CardsHorror :items="horror" :loading="horrorLoading" />
-  <CardsCategories :items="categories" :loading="categoriesLoading" />
+  <PagesHomeCardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
+  <PagesHomeCardsComedy :items="comedy" :loading="comedyLoading" />
+  <PagesHomeCardsRomance :items="romance" :loading="romanceLoading" />
+  <PagesHomeCardsHorror :items="horror" :loading="horrorLoading" />
+  <PagesHomeCardsCategories :items="categories" :loading="categoriesLoading" />
 </template>
 
 <script setup lang="ts">
 // import
-import type { Category, CategoryResponse } from "~/type/module/categories";
-
-import Input from "@/components/ui/Input.vue";
-import CardsLastestStory from "~/components/pages/home/CardsLastestStory.vue";
-import CardsComedy from "~/components/pages/home/CardsComedy.vue";
-import CardsRomance from "~/components/pages/home/CardsRomance.vue";
-import CardsHorror from "~/components/pages/home/CardsHorror.vue";
-import type { PropsStory, Story } from "~/type/module/stories";
-import CardsCategories from "~/components/pages/home/CardsCategories.vue";
+import type { Category } from "~/type/module/categories";
+import type { Story } from "~/type/module/stories";
 
 // meta
 definePageMeta({
@@ -118,31 +111,20 @@ const fetchStoryFilterByCategory = (
 
 const handleSearch = async () => {
   if (search.value == "") {
-    const array = [
-      'A world of stories awaits. Find your book today',
-      'Find the book that speaks to you',
-      'Books that spark imagination — discover yours now!',
-      'Turn the page to something amazing.',
-      'Every story begins with a book. Find yours today.',
-      'Escape the ordinary — one page at a time.',
-      'Fuel your mind, feed your soul. Find a book now!',
-      'Stories that stay with you — waiting to be read.'
-    ];
 
-    $toast(array[Math.floor(Math.random() * array.length)], {
-      type: "info",
+    $toast("❌ Error: Search input cannot be empty!", {
+      type: "error",
       position: "top-center",
       autoClose: 3000,
       transition: "zoom",
-      dangerouslyHTMLString: true
+      dangerouslyHTMLString: true,
     });
-
   } else {
     await navigateTo({
-      path: '/story',
+      path: "/story",
       query: {
-        search: search.value
-      }
+        search: search.value,
+      },
     });
   }
 };
@@ -154,7 +136,6 @@ fetchStoryFilterByCategory("Romance", romance, romanceLoading);
 fetchStoryFilterByCategory("Horror", horror, horrorLoading);
 fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
 </script>
-
 
 <style lang="scss" scoped>
 /* width */

@@ -17,7 +17,7 @@ defineProps<Props>();
 <template>
   <section class="container categories">
     <h2>More Categories</h2>
-    <Separator />
+    <UiSeparator />
     <div class="categories__items" v-if="items">
       <Badge classCustom="categories__item" :label="item.name" :link="'/story?category=' + item.name"
         v-for="(item, index) in items" :key="index" />

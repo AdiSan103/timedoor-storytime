@@ -21,13 +21,13 @@ defineProps<Props>();
         <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>
     </div>
-    <Separator />
+    <UiSeparator />
     <div class="cards__items">
       <!--  -->
-      <CardSekeleton v-if="loading" />
-      <CardSekeleton v-if="loading" />
-      <CardSekeleton v-if="loading" />
-      <CardSekeleton v-if="loading" />
+      <UiCardSekeleton v-if="loading" />
+      <UiCardSekeleton v-if="loading" />
+      <UiCardSekeleton v-if="loading" />
+      <UiCardSekeleton v-if="loading" />
       <!--  -->
       <Card v-for="(item, index) in items" :item="item" :key="index" />
     </div>
@@ -64,17 +64,12 @@ defineProps<Props>();
     vertical-align: middle;
     color: black;
     cursor: pointer;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    text-decoration: underline;
   }
 
   &__items {
     width: 100%;
     display: flex;
-    gap: 20px;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;

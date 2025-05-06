@@ -97,15 +97,15 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
+  <UiLoadingScreen v-if="loading" />
   <!-- modal -->
   <div class="component" v-if="modalPopup">
     <div class="component__contain">
       <h2 class="component__title">Delete Story</h2>
       <p class="component__desc">Are you sure want to delete this story?</p>
       <div class="component__buttons">
-        <Button label="Cancel" variant="secondary" @click="handleModal" />
-        <Button label="Delete" variant="primary" @click="handleDelete" />
+        <UiButton label="Cancel" variant="secondary" @click="handleModal" />
+        <UiButton label="Delete" variant="primary" @click="handleDelete" />
       </div>
     </div>
   </div>
@@ -116,7 +116,7 @@ const handleDelete = () => {
       minHeight: (height || 300) + 'px',
     }" class="card__background">
       <div class="card__icons">
-        <NuxtLink :to="'/profile/story/edit/' + '123'" class="card__icon">
+        <NuxtLink :prefetch="false" :to="'/profile/story/edit/' + '123'" class="card__icon">
           <Icon name="mage:edit" style="color: #fff" size="25" />
         </NuxtLink>
         <!--  -->
@@ -166,6 +166,11 @@ const handleDelete = () => {
   cursor: pointer;
   transition: 0.2s;
   opacity: 1;
+
+  &:hover {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+  }
 
   &__animate {
     transition: ease-in-out 0.7s;

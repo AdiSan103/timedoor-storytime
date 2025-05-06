@@ -32,10 +32,10 @@ const breadcrumbs = computed(() => {
 <template>
   <div class="breadcumb">
     <div class="breadcumb__contain container">
-      <span v-for="(item, index) in breadcrumbs" :key="index">
+      <NuxtLink :to="'/' + item" v-for="(item, index) in breadcrumbs" :key="index" class="breadcumb__link">
         {{ item }}
         <span v-if="index < breadcrumbs.length - 1" class="breadcumb__separator"> / </span>
-      </span>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -48,6 +48,11 @@ const breadcrumbs = computed(() => {
   width: 100%;
   margin-bottom: 40px;
   padding: 5px 0;
+
+  &__link {
+    color: $color8;
+    text-decoration: none;
+  }
 
   &__contain {
     padding: 20px 10px;

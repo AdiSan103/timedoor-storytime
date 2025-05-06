@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import Input from "~/components/ui/Input.vue";
-import Select from "~/components/ui/Select.vue";
-import Card from "~/components/ui/Card.vue";
 import type { Story } from "~/type/module/stories";
-import CardSekeleton from "~/components/ui/CardSekeleton.vue";
 import type { Category } from "~/type/module/categories";
 
 // meta
@@ -114,7 +110,7 @@ const handleSearch = () => {
       position: "top-center",
       autoClose: 3000,
       transition: "zoom",
-      dangerouslyHTMLString: true
+      dangerouslyHTMLString: true,
     });
   } else {
     handleSearchPage();
@@ -126,13 +122,13 @@ const handleResetKeyword = () => {
   sort_by.value = "";
   search.value = "";
   category.value = "";
-  // 
+  //
   $toast("Reset keywords....", {
     type: "info",
     position: "top-center",
     autoClose: 3000,
     transition: "zoom",
-    dangerouslyHTMLString: true
+    dangerouslyHTMLString: true,
   });
 
   handleSearchPage();
@@ -144,13 +140,12 @@ fetchstory();
 </script>
 
 <template>
-
   <section class="form">
     <!-- condition select -->
     <div class="form__selects" v-if="!selectLoading">
-      <Select label="Category" :options="selectCategory" v-model="category" optionValue="id" optionLabel="name"
+      <UiSelect label="Category" :options="selectCategory" v-model="category" optionValue="id" optionLabel="name"
         @change="handleSearchPage" />
-      <Select label="Sort By" :options="selectOrder" v-model="sort_by" optionValue="name" optionLabel="name"
+      <UiSelect label="Sort By" :options="selectOrder" v-model="sort_by" optionValue="name" optionLabel="name"
         @change="handleSearchPage" />
     </div>
     <!-- else -->
@@ -160,7 +155,7 @@ fetchstory();
     </div>
 
     <form @submit.prevent="handleSearch" class="form__search">
-      <Input placeholder="Search Story" classCustom="form__input" v-model="search" />
+      <UiInput placeholder="Search Story" classCustom="form__input" v-model="search" />
       <Icon name="proicons:cancel" style="color: black" size="25" @click="handleResetKeyword"
         class="form__buttonreset" />
     </form>
@@ -169,26 +164,27 @@ fetchstory();
   <!--  -->
   <section class="cards" v-if="storyLoading || story.length != 0">
     <div class="cards__items">
-      <Card height="770" :item="story[0]" v-if="!storyLoading" />
-      <CardSekeleton height="770" v-if="storyLoading" />
+      <UiCard height="770" :item="story[0]" v-if="!storyLoading" />
+      <UiCardSekeleton height="770" v-if="storyLoading" />
       <div class="cards__left">
-        <CardSekeleton v-if="storyLoading" />
-        <CardSekeleton v-if="storyLoading" />
-        <Card :item="story[1]" v-if="!storyLoading" />
-        <Card :item="story[2]" v-if="!storyLoading" />
+        <UiCardSekeleton v-if="storyLoading" />
+        <UiCardSekeleton v-if="storyLoading" />
+        <UiCard :item="story[1]" v-if="!storyLoading" />
+        <UiCard :item="story[2]" v-if="!storyLoading" />
       </div>
     </div>
   </section>
-  <section class="cards__list" v-if="storyLoading || story.length != 0">
+  <section class="cards__list row row-cols-4" v-if="storyLoading || story.length != 0">
     <!--  -->
-    <CardSekeleton v-if="storyLoading" />
-    <CardSekeleton v-if="storyLoading" />
-    <CardSekeleton v-if="storyLoading" />
-    <CardSekeleton v-if="storyLoading" />
+    <UiCardSekeleton v-if="storyLoading" />
+    <UiCardSekeleton v-if="storyLoading" />
+    <UiCardSekeleton v-if="storyLoading" />
+    <UiCardSekeleton v-if="storyLoading" />
     <!--  -->
-    <Card v-for="(item, index) in story" :item="item" :key="index" />
+    <UiCard v-for="(item, index) in story" :item="item" :key="index" />
   </section>
   <p v-else class="text-center fst-italic">📚 Story not found.. ❌</p>
+  <UiPagination class="cards__pagination" />
 </template>
 
 <style lang="scss" scoped>
@@ -234,9 +230,9 @@ fetchstory();
 
   &__list {
     margin: 50px 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    // display: grid;
+    // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    // gap: 20px;
   }
 
   &__left {
@@ -244,6 +240,12 @@ fetchstory();
     flex-direction: column;
     gap: 20px;
     width: 50%;
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
   }
 }
 

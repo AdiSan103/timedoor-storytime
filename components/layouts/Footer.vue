@@ -6,7 +6,7 @@ import FacebookIcon from "@/assets/images/facebook.svg";
 </script>
 
 <template>
-  <Separator />
+  <UiSeparator />
   <section class="container footer">
     <p class="footer__title">© 2024 PT. Timedoor Indonesia. All rights reserved.</p>
     <div class="footer__socialmedia">

@@ -11,7 +11,7 @@
           Oops! It looks like this page doesn't exist. Please check the URL or return to
           the homepage.
         </p>
-        <Button label="Back To Home" variant="primary" />
+        <UiButton label="Back To Home" variant="primary" />
       </div>
     </section>
   </NuxtLayout>

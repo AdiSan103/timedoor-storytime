@@ -60,7 +60,7 @@ const toggleBookmark = () => {
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
+  <UiLoadingScreen v-if="loading" />
   <div :class="['card ', { 'card__animate': trashStatus === 'ANIMATE' }]" v-if="trashStatus !== 'NONACTIVE'">
     <div :style="{
       backgroundImage: `url(${item.content_images[0] ? item.content_images[0].url : 'https://placehold.co/600x600'})`,
@@ -108,6 +108,11 @@ const toggleBookmark = () => {
   text-decoration: none;
   transition: 0.2s;
   opacity: 1;
+
+  &:hover {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+  }
 
   &__footerleft {
     display: flex;

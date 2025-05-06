@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import type { Story } from "~/type/module/stories";
 
-import Card from "~/components/ui/Card.vue";
-import Breadcumb from "~/components/ui/Breadcumb.vue";
-import SliderThumbs from '@/components/pages/story/SliderThumbs.vue'
-import Separator from "~/components/ui/Separator.vue";
-import DetailSekeleton from "@/components/pages/story/DetailSekeleton.vue";
-import LoadingScreen from "@/components/ui/LoadingScreen.vue";
-
-
 definePageMeta({
   layout: "home",
 });
@@ -25,7 +17,6 @@ const storyLoading = ref(false);
 const route = useRoute();
 const id = ref(route.params.id);
 
-const bookmarkStatus = ref(false);
 const loading = ref(false);
 
 // function
@@ -43,7 +34,7 @@ const fetchstory = () => {
         ogTitle: story?.value?.title,
         // description: 'This is my amazing site, let me tell you all about it.',
         // ogDescription: 'This is my amazing site, let me tell you all about it.',
-      })
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -58,8 +49,8 @@ const fetchLastestStory = () => {
   lastestStoryLoading.value = true;
 
   const keywords = {
-    sort_by: 'lastest',
-  }
+    sort_by: "lastest",
+  };
 
   $api.stories
     .getFilter(keywords)
@@ -79,10 +70,11 @@ const fetchLastestStory = () => {
 const toggleBookmark = () => {
   loading.value = true;
   const dataForm = {
-    story_id: id.value
-  }
+    story_id: id.value,
+  };
 
-  $api.bookmark.toggle(dataForm)
+  $api.bookmark
+    .toggle(dataForm)
     .then((res) => {
       // message
       $toast("You've successfully bookmarked this story", {
@@ -90,7 +82,7 @@ const toggleBookmark = () => {
         position: "top-center",
         autoClose: 3000,
         transition: "zoom",
-        dangerouslyHTMLString: true
+        dangerouslyHTMLString: true,
       });
       // console.log('message', res)
     })
@@ -101,14 +93,14 @@ const toggleBookmark = () => {
         position: "top-center",
         autoClose: 3000,
         transition: "zoom",
-        dangerouslyHTMLString: true
+        dangerouslyHTMLString: true,
       });
-      console.log('message', err);
+      console.log("message", err);
     })
     .finally(() => {
       loading.value = false;
     });
-}
+};
 
 // lifecycle
 fetchstory();
@@ -116,18 +108,20 @@ fetchLastestStory();
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
-  <Breadcumb />
+  <UiLoadingScreen v-if="loading" />
+  <UiBreadcumb />
   <div class="detail container">
     <!--  -->
-    <DetailSekeleton v-if="storyLoading" />
+    <PagesStoryDetailSekeleton v-if="storyLoading" />
     <!--  -->
     <section v-if="!storyLoading" class="detail__title">
       <p class="detail__label" data-aos="fade-up">{{ story?.created_at }}</p>
       <h1 class="detail__title" data-aos="fade-up">{{ story?.title }}</h1>
       <div class="detail__avatar" data-aos="fade-up">
-        <div :style="{ backgroundImage: `url(${story?.user.profile_image ?? 'https://placehold.co/600x600'})` }"
-          class="detail__user"></div>
+        <div :style="{
+          backgroundImage: `url(${story?.user.profile_image ?? 'https://placehold.co/600x600'
+            })`,
+        }" class="detail__user"></div>
         <p class="detail__label" data-aos="fade-up">Author : {{ story?.user.name }}</p>
       </div>
       <!--  -->
@@ -137,18 +131,17 @@ fetchLastestStory();
     </section>
     <section v-if="!storyLoading" class="detail__content">
       <div class="detail__contentleft">
-        <SliderThumbs v-if="story?.content_images != null" :items="story?.content_images" />
+        <PagesStorySliderThumbs v-if="story?.content_images != null" :items="story?.content_images" />
       </div>
-      <div class="detail__contentright" v-html="story?.content">
-      </div>
+      <div class="detail__contentright" v-html="story?.content"></div>
     </section>
 
     <section>
       <h3 class="detail__heading3">Similiar Story</h3>
-      <Separator />
+      <UiSeparator />
       <div class="detail__items">
         <div v-for="(item, index) in lastestStory" :key="index">
-          <Card :item="item" />
+          <UICard :item="item" />
         </div>
       </div>
     </section>
@@ -241,6 +234,23 @@ fetchLastestStory();
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .detail {
+    &__content {
+      display: flex;
+      flex-direction: column
+    }
+
+    &__contentleft {
+      width: 100%;
+    }
+
+    &__contentright {
+      width: 100%;
+    }
   }
 }
 </style>

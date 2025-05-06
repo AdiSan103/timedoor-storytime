@@ -28,7 +28,7 @@ const handlePassword = () => {
     <label for="" class="component__label">{{ label }}</label>
     <div :class="['component ', classCustom, error ? 'component--error' : '']">
       <!-- condition type password -->
-      <input autocomplete :type="togglePassword === false ? 'text' : type" :placeholder="placeholder"
+      <input autocomplete="" :type="togglePassword === false ? 'text' : type" :placeholder="placeholder"
         class="component__input" :disabled="disabled" v-model="model" />
       <Icon :name="icon" style="color: black" size="25" v-if="icon" />
       <!-- type password -->
@@ -50,6 +50,7 @@ const handlePassword = () => {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border: 2px solid #cccccc;
   padding-right: 15px;
+  cursor: pointer;
 
   &__input {
     width: 100%;

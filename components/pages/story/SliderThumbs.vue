@@ -1,179 +1,122 @@
 <script lang="ts" setup>
-import { Swiper, SwiperSlide } from "swiper/vue";
+import { ref, onMounted } from 'vue'
+import type { StoryImage } from '~/type/module/stories'
 
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import type { StoryImage } from "~/type/module/stories";
-
-const thumbsSwiper = ref(null);
-const swiperPopupStatus = ref(false);
-const modules = [FreeMode, Navigation, Thumbs];
-
-
-// Define props with TypeScript
+// Define props
 interface Props {
-  classCustom?: string;
-  classCustomItems?: string;
-  items?: StoryImage[];
+  classCustom?: string
+  classCustomItems?: string
+  items?: StoryImage[]
 }
+defineProps<Props>()
 
-defineProps<Props>();
+const containerRef = ref(null)
+const swiper = useSwiper(containerRef, {
+  navigation: true,
+  loop: true,
+  autoplay: {
+    delay: 5000,
+  },
+})
 
-const setThumbsSwiper = (swiperInstance: any) => {
-  thumbsSwiper.value = swiperInstance;
-};
+onMounted(() => {
+  const instance = swiper.instance?.value
+  console.log(swiper.instance.value)
+  if (instance) {
 
-const handlePopup = () => {
-  swiperPopupStatus.value = !swiperPopupStatus.value;
-};
+    instance.slideTo(2); // Go to slide index 2
+  }
+})
+
 </script>
 
 <template>
-  <!-- popup -->
-  <div :class="['popup ', swiperPopupStatus === true ? ' popup--active' : '']">
-    <div class="popup__close" @click="handlePopup">
-      <Icon name="icon-park-solid:close-one" style="color: white" size="60" />
-    </div>
-    <div class="container">
-      <swiper :style="{
-        '--swiper-navigation-color': '#fff',
-        '--swiper-pagination-color': '#fff',
-      }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
-        class="mySwiper2">
-        <div v-for="(item, index) in items" :key="index">
-          <swiper-slide>
-            <img :src="item.url" />
-          </swiper-slide>
-        </div>
-      </swiper>
-
-      <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
-        :watchSlidesProgress="true" :modules="modules" class="mySwiper">
-        <div v-for="(item, index) in items" :key="index">
-          <swiper-slide>
-            <img :src="item.url" />
-          </swiper-slide>
-        </div>
-      </swiper>
-    </div>
-  </div>
-  <!-- slider -->
-  <div>
-    <swiper :style="{
-      '--swiper-navigation-color': '#fff',
-      '--swiper-pagination-color': '#fff',
-    }" :loop="true" :spaceBetween="10" :navigation="true" :thumbs="{ swiper: thumbsSwiper }" :modules="modules"
-      class="mySwiper2">
-      <div v-for="(item, index) in items" :key="index" @click="handlePopup">
-        <swiper-slide>
-          <img :src="item.url" />
+  <div class="component">
+    <!--  -->
+    <ClientOnly>
+      <!-- Main Swiper -->
+      <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper1"
+        thumbs-swiper=".mySwiper1_2" ref="containerRef" :init="false">
+        <swiper-slide v-for="(item, index) in items" :key="index">
+          <img :src="item.url" alt="Image" class="component__image" />
         </swiper-slide>
-      </div>
-    </swiper>
+      </swiper-container>
 
-    <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="4" :freeMode="true"
-      :watchSlidesProgress="true" :modules="modules" class="mySwiper">
-      <div v-for="(item, index) in items" :key="index">
-        <swiper-slide>
-          <img :src="item.url" />
+      <!-- Thumbnail Swiper -->
+      <swiper-container class="mySwiper1_2" space-between="10" :slides-per-view="4" :free-mode="true">
+        <swiper-slide v-for="(item, index) in items" :key="'thumb-' + index">
+          <img :src="item.url" alt="Thumbnail" class="component__thumbnail" />
         </swiper-slide>
-      </div>
-    </swiper>
+      </swiper-container>
+    </ClientOnly>
+    <!--  -->
   </div>
 </template>
 
 <style lang="scss" scoped>
-.swiper {
+swiper-container {
   width: 100%;
   height: 100%;
 }
 
-.swiper-slide {
+swiper-slide {
   text-align: center;
-  font-size: clamp(16px, 1vw + 0.5rem, 18px);
-
-  /* Center slide text vertically */
+  font-size: 18px;
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.swiper-slide img {
+swiper-slide img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
 }
 
-.swiper {
+body {
+  background: #000;
+  color: #000;
+}
+
+swiper-container {
   width: 100%;
   height: 300px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.swiper-slide {
+swiper-slide {
   background-size: cover;
   background-position: center;
 }
 
-.mySwiper2 {
+.mySwiper1 {
   height: 80%;
   width: 100%;
 }
 
-.mySwiper {
+.mySwiper1_2 {
   height: 20%;
   box-sizing: border-box;
   padding: 10px 0;
 }
 
-.mySwiper .swiper-slide {
+.mySwiper1_2 swiper-slide {
   width: 25%;
   height: 100%;
   opacity: 0.4;
 }
 
-.mySwiper .swiper-slide-thumb-active {
+.mySwiper1_2 .swiper-slide-thumb-active {
   opacity: 1;
 }
 
-.swiper-slide img {
+swiper-slide img {
   display: block;
+  width: 100%;
   height: 100%;
-  max-height: 600px;
   object-fit: cover;
-  border-radius: 10p;
-}
-
-//
-.popup {
-  width: 100vw;
-  min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.515);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99;
-  padding: 40px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateY(-100%);
-
-  &__close {
-    position: fixed;
-    top: 50px;
-    cursor: pointer;
-  }
-
-  &--active {
-    transform: translateY(0%);
-  }
 }
 </style>

@@ -23,13 +23,13 @@ defineProps<Props>();
         <Icon name="formkit:arrowright" style="color: black" size="18" />
       </NuxtLink>
     </div>
-    <Separator />
-    <div class="cards__items">
+    <UiSeparator />
+    <div class="cards__items row row-cols-lg-2 row-cols-1">
       <Card height="770" :item="items[0]" v-if="!loading" />
-      <CardSekeleton v-if="loading" height="770" />
-      <div class="cards__left">
-        <CardSekeleton v-if="loading" />
-        <CardSekeleton v-if="loading" />
+      <UiCardSekeleton v-if="loading" height="770" />
+      <div class="col">
+        <UiCardSekeleton v-if="loading" />
+        <UiCardSekeleton v-if="loading" />
         <Card :item="items[1]" v-if="!loading" />
         <Card :item="items[2]" v-if="!loading" />
       </div>
@@ -66,25 +66,6 @@ defineProps<Props>();
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  &__items {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-
-  &__left {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .cards__items {
-    flex-direction: column;
   }
 }
 </style>

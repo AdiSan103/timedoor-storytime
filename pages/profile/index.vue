@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import type { User } from "~/type/module/users";
 
-import Modal from "~/components/pages/profile/Modal.vue";
-import NavTabs from "~/components/pages/profile/NavTabs.vue"
-import UserSection from "~/components/pages/profile/UserSection.vue";
-import MyBookmark from "~/components/pages/profile/MyBookmark.vue"
-import MyStory from "~/components/pages/profile/MyStory.vue"
-
 // meta
 definePageMeta({
   layout: "home",
@@ -19,7 +13,6 @@ const { $api } = useNuxtApp();
 const user: Ref<User | undefined> = ref();
 const userLoading = ref(false);
 const navtabsStatus = ref("LEFT") // value : "LEFT" | "RIGHT"
-const modalProfileStatus = ref(false);
 
 // function
 const fetchDetailUser = () => {
@@ -44,11 +37,11 @@ fetchDetailUser();
 
 <template>
   <section class="mystory">
-    <UserSection />
+    <PagesProfileUserSection />
   </section>
   <section class="mystory__items container">
     <!--  -->
-    <NavTabs v-if="!userLoading" v-model="navtabsStatus" />
+    <PagesProfileNavTabs v-if="!userLoading" v-model="navtabsStatus" />
     <div class="navtabs placeholder-glow" v-if="userLoading">
       <div class="navtabs__item placeholder"></div>
       <div class="navtabs__item placeholder"></div>
@@ -56,18 +49,18 @@ fetchDetailUser();
     <!--  -->
     <div class="mystory__content">
       <div class="mystory__left  placeholder-glow">
-        <Modal v-if="!userLoading" />
+        <PagesProfileModal v-if="!userLoading" />
         <div class="mystory__modal placeholder" v-if="userLoading">
         </div>
       </div>
       <div class="mystory__right">
         <!-- MyStory -->
         <div v-if="navtabsStatus == 'LEFT'">
-          <MyStory />
+          <PagesProfileMyStory />
         </div>
         <!-- MyBookMark -->
         <div v-if="navtabsStatus == 'RIGHT'">
-          <MyBookmark />
+          <PagesProfileMyBookmark />
         </div>
       </div>
     </div>

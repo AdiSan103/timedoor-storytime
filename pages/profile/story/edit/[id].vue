@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-import Input from "@/components/ui/Input.vue";
-import InputSelect from "@/components/ui/InputSelect.vue";
-import InputTextarea from "@/components/ui/InputTextarea.vue";
-import InputImage from "@/components/ui/InputImage.vue";
-
 import imageDefault from "@/assets/images/notfound_story.png";
 
 // meta
@@ -32,20 +27,15 @@ const selectOptions = [
       <h3 class="form__heading1">Edit Story</h3>
     </div>
     <form action="" class="form__contain">
-      <Input placeholder="Enter a story title" label="Title" />
-      <InputSelect
-        label="Category"
-        :options="selectOptions"
-        optionValue="id"
-        optionLabel="name"
-      />
+      <UiInput placeholder="Enter a story title" label="Title" />
+      <UiInputSelect label="Category" :options="selectOptions" optionValue="id" optionLabel="name" />
       <ClientOnly>
-        <InputTextarea type="ckeditor" label="Content" />
+        <UiInputtextarea type="ckeditor" label="Content" />
       </ClientOnly>
-      <InputImage :image_name="imageDefault" />
+      <UiInputImage :image_name="imageDefault" />
       <div class="form__actions">
-        <Button variant="secondary" label="Cancel" />
-        <Button label="Post Story" variant="primary" />
+        <UiButton variant="secondary" label="Cancel" />
+        <UiButton label="Post Story" variant="primary" />
       </div>
     </form>
   </section>

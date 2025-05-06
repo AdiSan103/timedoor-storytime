@@ -25,8 +25,8 @@ const handleActive = () => {
    }
   ]">
   </div>
-  <Button label="My Story" variant="light" classCustom="component__button component--btn1" @click="handleActive()" />
-  <Button label="Bookmark" variant="light" classCustom="component__button component--btn2" @click="handleActive()" />
+  <UiButton label="My Story" variant="light" classCustom="component__button component--btn1" @click="handleActive()" />
+  <UiButton label="Bookmark" variant="light" classCustom="component__button component--btn2" @click="handleActive()" />
  </div>
 </template>
 

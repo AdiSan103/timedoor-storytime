@@ -5,12 +5,6 @@ import * as yup from "yup";
 import { Cropper } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 
-import Input from "@/components/ui/Input.vue";
-import InputSelect from "@/components/ui/InputSelect.vue";
-import InputTextarea from "@/components/ui/InputTextarea.vue";
-import Button from "~/components/ui/Button.vue";
-import LoadingScreen from "@/components/ui/LoadingScreen.vue";
-
 // meta
 definePageMeta({
   layout: "home",
@@ -18,11 +12,11 @@ definePageMeta({
 });
 
 // initialize variable state
-const { $api } = useNuxtApp();
+const { $api, $bModal } = useNuxtApp();
 const loading = ref(false);
 const selectOptions: any = ref([]);
 
-// Schema for form validation
+// Schema for form validation  
 const schema = yup.object({
   title: yup.string().required("is required"),
   category_id: yup.string().required("is required"),
@@ -121,6 +115,8 @@ const crop = async () => {
       content_images.value = file;
     }
   }
+  // close crop
+  $bModal.toggle('CropperImageModal')
 };
 
 // Reset crop
@@ -135,39 +131,67 @@ const dataUrlToFile = (dataUrl: string, filename: string): Promise<File> => {
     .then((res) => res.arrayBuffer())
     .then((buf) => new File([buf], filename, { type: "image/png" }));
 };
+
+// lifecycle
+watch(uploadedImage, (newValue) => {
+  if (newValue) {
+    $bModal.show('CropperImageModal')
+  }
+})
 </script>
 
 
 <template>
-  <LoadingScreen v-if="loading" />
+  <UiLoadingScreen v-if="loading" />
   <section class="form container">
     <div class="form__nav">
-      <Icon name="formkit:arrowleft" style="color: black" size="25" />
+      <NuxtLink to="/profile">
+        <Icon name="formkit:arrowleft" style="color: black" size="25" />
+      </NuxtLink>
       <h3 class="form__heading1">Write Story</h3>
     </div>
 
     <form @submit.prevent="onSubmit" class="form__contain" enctype="multipart/form-data">
-      <Input placeholder="Enter a story title" label="Title" v-model="title" :error="errors.title" />
-      <InputSelect label="Category" :options="selectOptions" v-model="category_id" :error="errors.category_id"
+      <UiInput placeholder="Enter a story title" label="Title" v-model="title" :error="errors.title" />
+      <UiInputSelect label="Category" :options="selectOptions" v-model="category_id" :error="errors.category_id"
         optionValue="id" optionLabel="name" />
 
       <ClientOnly>
-        <InputTextarea type="ckeditor" label="Content" v-model="content" />
+        <UiInputTextarea type="ckeditor" label="Content" v-model="content" :error="errors.content" />
       </ClientOnly>
-      <p class="text-danger fst-italic">{{ errors.content }}</p>
 
       <!-- Image upload -->
       <div class="my-4">
         <label class="block mb-2 text-sm font-medium text-gray-700">Upload Image</label>
 
-        <div v-if="!croppedImage">
-          <input type="file" @change="onFileChange" accept="image/png, image/jpeg"
-            style="width: 100%; margin-bottom: 16px;" />
-          <Cropper ref="cropper" class="cropper" :src="uploadedImage" />
-          <button type="button" @click="crop" style="margin-bottom: 16px;">Crop</button>
+        <div>
+          <UiInput type="file" @change="onFileChange" accept="image/png, image/jpeg"
+            style="width: 100%; margin-bottom: 16px;" v-if="!croppedImage" />
+
+          <!-- Modal -->
+          <div class="modal fade" id="CropperImageModal" tabindex="-1" aria-labelledby="CropperImageModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="CropperImageModalLabel">Cropper Image</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <Cropper ref="cropper" class="cropper" :src="uploadedImage" />
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                  <button class="btn btn-outline-primary" @click="crop">Crop</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <div v-else>
+        <div v-if="croppedImage">
           <img :src="croppedImage" class="image-preview" />
           <button type="button" @click="resetCrop" style="margin-top: 16px;">Change Image</button>
         </div>
@@ -177,8 +201,8 @@ const dataUrlToFile = (dataUrl: string, filename: string): Promise<File> => {
 
       <!-- Actions -->
       <div class="form__actions">
-        <Button variant="secondary" label="Cancel" type="button" @click="resetForm" />
-        <Button label="Post Story" variant="primary" type="submit" />
+        <UiButton variant="secondary" label="Cancel" type="button" @click="resetForm" />
+        <UiButton label="Post Story" variant="primary" type="submit" />
       </div>
     </form>
   </section>

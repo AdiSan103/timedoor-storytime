@@ -1,5 +1,5 @@
 <template>
-  <LoadingScreen v-if="loading" />
+  <UiLoadingScreen v-if="loading" />
   <section class="register container">
     <div class="register__left">
       <img :src="logoImg" alt="logo" class="register__logo" />
@@ -15,17 +15,17 @@
     <div class="register__right">
       <h3 class="register__heading2">Create Account</h3>
       <form action="" class="register__form" @submit.prevent="onSubmit">
-        <Input v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
-        <Input v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
+        <UiInput v-model="name" :error="errors.name" placeholder="Enter Your Name" label="Name" type="text" />
+        <UiInput v-model="username" :error="errors.username" placeholder="Enter Your Username" label="Username"
           type="text" />
-        <Input v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
-        <Input v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
+        <UiInput v-model="email" :error="errors.email" placeholder="Enter Your Email" label="Email" type="email" />
+        <UiInput v-model="password" :error="errors.password" placeholder="Enter Your Password" label="Password"
           type="password" />
-        <Input v-model="password_confirmation" :error="errors.password_confirmation"
+        <UiInput v-model="password_confirmation" :error="errors.password_confirmation"
           placeholder="Re-enter your chosen password" label="Confirm Passowrd" type="password" />
-        <Button variant="primary" label="Create Account" classCustom="register__button" />
+        <UiButton variant="primary" label="Create Account" classCustom="register__button" />
         <span class="register__link">Already have an account?
-          <NuxtLink to="/login" class="register__login">Login</NuxtLink>
+          <NuxtLink :prefetch="false" to="/login" class="register__login">Login</NuxtLink>
         </span>
       </form>
     </div>
@@ -38,9 +38,6 @@ import * as yup from "yup";
 
 import logoImg from "@/assets/images/logo.png";
 import imgRegister from "@/assets/images/register.png";
-import Input from "~/components/ui/Input.vue";
-import Button from "~/components/ui/Button.vue";
-import LoadingScreen from "@/components/ui/LoadingScreen.vue";
 
 // meta
 useSeoMeta({
@@ -49,7 +46,6 @@ useSeoMeta({
   // description: 'This is my amazing site, let me tell you all about it.',
   // ogDescription: 'This is my amazing site, let me tell you all about it.',
 })
-
 
 // Initialize variable
 const { $api, $toast } = useNuxtApp();

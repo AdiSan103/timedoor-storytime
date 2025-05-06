@@ -6,7 +6,7 @@ import Button from "~/components/ui/Button.vue";
   <div class="component">
     <h4>Write your story</h4>
     <p>Share your unique voice with the world – start writing your story today!</p>
-    <Button link="/profile/story/create" label="Write Story" variant="primary" />
+    <UiButton link="/profile/story/create" label="Write Story" variant="primary" />
   </div>
 </template>
 <style lang="scss" scoped>
