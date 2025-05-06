@@ -70,7 +70,7 @@ const fetchstory = () => {
   if (search.value) keywords.search = search.value;
   if (category.value) keywords.category = category.value;
 
-  console.log("keywords : ", keywords);
+  // console.log("keywords : ", keywords);
 
   $api.stories
     .getFilter(keywords)

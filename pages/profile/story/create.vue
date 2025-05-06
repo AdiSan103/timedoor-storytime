@@ -65,13 +65,13 @@ const onSubmit = handleSubmit(() => {
   });
 
   // 🔥 ADD THIS: Log user input before sending to API
-  console.log("User Input:");
-  console.log({
-    title: title.value,
-    category_id: category_id.value,
-    content: content.value,
-    images: imageArray, // list of selected/cropped images
-  });
+  // console.log("User Input:");
+  // console.log({
+  //   title: title.value,
+  //   category_id: category_id.value,
+  //   content: content.value,
+  //   images: imageArray, // list of selected/cropped images
+  // });
 
   $api.stories
     .addStory(formData)

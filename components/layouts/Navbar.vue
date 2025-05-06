@@ -39,8 +39,11 @@
               </div>
               <!-- loading end... -->
               <div v-else>
-                <img class="navbar__user" :src="user.profile_image && user.profile_image != 'https://timestory.tmdsite.my.id/' ? user.profile_image :
-                  'https://placehold.co/600x600'" alt="" />
+                <img class="navbar__user" :src="user.profile_image &&
+                  user.profile_image != 'https://timestory.tmdsite.my.id/'
+                  ? user.profile_image
+                  : 'https://placehold.co/600x600'
+                  " alt="" />
                 <span class="navbar__usertitle">{{ user?.name }}</span>
               </div>
             </a>
@@ -52,7 +55,7 @@
               <li>
                 <NuxtLink to="/profile" :prefetch="false" class="navbar__listitem">My Profile</NuxtLink>
               </li>
-              <hr>
+              <hr />
               <li>
                 <span type="button" class="navbar__listitem" data-bs-toggle="modal" data-bs-target="#modalLogout">
                   Log Out
@@ -75,8 +78,8 @@ import Button from "@/components/ui/Button.vue";
 const menu = ref(false);
 const authToken = useCookie("STORYTIME_TOKEN");
 const { user, userLoading } = useUser();
-const router = useRouter()
-const { $api, $toast } = useNuxtApp();
+const router = useRouter();
+const { $api, $toast, $bModal } = useNuxtApp();
 
 // function
 const handleMenu = () => {
@@ -93,29 +96,29 @@ const handleLogout = () => {
         position: "top-center",
         autoClose: 3000,
         transition: "zoom",
-        dangerouslyHTMLString: true
-      });      // close popup
+        dangerouslyHTMLString: true,
+      }); // close popup
       // remove token
       const authToken = useCookie("STORYTIME_TOKEN");
       authToken.value = null;
-      // redirect home 
-      console.log('- test logout -')
-      router.push('/')
+      // redirect home
+      console.log("- test logout -");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-
+      $bModal.toggle('modalLogout');
     });
 };
-
 </script>
-
 
 <style scoped lang="scss">
 @import "@/assets/main.scss";
-
 
 .navbar {
   position: sticky;
@@ -210,7 +213,6 @@ const handleLogout = () => {
 }
 
 .modal {
-
   &__title {
     font-family: DM Sans;
     font-weight: 700;

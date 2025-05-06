@@ -115,14 +115,21 @@ fetchLastestStory();
     <PagesStoryDetailSekeleton v-if="storyLoading" />
     <!--  -->
     <section v-if="!storyLoading" class="detail__title">
-      <p class="detail__label" data-aos="fade-up">{{ story?.created_at }}</p>
-      <h1 class="detail__title" data-aos="fade-up">{{ story?.title }}</h1>
-      <div class="detail__avatar" data-aos="fade-up">
-        <div :style="{
-          backgroundImage: `url(${story?.user.profile_image ?? 'https://placehold.co/600x600'
-            })`,
-        }" class="detail__user"></div>
-        <p class="detail__label" data-aos="fade-up">Author : {{ story?.user.name }}</p>
+      <div data-aos="fade-up">
+        <p class="detail__label">{{ story?.created_at }}</p>
+      </div>
+      <div data-aos="fade-up">
+        <h1 class="detail__title">{{ story?.title }}</h1>
+
+      </div>
+      <div data-aos="fade-up">
+        <div class="detail__avatar">
+          <div :style="{
+            backgroundImage: `url(${story?.user.profile_image ?? 'https://placehold.co/600x600'
+              })`,
+          }" class="detail__user"></div>
+          <p class="detail__label">Author : {{ story?.user.name }}</p>
+        </div>
       </div>
       <!--  -->
       <div class="detail__bookmark" @click="toggleBookmark">

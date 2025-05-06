@@ -45,12 +45,12 @@ const onSubmit = handleSubmit(() => {
   formLogin.append("username_or_email", username_or_email.value);
   formLogin.append("password", password.value);
 
-  console.log("form Login", formLogin);
+  // console.log("form Login", formLogin);
 
   $api.auth
     .login(formLogin)
     .then(async (res) => {
-      console.log(res);
+      // console.log(res);
       token.value = res.token;
       $toast("Welcome back! You’ve successfully logged in.", {
         type: "success",

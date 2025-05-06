@@ -21,7 +21,7 @@ const swiper = useSwiper(containerRef, {
 
 onMounted(() => {
   const instance = swiper.instance?.value
-  console.log(swiper.instance.value)
+  // console.log(swiper.instance.value)
   if (instance) {
 
     instance.slideTo(2); // Go to slide index 2

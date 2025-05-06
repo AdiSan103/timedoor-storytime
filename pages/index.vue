@@ -1,20 +1,39 @@
 <template>
   <section class="container banner">
-    <h1 class="banner__title" data-aos="fade-up">Welcome to Storytime</h1>
-    <p class="banner__desc" data-aos="fade-up">
-      The world's most-loved social storytelling platform. Story time connects a global
-      community of 90 million readers and writers through the power of story.
-    </p>
+    <div data-aos="fade-up">
+      <h1 class="banner__title">Welcome to Storytime</h1>
+    </div>
+    <div data-aos="fade-up">
+      <p class="banner__desc">
+        The world's most-loved social storytelling platform. Story time connects a global
+        community of 90 million readers and writers through the power of story.
+      </p>
+    </div>
     <form data-aos="zoom-in" @submit.prevent="handleSearch">
       <UiInput placeholder="Search Story" classCustom="banner__input" icon="iconoir:search" v-model="search"
         @click="handleSearch" />
     </form>
-    <img src="/images/image1.png" alt="" class="banner__image" data-aos="zoom-in" />
+    <div data-aos="zoom-in">
+      <img src="/images/image1.png" alt="" class="banner__image" />
+    </div>
   </section>
-  <PagesHomeCardsLastestStory :items="lastestStory" :loading="lastestStoryLoading" />
-  <PagesHomeCardsComedy :items="comedy" :loading="comedyLoading" />
-  <PagesHomeCardsRomance :items="romance" :loading="romanceLoading" />
-  <PagesHomeCardsHorror :items="horror" :loading="horrorLoading" />
+  <!-- lastest -->
+  <PagesHomeCardsSlider :items="lastestStory" :loading="lastestStoryLoading" title="Lastest Story"
+    link_explore="/story?sort_by=newest" />
+  <!-- comedy -->
+  <PagesHomeCardsThumb v-if="isLgUp" :items="comedy" :loading="comedyLoading" title="Comedy"
+    link_explore="/story?sort_by=comedy" />
+  <PagesHomeCardsSlider v-else :items="comedy" :loading="comedyLoading" title="Comedy"
+    link_explore="/story?sort_by=comedy" />
+  <!-- romance -->
+  <PagesHomeCardsSlider :items="romance" :loading="romanceLoading" title="Romance"
+    link_explore="/story?sort_by=romance" />
+  <!-- horror -->
+  <PagesHomeCardsThumb v-if="isLgUp" :items="horror" :loading="horrorLoading" title="Horror"
+    link_explore="/story?sort_by=horror" />
+  <PagesHomeCardsSlider v-else :items="horror" :loading="horrorLoading" title="Horror"
+    link_explore="/story?sort_by=horror" />
+  <!-- categories -->
   <PagesHomeCardsCategories :items="categories" :loading="categoriesLoading" />
 </template>
 
@@ -135,6 +154,20 @@ fetchCategories();
 fetchStoryFilterByCategory("Romance", romance, romanceLoading);
 fetchStoryFilterByCategory("Horror", horror, horrorLoading);
 fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
+
+// 
+import { useWindowSize } from '@vueuse/core'
+
+// Get reactive window width
+const { width } = useWindowSize()
+
+// Track whether screen is lg or up
+const isLgUp = ref(width.value >= 992)
+
+// Watch for changes to width and update isLgUp
+watch(width, (newWidth) => {
+  isLgUp.value = newWidth >= 992
+})
 </script>
 
 <style lang="scss" scoped>
@@ -173,7 +206,7 @@ fetchStoryFilterByCategory("Comedy", comedy, comedyLoading);
 
   &__input {
     width: 100% !important;
-    max-width: 1062px;
+    max-width: 2000px;
     margin-top: 30px;
   }
 

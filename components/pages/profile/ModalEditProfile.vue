@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(() => {
   //   formData.append("content_images[]", file); // correctly append as array
   // });
 
-  console.log("data form", formData);
+  // console.log("data form", formData);
 
   // console.log("type images");
   // console.log(typeof content_images.value); // Should be "object"
@@ -121,7 +121,7 @@ const onSubmit = handleSubmit(() => {
   $api.users
     .updateProfile(formData)
     .then((res) => {
-      console.log('success response : ', res);
+      // console.log('success response : ', res);
     })
     .catch((err) => {
       console.log('error : ', err);

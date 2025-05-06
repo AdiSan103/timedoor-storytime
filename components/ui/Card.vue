@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // import imageDefault from "@/assets/images/404.png";
+import moment from 'moment'
 import Badge from "@/components/ui/Badge.vue";
 import type { Story } from "~/type/module/stories";
 import LoadingScreen from "./LoadingScreen.vue";
@@ -67,11 +68,11 @@ const toggleBookmark = () => {
         <div class="card__footerleft">
           <div :style="{ backgroundImage: `url(${item.user.profile_image ?? 'https://placehold.co/600x600'})` }"
             class="card__user"></div>
-          <p class="card__label">{{ item.user.name.length > 9 ? item.user.name.slice(0, 9) + '...' : item.user.name }}
+          <p class="card__label">{{ item.user.name.length > 7 ? item.user.name.slice(0, 7) + '...' : item.user.name }}
           </p>
         </div>
         <div class="card__footerright">
-          <p class="card__label">{{ item.created_at }}</p>
+          <p class="card__label">{{ moment(item.created_at).format('ddd, D MMMM YYYY') }}</p>
           <Badge :label="item.category.name" />
         </div>
       </div>
@@ -100,13 +101,17 @@ const toggleBookmark = () => {
 
   &__background {
     width: 100%;
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     flex-shrink: 0;
     border-radius: 8px;
     position: relative;
     transition: 0.2s;
+  }
+
+  &:hover &__background {
+    background-size: 110% 110%;
   }
 
   &:hover {
