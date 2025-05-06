@@ -62,7 +62,7 @@ const handleDelete = () => {
   $api.stories
     .removeStory(props.item.id)
     .then((res) => {
-      $toast("Successfully Logout", {
+      $toast("Successfully Deleted", {
         type: "success",
         position: "top-center",
         autoClose: 3000,

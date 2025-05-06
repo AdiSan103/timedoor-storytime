@@ -88,42 +88,48 @@ fetchCategories();
 
 // ---- IMAGE CROPPER HANDLING ----
 const cropper = ref<InstanceType<typeof Cropper> | null>(null);
-const croppedImage = ref<string | null>(null);
-const uploadedImage = ref<string | null>(null);
+const croppedImage = ref<string[] | null>([]);
+const uploadedImage = ref<string[] | null>([]);
 
 // Handle upload file
 const onFileChange = (event: Event) => {
   const input = event.target as HTMLInputElement;
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadedImage.value = (e.target as FileReader).result as string;
-    };
-    reader.readAsDataURL(input.files[0]);
+  if (input.files) {
+    const files = Array.from(input.files);
+    uploadedImage.value = [];
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = (e.target as FileReader).result as string;
+        uploadedImage.value?.push(result);
+        $bModal.show('CropperImageModal'); // Open after each file
+      };
+      reader.readAsDataURL(file);
+    });
   }
 };
 
 // Crop image
-const crop = async () => {
+const handleCrop = async () => {
   if (cropper.value) {
     const result = cropper.value.getResult();
     const { canvas } = result;
     if (canvas) {
-      croppedImage.value = canvas.toDataURL();
+      const dataUrl = canvas.toDataURL();
+      croppedImage.value.push(dataUrl);
 
-      const file = await dataUrlToFile(canvas.toDataURL(), "cropped-image.png");
-      content_images.value = file;
+      const file = await dataUrlToFile(dataUrl, `cropped-${Date.now()}.png`);
+
+      // Push each cropped file into content_images
+      const existing = content_images.value || [];
+      content_images.value = [...existing, file];
     }
   }
-  // close crop
-  $bModal.toggle('CropperImageModal')
+
+  $bModal.toggle('CropperImageModal');
 };
 
-// Reset crop
-const resetCrop = () => {
-  croppedImage.value = null;
-  uploadedImage.value = null;
-};
 
 // Helper: convert base64 to File
 const dataUrlToFile = (dataUrl: string, filename: string): Promise<File> => {
@@ -166,7 +172,7 @@ watch(uploadedImage, (newValue) => {
 
         <div>
           <UiInput type="file" @change="onFileChange" accept="image/png, image/jpeg"
-            style="width: 100%; margin-bottom: 16px;" v-if="!croppedImage" />
+            style="width: 100%; margin-bottom: 16px;" />
 
           <!-- Modal -->
           <div class="modal fade" id="CropperImageModal" tabindex="-1" aria-labelledby="CropperImageModalLabel"
@@ -183,7 +189,7 @@ watch(uploadedImage, (newValue) => {
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                  <button class="btn btn-outline-primary" @click="crop">Crop</button>
+                  <button class="btn btn-outline-primary" @click="handleCrop">Crop</button>
                 </div>
               </div>
             </div>
@@ -191,9 +197,12 @@ watch(uploadedImage, (newValue) => {
 
         </div>
 
-        <div v-if="croppedImage">
-          <img :src="croppedImage" class="image-preview" />
-          <button type="button" @click="resetCrop" style="margin-top: 16px;">Change Image</button>
+        <div v-if="croppedImage.length">
+          <div class="row row-cols-lg-4 row-cols-2">
+            <div v-for="(img, index) in croppedImage" :key="index" class="col">
+              <img :src="img" class="image-preview" />
+            </div>
+          </div>
         </div>
 
         <p class="text-danger fst-italic">{{ errors.content_images }}</p>
@@ -249,9 +258,10 @@ watch(uploadedImage, (newValue) => {
 
 .image-preview {
   display: inline-block;
-  border-radius: 50%;
+  border-radius: 20px;
   width: 300px;
   height: 300px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 button {
